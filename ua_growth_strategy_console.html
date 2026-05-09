@@ -5204,6 +5204,16 @@
     const topBias = biasOrdered[0];
     const biasIsSystematic = topBias.flagged;
 
+    /* Revenue-weighted portfolio-blended bias = Σ (per-game mean bias ×
+       revenue share). At the portfolio rollup level this can be small
+       even when a single title carries a large systematic miss — that's
+       precisely why title-level decomposition matters and why the per-game
+       view in this tab exists. Computed live so the masking number stays
+       honest if any baseline shifts. */
+    const totalMonthlyRev = Object.values(PARAMS.T07_REV_BASELINE).reduce((s, b) => s + b.monthly, 0);
+    const blendedBias = accuracy.reduce((s, a) =>
+      s + a.meanBias * (PARAMS.T07_REV_BASELINE[a.gameKey].monthly / totalMonthlyRev), 0);
+
     const html =
       'Q-end portfolio revenue P50 <strong>$' + (totalP50/1e6).toFixed(2) + 'M</strong>, ' +
       '90% CI <strong>$' + (totalP10/1e6).toFixed(2) + 'M – $' + (totalP90/1e6).toFixed(2) + 'M</strong> ' +
@@ -5215,12 +5225,18 @@
         ? '<strong>Largest bias contributor:</strong> ' + topBias.game.name +
           ' at <strong>' + (topBias.meanBias*100).toFixed(1) + '% mean bias</strong> over last 4 quarters (systematic over-prediction). ' +
           'Recommendation: <strong>recalibrate ' + topBias.game.name + ' forecast centroid down ~' + Math.abs(topBias.meanBias*100).toFixed(0) + '%</strong> ' +
-          'before publishing this quarter\'s P50; tighten band acknowledgment on ' + topVar.game.name + ' for Finance.'
+          'before publishing this quarter\'s P50; tighten band acknowledgment on ' + topVar.game.name + ' for Finance.<br><br>' +
+          '<em>Why this wasn\'t flagged in prior Finance reviews:</em> revenue-weighted blended bias across the four games is <strong>' +
+          (blendedBias*100 >= 0 ? '+' : '') + (blendedBias*100).toFixed(2) + '%</strong> — ' +
+          topBias.game.name + '\'s ' + (topBias.meanBias*100).toFixed(1) + '% miss is masked by net-out across the portfolio (Sol/Spider/TriPeaks contribute small positive biases that partially offset Bubble\'s drag). ' +
+          'Per-title bias decomposition is the structural fix; the centroid recalibration is the immediate one. ' +
+          'This is the raison d\'être of the tab: portfolio-level rollup hides title-level signals.'
         : 'No systematic bias above 10% mean across the four games over last 4 quarters. Standard quarter-end review.');
     const foot =
       'Variance contributions: ' + variance.map(v => v.game.name + ' ' + ((v.sd_q*v.sd_q/totalSDsquared)*100).toFixed(0) + '%').join(' · ') +
-      ' · Mean biases: ' + accuracy.map(a => a.game.name.split(' ')[0] + ' ' + (a.meanBias>=0?'+':'') + (a.meanBias*100).toFixed(1) + '%').join(' · ');
-    return { html, foot, totalP10, totalP50, totalP90, totalSD, topVar, topBias };
+      ' · Per-game biases: ' + accuracy.map(a => a.game.name.split(' ')[0] + ' ' + (a.meanBias>=0?'+':'') + (a.meanBias*100).toFixed(1) + '%').join(' · ') +
+      ' · Revenue-weighted blended bias: ' + (blendedBias*100>=0?'+':'') + (blendedBias*100).toFixed(2) + '%';
+    return { html, foot, totalP10, totalP50, totalP90, totalSD, topVar, topBias, blendedBias };
   }
 
   /* ============================================================ */
