@@ -4580,9 +4580,53 @@
           (c.delta * 100).toFixed(0) + 'pp').join(' and ')
       : 'no individual hotspot above −4pp';
 
-    const verb = top.refreshGap >= 4
-      ? '<strong>preempt with creative pipeline acceleration</strong> — the operational lever (refresh velocity gap) is larger than what defensive spend can buy at current MCPI'
-      : '<strong>follow with defensive spend</strong> — refresh-velocity gap is small enough that creative acceleration alone won\'t close it';
+    /* Credibility filter on the recommendation: preempt requires both
+       (a) velocity gap ≥ 4/mo AND (b) baseline IAP CVR ≥ category floor.
+       The IAP-CVR check makes defensive-spend ROI credible — pumping
+       creative pipeline on a title with weak monetization fundamentals
+       just moves the bottleneck. Same external diagnostic, different
+       internal response: this is the explicit logic that lets Solitaire
+       (IAP 13%) get +30pp Tab-01 shift while Bubble (IAP 7.1%) gets
+       reallocated away despite both being "already passed". */
+    const t05Data = buildT05GameData(top.gameKey);
+    const realizedIAP = t05Data.iapCVR;
+    const iapFloor    = PARAMS.T05_BENCHMARKS.iapCVR.lo;
+    const velocityClearsThreshold = top.refreshGap >= 4;
+    const fundamentalsCredible    = realizedIAP >= iapFloor;
+
+    let verb, branchTag;
+    if (velocityClearsThreshold && fundamentalsCredible) {
+      verb =
+        '<strong>preempt with creative pipeline acceleration</strong> — refresh velocity gap is the operational lever, ' +
+        'and IAP CVR at <strong>' + (realizedIAP * 100).toFixed(1) + '%</strong> sits above the ' +
+        (iapFloor * 100).toFixed(0) + '% category floor (defensive spend ROI credible)';
+      branchTag = 'preempt';
+    } else if (velocityClearsThreshold && !fundamentalsCredible) {
+      /* Pull this game's best Tab-04 channel × creative pair to cite. */
+      ensureCreatives();
+      const eligible = state.t04._creatives.filter(c =>
+        c.gameKey === top.gameKey && c.totalImp >= 50_000 && c.stage !== 'killed');
+      let pairCitation = 'the strongest channel × creative pair (see Tab 04)';
+      if (eligible.length) {
+        const best = shrinkRankings(eligible).sort((a, b) => b.shrunkROAS - a.shrunkROAS)[0];
+        pairCitation =
+          '<strong>' + best.conceptName + ' × ' + best.channelName + '</strong> (' + best.id +
+          ', shrunk ROAS ' + best.shrunkROAS.toFixed(2) + ' — see Tab 04 rankings)';
+      }
+      verb =
+        '<strong>follow / contain</strong> — refresh-velocity gap (' + top.refreshGap +
+        '/mo) clears the preempt threshold, but IAP CVR at <strong>' +
+        (realizedIAP * 100).toFixed(1) + '%</strong> sits below the ' +
+        (iapFloor * 100).toFixed(0) + '% category floor (Tab 05) — defensive spend ROI not credible. ' +
+        'Concentrate spend on the working pair ' + pairCitation +
+        ' rather than chase pipeline expansion';
+      branchTag = 'follow-fundamentals';
+    } else {
+      verb =
+        '<strong>follow with defensive spend</strong> — refresh-velocity gap (' + top.refreshGap +
+        '/mo) is small enough that creative acceleration alone won\'t close it';
+      branchTag = 'follow-velocity';
+    }
 
     const html =
       '<strong>' + top.game.name + '</strong>: ' +
@@ -4601,8 +4645,9 @@
       'Recommendation: ' + verb + '.';
     return {
       html,
-      foot: 'Pressure score: ' + top.score.toFixed(1) +
-            ' (rank Δ ' + top.rankDelta + ' · max SOV loss ' + (top.maxSovLoss * 100).toFixed(1) + 'pp · refresh gap ' + top.refreshGap + '/mo) · ' +
+      foot: 'Branch: ' + branchTag +
+            ' · pressure score ' + top.score.toFixed(1) +
+            ' (rank Δ ' + top.rankDelta + ' · max SOV loss ' + (top.maxSovLoss * 100).toFixed(1) + 'pp · refresh gap ' + top.refreshGap + '/mo · IAP ' + (realizedIAP*100).toFixed(1) + '%) · ' +
             'cross-tab: reinforces Tab 01\'s ' + (top.rankDelta > 0 ? 'shift-toward' : 'reduce') + ' signal on ' + top.game.name + '.'
     };
   }
