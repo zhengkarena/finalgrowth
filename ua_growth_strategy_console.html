@@ -353,13 +353,6 @@
 
   /* === Frontier (right col) === */
   .frontier-wrap { height: 280px; position: relative; }
-  .frontier-axis-tip {
-    position: absolute; top: 50%; left: -2px;
-    transform: translateY(-50%) rotate(-90deg);
-    transform-origin: left center;
-    font-size: 10px; color: var(--muted); cursor: help;
-    border-bottom: 1px dotted var(--muted);
-  }
   .frontier-legend {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px;
     margin-top: 10px; font-size: 11.5px;
@@ -1445,7 +1438,7 @@
         <div class="col-card">
           <div class="col-h">
             <h3>Efficient frontier
-              <span class="why" data-tip="Each grey dot is a feasible allocation across the 4 games. The frontier (upper-left edge) shows the best return for a given level of volatility.">ⓘ</span>
+              <span class="why" data-tip="Each grey dot is a feasible allocation across the 4 games. The frontier (upper-left edge) shows the best return for a given level of volatility.   σ on the y-axis = std dev of monthly D30 ROAS, weighted by allocation, computed over trailing 6 months. Aggregated as sqrt(w′ Σ w) where Σ = D·C·D, D=diag(per-game σ), C=game-game correlation. 90% prediction interval on KPIs uses μ ± 1.645σ.">ⓘ</span>
             </h3>
             <span class="h-meta">500 sampled allocations</span>
           </div>
@@ -3060,7 +3053,7 @@
           y: {
             title: {
               display: true,
-              text: 'ROAS volatility  σ  (hover label for definition)',
+              text: 'ROAS volatility  σ  (see ⓘ in title for definition)',
               color: '#6e6e63',
               font: { size: 11 }
             },
@@ -3070,19 +3063,6 @@
         }
       }
     });
-
-    /* Axis tooltip on the y-axis title — Chart.js doesn't expose a direct
-       hover target for axis titles, so we mount a positioned helper. */
-    const wrap = cv.parentElement;
-    wrap.querySelectorAll('.frontier-axis-tip').forEach(n => n.remove());
-    const tip = document.createElement('span');
-    tip.className = 'frontier-axis-tip';
-    tip.textContent = 'σ definition';
-    tip.setAttribute('data-tip',
-      'ROAS volatility = std dev of monthly D30 ROAS, weighted by allocation, computed over trailing 6 months. ' +
-      'Aggregated as sqrt(w′ Σ w) where Σ = D·C·D, D=diag(per-game σ), C=game-game correlation. ' +
-      '90% prediction interval shown on KPIs uses μ ± 1.645σ.');
-    wrap.appendChild(tip);
   }
 
   /* --- Recommendation (computed live: optimal vs sandbox) ---
