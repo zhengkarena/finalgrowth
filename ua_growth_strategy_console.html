@@ -984,6 +984,122 @@
     color: var(--ink-soft); margin-top: 2px;
   }
 
+  /* === Tab 07 layout === */
+  .t07-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) { .t07-grid { grid-template-columns: 1fr; } }
+  .t07-main, .t07-rail { display: flex; flex-direction: column; gap: 16px; }
+
+  .t07-kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-top: 6px;
+  }
+  .t07-kpi {
+    border: 1px solid var(--line); border-radius: 5px;
+    padding: 9px 12px; background: #fcfcf9;
+  }
+  .t07-kpi .lbl {
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+  }
+  .t07-kpi .v {
+    font-family: var(--mono); font-size: 18px; color: var(--ink); margin-top: 2px;
+  }
+  .t07-kpi .v .unit { font-size: 12px; color: var(--muted); margin-left: 2px; }
+  .t07-kpi .sub {
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 2px;
+  }
+  .t07-kpi .sub.over  { color: var(--warn); }
+  .t07-kpi .sub.under { color: var(--good); }
+
+  .t07-fcst { width: 100%; height: 220px; display: block; margin-top: 6px; }
+  .t07-note {
+    margin: 8px 0 0; padding-top: 6px;
+    border-top: 1px dashed var(--line-soft);
+    font-size: 10.5px; color: var(--muted); line-height: 1.5;
+  }
+
+  /* Accuracy table */
+  .t07-acc-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 6px; }
+  .t07-acc-table th {
+    text-align: right; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .t07-acc-table th:first-child { text-align: left; }
+  .t07-acc-table td {
+    padding: 5px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11px;
+    text-align: right;
+  }
+  .t07-acc-table td.gname {
+    font-family: var(--sans); font-size: 12px; text-align: left;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t07-acc-table td.gname .sw { width: 8px; height: 8px; border-radius: 2px; }
+  .t07-acc-table td.bias-strong { color: var(--bad); font-weight: 500; }
+  .t07-acc-table td.bias-mild   { color: var(--warn); }
+  .t07-acc-table td.bias-ok     { color: var(--muted); }
+  .t07-acc-table tr.flagged { background: #fdf6e8; }
+
+  /* P&L table */
+  .t07-pnl-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 6px; }
+  .t07-pnl-table th {
+    text-align: right; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .t07-pnl-table th:first-child { text-align: left; }
+  .t07-pnl-table td {
+    padding: 6px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11px;
+    text-align: right;
+  }
+  .t07-pnl-table td.gname {
+    font-family: var(--sans); font-size: 12px; text-align: left;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t07-pnl-table td.gname .sw { width: 8px; height: 8px; border-radius: 2px; }
+  .t07-pnl-table tr.total td {
+    border-top: 2px solid var(--ink); border-bottom: none;
+    font-weight: 500; padding-top: 8px;
+  }
+
+  .t07-cf-wrap { height: 220px; position: relative; margin-top: 6px; }
+
+  /* Risk attribution rail */
+  .t07-risk-row {
+    display: grid; grid-template-columns: 12px 1fr 80px 70px;
+    gap: 8px; align-items: center;
+    padding: 6px 0;
+    font-size: 11.5px;
+  }
+  .t07-risk-row .swatch { width: 9px; height: 9px; border-radius: 2px; }
+  .t07-risk-row .nm { color: var(--ink); font-size: 12px; }
+  .t07-risk-row .nm .sub { color: var(--muted); font-size: 10px; display: block; }
+  .t07-risk-row .bar-wrap {
+    height: 5px; background: var(--line); border-radius: 3px; overflow: hidden;
+    position: relative;
+  }
+  .t07-risk-row .bar { height: 100%; }
+  .t07-risk-row .sd {
+    font-family: var(--mono); font-size: 11.5px; text-align: right;
+  }
+  .t07-rail-sub { color: var(--muted); font-size: 11px; margin: 0 0 8px; }
+
+  .t07-assump {
+    list-style: none; padding: 0; margin: 0;
+    font-size: 11.5px; color: var(--ink-soft); line-height: 1.55;
+  }
+  .t07-assump li {
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .t07-assump li:last-child { border-bottom: none; }
+
   /* === Modal === */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(20,20,15,.4);
@@ -1694,10 +1810,98 @@
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="07">
-    <div class="placeholder-card">
-      <span class="turn-tag">Coming in Turn 7</span>
-      <h2>07 · Finance Forecast Reconciliation</h2>
-      <p>QTD UA spend vs plan + daily burn; revenue P10/P50/P90 forecast; last-4-quarter forecast accuracy self-check (surfacing model bias); game-level contribution P&amp;L; cash-flow timing tied to Tab 02 payback.</p>
+    <div class="t07-grid">
+
+      <div class="t07-main">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Quarter snapshot · day <span id="t07-qday-x"></span> of <span id="t07-qday-y"></span>
+              <span class="why" data-tip="QTD UA spend vs plan, daily burn rate, projected Q-end spend. Plan = $1M/mo budget × elapsed-quarter fraction; burn = QTD ÷ days elapsed.">ⓘ</span>
+            </h3>
+          </div>
+          <div class="t07-kpi-strip" id="t07-kpis"></div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Q-end revenue forecast · 90% prediction bands
+              <span class="why" data-tip="Per-game P10/P50/P90 quarterly revenue. Bands derived from monthly CV_g (Tab 01) attenuated by √3 for quarterly aggregation under independent monthly returns. Same σ_g driving Tab 02 payback bootstrap and Tab 03 saturation bands.">ⓘ</span>
+            </h3>
+            <span class="h-meta" id="t07-fcst-meta"></span>
+          </div>
+          <svg id="t07-fcst" class="t07-fcst"></svg>
+          <p class="t07-note">Quarterly σ uses the √3 attenuation rule for independent monthly returns. Wider bands = more variance in next-quarter realized revenue.</p>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Forecast accuracy · last 4 quarters
+              <span class="why" data-tip="Forecasted vs actual revenue, last 4 quarters. Mean bias = (Σ (actual − forecast)/forecast) / 4. Surfaced deliberately — model bias is information, not a flaw.">ⓘ</span>
+            </h3>
+            <span class="h-meta">forecast bias is information, not a flaw — surfaced deliberately</span>
+          </div>
+          <table class="t07-acc-table" id="t07-acc-table"></table>
+          <p class="t07-note" id="t07-acc-note"></p>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Game-level contribution P&amp;L · monthly run-rate
+              <span class="why" data-tip="UA spend, gross revenue (P50), ad / IAP split, payment processing (30% of IAP — Apple/Google fee), contribution margin = gross − UA − payment processing. No fixed-cost allocation — that's a Finance call, not the analyst's.">ⓘ</span>
+            </h3>
+          </div>
+          <table class="t07-pnl-table" id="t07-pnl-table"></table>
+          <p class="t07-note">Stops at contribution margin. OPEX allocation (overhead, salaries, infra) belongs to Finance.</p>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Cash-flow timing · payback recovery
+              <span class="why" data-tip="Per-game cumulative LTV recovery curve, normalized to breakeven (CAC). Reuses Tab 02's power-law fit on the same seeded LTV data — same α and β per game. Y-axis = % of CAC recovered; intersection with 100% line = payback day.">ⓘ</span>
+            </h3>
+            <span class="h-meta">consistency: same power-law LTV model as Tab 02</span>
+          </div>
+          <div class="t07-cf-wrap">
+            <canvas id="t07-cf"></canvas>
+          </div>
+        </div>
+
+        <div class="col-card recommendation">
+          <span class="tag">&#9830; Decision insight</span>
+          <div class="body" id="t07-insight">—</div>
+          <div class="footnote" id="t07-insight-foot"></div>
+        </div>
+
+      </div>
+
+      <div class="t07-rail">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Forecast risk attribution
+              <span class="why" data-tip="Each game's standard-deviation contribution to portfolio quarterly revenue, in dollars. SD_q = σ_g · monthly_revenue_g · √3. Largest variance contributor ≠ largest bias contributor — both surfaced.">ⓘ</span>
+            </h3>
+          </div>
+          <p class="t07-rail-sub">absolute SD contribution to Q-end revenue</p>
+          <div id="t07-risk"></div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Model assumptions</h3>
+          </div>
+          <ul class="t07-assump">
+            <li>Quarterly σ = monthly σ ÷ √3 (independent monthly returns).</li>
+            <li>Forecast P50 = QTD revenue + projected RoQ revenue at current daily run-rate.</li>
+            <li>LTV via Tab 02 power-law fit; cash-flow curves use same α, β.</li>
+            <li>Contribution margin = gross − UA − 30% × IAP. No fixed-cost allocation.</li>
+            <li>CV_g (= σ_g/μ_g) is the single noise driver across Tabs 01–05 + 07.</li>
+          </ul>
+        </div>
+
+      </div>
+
     </div>
   </section>
 
@@ -1977,7 +2181,52 @@
         desc:'Postback latency 24h → 6h. Improves real-time iOS UA visibility. Re-validate attribution dashboards.' },
       { sev:'info',   title:'Apple privacy manifest enforcement',
         desc:'Required for App Store submission next quarter. Coordinate with engineering — non-blocking for UA but check creative pipeline build dependencies.' }
-    ]
+    ],
+
+    /* Tab 07 ------------------------------------------------------ */
+    /* Quarter geometry. 90-day quarter, currently mid-quarter (day 45).
+       QTD plan derived from monthly UA budget × elapsed-month fraction. */
+    T07_QUARTER: { daysIn: 90, daysElapsed: 45, qtdPlanFrac: 0.50 },
+    /* Per-game monthly revenue baselines + IAP/Ad mix.
+       TriPeaks IAP 25% / Ad 75% reinforces the ad-monetization-heavy
+       narrative established in Tabs 02 + 05 (high D30 ROAS via rewarded
+       video, low IAP rate, fastest payback because ad eCPM monetizes day 1). */
+    T07_REV_BASELINE: {
+      sol: { monthly: 1_500_000, iapShare: 0.65, adShare: 0.35 },
+      spi: { monthly:   800_000, iapShare: 0.55, adShare: 0.45 },
+      tri: { monthly: 1_600_000, iapShare: 0.25, adShare: 0.75 },
+      bub: { monthly:   500_000, iapShare: 0.30, adShare: 0.70 }
+    },
+    /* Last 4 quarters of forecast vs actual (revenue, $M). Bubble carries
+       a deliberate ~13% over-prediction across all 4 quarters — the
+       credibility-move self-check. Sol / Spider / TriPeaks have noise
+       around the mean within ±5% (no systematic bias). */
+    T07_HISTORY: {
+      sol: [
+        { q:'Q-4', forecast:1.45, actual:1.48 },
+        { q:'Q-3', forecast:1.50, actual:1.52 },
+        { q:'Q-2', forecast:1.55, actual:1.49 },
+        { q:'Q-1', forecast:1.50, actual:1.51 }
+      ],
+      spi: [
+        { q:'Q-4', forecast:0.78, actual:0.81 },
+        { q:'Q-3', forecast:0.80, actual:0.77 },
+        { q:'Q-2', forecast:0.82, actual:0.85 },
+        { q:'Q-1', forecast:0.79, actual:0.78 }
+      ],
+      tri: [
+        { q:'Q-4', forecast:1.55, actual:1.58 },
+        { q:'Q-3', forecast:1.60, actual:1.54 },
+        { q:'Q-2', forecast:1.62, actual:1.65 },
+        { q:'Q-1', forecast:1.58, actual:1.61 }
+      ],
+      bub: [
+        { q:'Q-4', forecast:2.00, actual:1.70 },
+        { q:'Q-3', forecast:1.90, actual:1.65 },
+        { q:'Q-2', forecast:1.80, actual:1.55 },
+        { q:'Q-1', forecast:1.70, actual:1.50 }
+      ]
+    }
   };
 
   /* ============================================================ */
@@ -4839,6 +5088,375 @@
   }
 
   /* ============================================================ */
+  /* TAB 07 · FINANCE FORECAST RECONCILIATION                      */
+  /* ============================================================ */
+
+  /* Quarter snapshot. QTD plan = monthly budget × elapsed-month fraction.
+     Daily burn = QTD ÷ days elapsed. Forecast spend = burn × daysIn. */
+  function buildT07Snapshot() {
+    const Q = PARAMS.T07_QUARTER;
+    const monthlyPlan = PARAMS.BUDGET;            /* $1M/mo */
+    const qPlan       = monthlyPlan * 3;
+    const qtdPlan     = qPlan * Q.qtdPlanFrac;    /* day 45 of 90 = 0.50 */
+    /* QTD actual: 3% over plan, perturbed slightly by seed */
+    const rng = mulberry32((state.seed ^ 0xF00DBABE) >>> 0);
+    const qtdActual = qtdPlan * (1.03 + (rng() - 0.5) * 0.02);
+    const dailyBurn = qtdActual / Q.daysElapsed;
+    const forecastSpend = dailyBurn * Q.daysIn;
+    return {
+      Q, monthlyPlan, qPlan, qtdPlan, qtdActual, dailyBurn, forecastSpend,
+      qtdVar: (qtdActual - qtdPlan) / qtdPlan,
+      forecastVar: (forecastSpend - qPlan) / qPlan
+    };
+  }
+
+  /* Per-game quarterly revenue forecast. P50 = monthly_baseline × 3.
+     90% PI = P50 ± 1.645 · σ_q · P50, with σ_q = σ_g/μ_g · 1/√3 (CV
+     attenuation under independent monthly returns). */
+  function buildT07Forecast() {
+    const Z90 = 1.6449;
+    const sqrt3 = Math.sqrt(3);
+    return state.games.map((g, i) => {
+      const base = PARAMS.T07_REV_BASELINE[g.key];
+      const monthly = base.monthly;
+      const quarterly = monthly * 3;
+      const cv_q = g.cv / sqrt3;
+      const halfWidth = Z90 * cv_q * quarterly;
+      return {
+        game: g, gameKey: g.key, baseline: base,
+        monthly, quarterly,
+        p10: quarterly - halfWidth, p50: quarterly, p90: quarterly + halfWidth,
+        sd_q: cv_q * quarterly,                   /* dollar SD on quarterly forecast */
+        cv_q
+      };
+    });
+  }
+
+  /* Game-level contribution P&L (monthly run-rate). */
+  function buildT07PnL() {
+    return state.games.map((g, i) => {
+      const base = PARAMS.T07_REV_BASELINE[g.key];
+      const monthlyUA = PARAMS.BUDGET * PARAMS.CURRENT_W[i];
+      const gross = base.monthly;
+      const adRev  = gross * base.adShare;
+      const iapRev = gross * base.iapShare;
+      const paymentProcessing = iapRev * 0.30;    /* Apple/Google fee */
+      const contribution = gross - monthlyUA - paymentProcessing;
+      return {
+        game: g, gameKey: g.key,
+        monthlyUA, gross, adRev, iapRev, paymentProcessing,
+        contribution, marginPct: contribution / gross
+      };
+    });
+  }
+
+  /* Forecast accuracy self-check. Per-game mean bias = mean((actual − forecast) / forecast). */
+  function buildT07Accuracy() {
+    return state.games.map(g => {
+      const hist = PARAMS.T07_HISTORY[g.key];
+      const biases = hist.map(q => (q.actual - q.forecast) / q.forecast);
+      const meanBias = biases.reduce((s, x) => s + x, 0) / biases.length;
+      const flagged = Math.abs(meanBias) >= 0.10;   /* mean bias > 10% = systematic */
+      return { game: g, gameKey: g.key, hist, biases, meanBias, flagged };
+    });
+  }
+
+  /* Cash-flow timing curves. For each game, generate the same observed
+     LTV from Tab 02 (same seed), fit power-law, normalize to CAC, return
+     cumulative recovery pct over [1, 360]. Verifies cross-tab consistency. */
+  function buildT07CashFlow() {
+    return state.games.map((g, i) => {
+      const obs = generateObservedLTV(g, (state.seed ^ Math.imul(i + 7, 0x85EBCA6B)) >>> 0);
+      const fit = fitPower(obs.points);
+      const cac = g.cac;
+      const N = 60;
+      const days = [];
+      const recovery = [];
+      for (let j = 1; j <= N; j++) {
+        const t = (j / N) * 360;
+        days.push(t);
+        recovery.push((fit.predict(t) / cac) * 100);   /* % of CAC recovered */
+      }
+      return { game: g, gameKey: g.key, days, recovery, fit, cac };
+    });
+  }
+
+  /* Insight: combines forecast totals, largest variance contributor,
+     largest bias contributor — distinct risks, both surfaced. */
+  function buildT07Insight(forecast, accuracy) {
+    const totalP50 = forecast.reduce((s, f) => s + f.p50, 0);
+    /* Portfolio SD: sum of variances (assuming independence game-to-game)
+       = sqrt(Σ sd_q²) — this is conservative; positive correlation would
+       widen further but we're already adding diversification benefit */
+    const totalSDsquared = forecast.reduce((s, f) => s + f.sd_q * f.sd_q, 0);
+    const totalSD = Math.sqrt(totalSDsquared);
+    const Z90 = 1.6449;
+    const totalP10 = totalP50 - Z90 * totalSD;
+    const totalP90 = totalP50 + Z90 * totalSD;
+
+    /* Largest variance contributor */
+    const variance = forecast.slice().sort((a, b) => b.sd_q - a.sd_q);
+    const topVar = variance[0];
+    const totalVarShare = (topVar.sd_q * topVar.sd_q) / totalSDsquared;
+
+    /* Largest absolute bias contributor */
+    const biasOrdered = accuracy.slice().sort((a, b) => Math.abs(b.meanBias) - Math.abs(a.meanBias));
+    const topBias = biasOrdered[0];
+    const biasIsSystematic = topBias.flagged;
+
+    const html =
+      'Q-end portfolio revenue P50 <strong>$' + (totalP50/1e6).toFixed(2) + 'M</strong>, ' +
+      '90% CI <strong>$' + (totalP10/1e6).toFixed(2) + 'M – $' + (totalP90/1e6).toFixed(2) + 'M</strong> ' +
+      '(±$' + (Z90*totalSD/1e6).toFixed(2) + 'M).<br><br>' +
+      '<strong>Largest variance contributor:</strong> ' + topVar.game.name +
+      ' at ±$' + (topVar.sd_q/1e6).toFixed(2) + 'M SD/quarter (' + (totalVarShare*100).toFixed(0) + '% of portfolio variance) — ' +
+      'a function of high revenue × moderate σ_g, not bias. Communicate the wider band to Finance during quarter-end review.<br><br>' +
+      (biasIsSystematic
+        ? '<strong>Largest bias contributor:</strong> ' + topBias.game.name +
+          ' at <strong>' + (topBias.meanBias*100).toFixed(1) + '% mean bias</strong> over last 4 quarters (systematic over-prediction). ' +
+          'Recommendation: <strong>recalibrate ' + topBias.game.name + ' forecast centroid down ~' + Math.abs(topBias.meanBias*100).toFixed(0) + '%</strong> ' +
+          'before publishing this quarter\'s P50; tighten band acknowledgment on ' + topVar.game.name + ' for Finance.'
+        : 'No systematic bias above 10% mean across the four games over last 4 quarters. Standard quarter-end review.');
+    const foot =
+      'Variance contributions: ' + variance.map(v => v.game.name + ' ' + ((v.sd_q*v.sd_q/totalSDsquared)*100).toFixed(0) + '%').join(' · ') +
+      ' · Mean biases: ' + accuracy.map(a => a.game.name.split(' ')[0] + ' ' + (a.meanBias>=0?'+':'') + (a.meanBias*100).toFixed(1) + '%').join(' · ');
+    return { html, foot, totalP10, totalP50, totalP90, totalSD, topVar, topBias };
+  }
+
+  /* ============================================================ */
+  /* TAB 07 RENDER                                                 */
+  /* ============================================================ */
+  function renderT07() {
+    if (state.activeTab !== '07') return;
+
+    const snap     = buildT07Snapshot();
+    const forecast = buildT07Forecast();
+    const accuracy = buildT07Accuracy();
+    const pnl      = buildT07PnL();
+    const cashflow = buildT07CashFlow();
+
+    document.getElementById('t07-qday-x').textContent = snap.Q.daysElapsed;
+    document.getElementById('t07-qday-y').textContent = snap.Q.daysIn;
+
+    renderT07KPIs(snap);
+    renderT07Forecast(forecast);
+    renderT07Accuracy(accuracy);
+    renderT07PnL(pnl);
+    renderT07CashFlow(cashflow);
+    renderT07Risk(forecast, accuracy);
+
+    const ins = buildT07Insight(forecast, accuracy);
+    document.getElementById('t07-insight').innerHTML = ins.html;
+    document.getElementById('t07-insight-foot').textContent = ins.foot;
+  }
+
+  function renderT07KPIs(snap) {
+    const fmtM = v => '$' + (v/1e6).toFixed(2) + 'M';
+    const fmtK = v => '$' + (v/1e3).toFixed(0) + 'K';
+    const root = document.getElementById('t07-kpis');
+    const qtdVarSign = snap.qtdVar >= 0 ? 'over' : 'under';
+    const fcstVarSign = snap.forecastVar >= 0 ? 'over' : 'under';
+    root.innerHTML =
+      '<div class="t07-kpi"><div class="lbl">QTD spend</div>' +
+        '<div class="v">' + fmtM(snap.qtdActual) + '</div>' +
+        '<div class="sub ' + qtdVarSign + '">' + (snap.qtdVar>=0?'+':'') + (snap.qtdVar*100).toFixed(1) + '% vs plan</div></div>' +
+      '<div class="t07-kpi"><div class="lbl">QTD plan</div>' +
+        '<div class="v">' + fmtM(snap.qtdPlan) + '</div>' +
+        '<div class="sub">monthly $' + (snap.monthlyPlan/1e6).toFixed(1) + 'M × 1.5mo</div></div>' +
+      '<div class="t07-kpi"><div class="lbl">Daily burn</div>' +
+        '<div class="v">' + fmtK(snap.dailyBurn) + '<span class="unit"> / day</span></div>' +
+        '<div class="sub">QTD ÷ ' + snap.Q.daysElapsed + 'd</div></div>' +
+      '<div class="t07-kpi"><div class="lbl">Forecast Q-end spend</div>' +
+        '<div class="v">' + fmtM(snap.forecastSpend) + '</div>' +
+        '<div class="sub ' + fcstVarSign + '">' + (snap.forecastVar>=0?'+':'') + (snap.forecastVar*100).toFixed(1) + '% vs $' + (snap.qPlan/1e6).toFixed(1) + 'M plan</div></div>';
+  }
+
+  /* Forecast bands as a hand-rolled SVG (per-game horizontal whiskers
+     with P50 marker — matches Tab 01 KPI whisker visual grammar). */
+  function renderT07Forecast(forecast) {
+    const svg = document.getElementById('t07-fcst');
+    const W = svg.clientWidth || 700;
+    const padL = 130, padR = 30, padT = 10, padB = 26;
+    const rowH = 36;
+    const H = padT + rowH * forecast.length + padB;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('height', H);
+
+    const allLo = forecast.map(f => f.p10);
+    const allHi = forecast.map(f => f.p90);
+    const xMin = Math.min.apply(null, allLo) * 0.95;
+    const xMax = Math.max.apply(null, allHi) * 1.05;
+    const xs = v => padL + (W - padL - padR) * (v - xMin) / (xMax - xMin);
+
+    let total = 0;
+    forecast.forEach(f => total += f.p50);
+
+    const out = [];
+    /* x-axis ticks */
+    for (let v = Math.ceil(xMin/1e6); v <= Math.floor(xMax/1e6); v += 1) {
+      out.push(`<line x1="${xs(v*1e6)}" y1="${padT}" x2="${xs(v*1e6)}" y2="${H-padB+2}" stroke="#eeeee8"/>`);
+      out.push(`<text x="${xs(v*1e6)}" y="${H-padB+15}" font-size="9.5" fill="#6e6e63" text-anchor="middle" font-family="monospace">$${v}M</text>`);
+    }
+
+    forecast.forEach((f, i) => {
+      const y = padT + rowH * (i + 0.5);
+      const x10 = xs(f.p10), x50 = xs(f.p50), x90 = xs(f.p90);
+      const color = f.game.color;
+      out.push(`<text x="${padL - 10}" y="${y + 4}" font-size="11.5" fill="#14140f" text-anchor="end">${f.game.name}</text>`);
+      out.push(`<rect x="${x10}" y="${y - 7}" width="${Math.max(2, x90 - x10)}" height="14" fill="${color}" opacity="0.20" rx="2"/>`);
+      out.push(`<line x1="${x10}" y1="${y - 9}" x2="${x10}" y2="${y + 9}" stroke="${color}" stroke-width="1.4"/>`);
+      out.push(`<line x1="${x90}" y1="${y - 9}" x2="${x90}" y2="${y + 9}" stroke="${color}" stroke-width="1.4"/>`);
+      out.push(`<line x1="${x10}" y1="${y}" x2="${x90}" y2="${y}" stroke="${color}" stroke-width="1.6"/>`);
+      out.push(`<circle cx="${x50}" cy="${y}" r="4" fill="${color}" stroke="#fff" stroke-width="1.2"/>`);
+      out.push(`<text x="${x50}" y="${y - 11}" font-size="9.5" fill="${color}" text-anchor="middle" font-family="monospace">$${(f.p50/1e6).toFixed(2)}M</text>`);
+      out.push(`<text x="${x10 - 4}" y="${y + 4}" font-size="9" fill="#6e6e63" text-anchor="end" font-family="monospace">P10</text>`);
+      out.push(`<text x="${x90 + 4}" y="${y + 4}" font-size="9" fill="#6e6e63" text-anchor="start" font-family="monospace">P90</text>`);
+    });
+    svg.innerHTML = out.join('');
+
+    document.getElementById('t07-fcst-meta').textContent =
+      'portfolio P50 $' + (total/1e6).toFixed(2) + 'M · σ_q = σ_monthly ÷ √3 · CV from Tab 01';
+  }
+
+  function renderT07Accuracy(accuracy) {
+    const root = document.getElementById('t07-acc-table');
+    let html = '<thead><tr><th>Game</th>';
+    PARAMS.T07_HISTORY.sol.forEach(q => html += '<th>' + q.q + ' fcst</th><th>' + q.q + ' actual</th><th>Δ</th>');
+    html += '<th>Mean bias</th></tr></thead><tbody>';
+    accuracy.forEach(a => {
+      const mb = a.meanBias;
+      const cls = a.flagged ? 'flagged' : '';
+      const biasCls = Math.abs(mb) >= 0.10 ? 'bias-strong' : (Math.abs(mb) >= 0.05 ? 'bias-mild' : 'bias-ok');
+      html += '<tr class="' + cls + '"><td class="gname"><span class="sw" style="background:' + a.game.color + '"></span>' + a.game.name + '</td>';
+      a.hist.forEach((q, i) => {
+        const d = a.biases[i];
+        html += '<td>$' + q.forecast.toFixed(2) + 'M</td>' +
+                '<td>$' + q.actual.toFixed(2) + 'M</td>' +
+                '<td class="' + (Math.abs(d) >= 0.10 ? 'bias-strong' : Math.abs(d) >= 0.05 ? 'bias-mild' : 'bias-ok') + '">' + (d>=0?'+':'') + (d*100).toFixed(1) + '%</td>';
+      });
+      html += '<td class="' + biasCls + '">' + (mb>=0?'+':'') + (mb*100).toFixed(1) + '%</td></tr>';
+    });
+    html += '</tbody>';
+    root.innerHTML = html;
+
+    const flagged = accuracy.filter(a => a.flagged);
+    const note = document.getElementById('t07-acc-note');
+    if (flagged.length) {
+      const f = flagged[0];
+      note.innerHTML =
+        '<strong style="color:var(--bad)">' + f.game.name + '</strong> shows <strong>' + (f.meanBias*100).toFixed(1) + '%</strong> mean bias across all 4 quarters — systematic over-prediction. ' +
+        'This is the kind of bias that should narrow the published P50 next quarter, not be smoothed over. ' +
+        'Surfaced deliberately as a credibility move — model honesty beats model perfection.';
+    } else {
+      note.textContent = 'No game shows systematic bias above 10% mean. Standard quarter-end review.';
+    }
+  }
+
+  function renderT07PnL(pnl) {
+    const root = document.getElementById('t07-pnl-table');
+    const fmt = v => '$' + (v/1e6).toFixed(2) + 'M';
+    const fmtK = v => '$' + (v/1e3).toFixed(0) + 'K';
+    let html = '<thead><tr><th>Game</th><th>UA spend</th><th>Gross</th><th>Ad rev</th><th>IAP rev</th><th>Pay proc.</th><th>Contribution</th><th>Margin</th></tr></thead><tbody>';
+    pnl.forEach(p => {
+      html += '<tr><td class="gname"><span class="sw" style="background:' + p.game.color + '"></span>' + p.game.name + '</td>' +
+              '<td>' + fmtK(p.monthlyUA) + '</td>' +
+              '<td>' + fmt(p.gross) + '</td>' +
+              '<td>' + fmt(p.adRev) + '</td>' +
+              '<td>' + fmt(p.iapRev) + '</td>' +
+              '<td>−' + fmtK(p.paymentProcessing) + '</td>' +
+              '<td><strong>' + fmt(p.contribution) + '</strong></td>' +
+              '<td>' + (p.marginPct*100).toFixed(0) + '%</td></tr>';
+    });
+    /* Total row */
+    const tot = pnl.reduce((acc, p) => ({
+      ua: acc.ua + p.monthlyUA, gross: acc.gross + p.gross,
+      ad: acc.ad + p.adRev, iap: acc.iap + p.iapRev,
+      pp: acc.pp + p.paymentProcessing, contrib: acc.contrib + p.contribution
+    }), { ua:0, gross:0, ad:0, iap:0, pp:0, contrib:0 });
+    html += '<tr class="total"><td>Portfolio</td>' +
+            '<td>' + fmtK(tot.ua) + '</td>' +
+            '<td>' + fmt(tot.gross) + '</td>' +
+            '<td>' + fmt(tot.ad) + '</td>' +
+            '<td>' + fmt(tot.iap) + '</td>' +
+            '<td>−' + fmtK(tot.pp) + '</td>' +
+            '<td><strong>' + fmt(tot.contrib) + '</strong></td>' +
+            '<td>' + (tot.contrib/tot.gross*100).toFixed(0) + '%</td></tr></tbody>';
+    root.innerHTML = html;
+  }
+
+  function renderT07CashFlow(cashflow) {
+    destroyChart('t07-cf');
+    const cv = document.getElementById('t07-cf');
+    const datasets = cashflow.map(cf => ({
+      type: 'line', label: cf.game.name,
+      data: cf.days.map((d, i) => ({ x: d, y: cf.recovery[i] })),
+      borderColor: cf.game.color, backgroundColor: cf.game.color,
+      borderWidth: 1.7, pointRadius: 0, tension: 0.25, fill: false
+    }));
+    /* Breakeven reference line at 100% */
+    datasets.push({
+      type: 'line', label: 'Breakeven (CAC recovered)',
+      data: [{ x: 0, y: 100 }, { x: 360, y: 100 }],
+      borderColor: '#a8001f', backgroundColor: '#a8001f',
+      borderDash: [4, 4], borderWidth: 1.4, pointRadius: 0, fill: false
+    });
+    charts['t07-cf'] = new Chart(cv.getContext('2d'), {
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom', align: 'start',
+            labels: { boxWidth: 8, boxHeight: 8, font: { size: 10.5 } }
+          },
+          tooltip: {
+            callbacks: {
+              label: (c) => c.dataset.label + ' — D' + Math.round(c.parsed.x) + ' · ' + c.parsed.y.toFixed(0) + '% of CAC'
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: 0, max: 360,
+            title: { display: true, text: 'Days from install', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 } }
+          },
+          y: {
+            min: 0, max: 200,
+            title: { display: true, text: '% of CAC recovered', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => v + '%' }
+          }
+        }
+      }
+    });
+  }
+
+  function renderT07Risk(forecast, accuracy) {
+    const root = document.getElementById('t07-risk');
+    const sorted = forecast.slice().sort((a, b) => b.sd_q - a.sd_q);
+    const maxSD = sorted[0].sd_q;
+    const totalVar = sorted.reduce((s, f) => s + f.sd_q*f.sd_q, 0);
+    let html = '';
+    sorted.forEach(f => {
+      const acc = accuracy.find(a => a.gameKey === f.gameKey);
+      const variancePct = (f.sd_q*f.sd_q / totalVar) * 100;
+      const biasPct = acc.meanBias * 100;
+      const biasNote = Math.abs(biasPct) >= 10
+        ? '<span style="color:var(--bad)"> · ' + (biasPct>=0?'+':'') + biasPct.toFixed(1) + '% bias</span>'
+        : '';
+      html += '<div class="t07-risk-row">' +
+        '<span class="swatch" style="background:' + f.game.color + '"></span>' +
+        '<span class="nm">' + f.game.name + '<span class="sub">' + variancePct.toFixed(0) + '% of variance' + biasNote + '</span></span>' +
+        '<span class="bar-wrap"><span class="bar" style="width:' + ((f.sd_q/maxSD)*100).toFixed(0) + '%;background:' + f.game.color + ';opacity:0.65"></span></span>' +
+        '<span class="sd">±$' + (f.sd_q/1e6).toFixed(2) + 'M</span>' +
+      '</div>';
+    });
+    root.innerHTML = html;
+  }
+
+  /* ============================================================ */
   /* CSV: parse + validate + sample                                */
   /* ============================================================ */
   const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
@@ -4946,6 +5564,48 @@
       lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
       lines.push('');
       lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else if (state.activeTab === '07') {
+      const snap     = buildT07Snapshot();
+      const forecast = buildT07Forecast();
+      const accuracy = buildT07Accuracy();
+      const pnl      = buildT07PnL();
+      const ins      = buildT07Insight(forecast, accuracy);
+      lines.push('## QTD snapshot · day ' + snap.Q.daysElapsed + ' of ' + snap.Q.daysIn);
+      lines.push('- QTD spend: $' + (snap.qtdActual/1e6).toFixed(2) + 'M (' + (snap.qtdVar*100>=0?'+':'') + (snap.qtdVar*100).toFixed(1) + '% vs $' + (snap.qtdPlan/1e6).toFixed(2) + 'M plan)');
+      lines.push('- Daily burn: $' + (snap.dailyBurn/1e3).toFixed(0) + 'K/day');
+      lines.push('- Forecast Q-end spend: $' + (snap.forecastSpend/1e6).toFixed(2) + 'M (' + (snap.forecastVar*100>=0?'+':'') + (snap.forecastVar*100).toFixed(1) + '% vs $' + (snap.qPlan/1e6).toFixed(1) + 'M plan)');
+      lines.push('');
+      lines.push('## Q-end revenue forecast (90% bands · σ_q = σ_monthly ÷ √3)');
+      lines.push('| Game | P10 | P50 | P90 | SD/q |');
+      lines.push('|---|---|---|---|---|');
+      forecast.forEach(f => {
+        lines.push('| ' + f.game.name + ' | $' + (f.p10/1e6).toFixed(2) + 'M | $' + (f.p50/1e6).toFixed(2) + 'M | $' + (f.p90/1e6).toFixed(2) + 'M | ±$' + (f.sd_q/1e6).toFixed(2) + 'M |');
+      });
+      lines.push('| **Portfolio** | **$' + (ins.totalP10/1e6).toFixed(2) + 'M** | **$' + (ins.totalP50/1e6).toFixed(2) + 'M** | **$' + (ins.totalP90/1e6).toFixed(2) + 'M** | **±$' + (ins.totalSD/1e6).toFixed(2) + 'M** |');
+      lines.push('');
+      lines.push('## Forecast accuracy · last 4 quarters');
+      lines.push('| Game | Q-4 fcst/act/Δ | Q-3 fcst/act/Δ | Q-2 fcst/act/Δ | Q-1 fcst/act/Δ | Mean bias |');
+      lines.push('|---|---|---|---|---|---|');
+      accuracy.forEach(a => {
+        const cells = a.hist.map((q, i) =>
+          '$' + q.forecast.toFixed(2) + 'M / $' + q.actual.toFixed(2) + 'M / ' + (a.biases[i]>=0?'+':'') + (a.biases[i]*100).toFixed(1) + '%');
+        const flag = a.flagged ? ' ⚠' : '';
+        lines.push('| ' + a.game.name + ' | ' + cells.join(' | ') + ' | **' + (a.meanBias>=0?'+':'') + (a.meanBias*100).toFixed(1) + '%' + flag + '** |');
+      });
+      lines.push('');
+      lines.push('## Game-level contribution P&L (monthly run-rate)');
+      lines.push('| Game | UA spend | Gross | Ad rev | IAP rev | Pay proc. | Contribution | Margin |');
+      lines.push('|---|---|---|---|---|---|---|---|');
+      pnl.forEach(p => {
+        lines.push('| ' + p.game.name + ' | $' + (p.monthlyUA/1e3).toFixed(0) + 'K | $' + (p.gross/1e6).toFixed(2) + 'M | $' + (p.adRev/1e6).toFixed(2) + 'M | $' + (p.iapRev/1e6).toFixed(2) + 'M | −$' + (p.paymentProcessing/1e3).toFixed(0) + 'K | **$' + (p.contribution/1e6).toFixed(2) + 'M** | ' + (p.marginPct*100).toFixed(0) + '% |');
+      });
+      lines.push('');
+      lines.push('Stops at contribution margin · OPEX allocation belongs to Finance.');
+      lines.push('');
+      lines.push('## Decision insight');
+      lines.push('> ' + document.getElementById('t07-insight').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t07-insight-foot').textContent.trim() + '_');
     } else if (state.activeTab === '06') {
       const k = state.t06.selectedGame;
       const game = state.games.find(g => g.key === k);
@@ -5395,7 +6055,7 @@
     else if (state.activeTab === '04') renderT04();
     else if (state.activeTab === '05') renderT05();
     else if (state.activeTab === '06') renderT06();
-    /* Tab 07 remains a placeholder. */
+    else if (state.activeTab === '07') renderT07();
   }
 
   function init() {
@@ -5413,6 +6073,9 @@
       }
       else if (state.activeTab === '05') {
         renderT05Funnel(buildT05GameData(state.t05.selectedGame));
+      }
+      else if (state.activeTab === '07') {
+        renderT07Forecast(buildT07Forecast());
       }
     });
   }
