@@ -853,6 +853,137 @@
   .t05-bench-row .nm { color: var(--ink-soft); }
   .t05-bench-row .rg { font-family: var(--mono); color: var(--ink); text-align: right; font-size: 11.5px; }
 
+  /* === Tab 06 layout === */
+  .t06-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) { .t06-grid { grid-template-columns: 1fr; } }
+  .t06-main, .t06-rail { display: flex; flex-direction: column; gap: 16px; }
+  .t06-disclosure {
+    margin-bottom: 16px;
+    padding: 8px 14px;
+    background: #fbf8ee; border: 1px solid #ecdfb6; border-radius: 4px;
+    font-size: 11.5px; color: #6e5d24;
+    line-height: 1.5;
+  }
+  .t06-watermark {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--line-soft);
+    font-size: 10px; color: var(--muted); font-family: var(--mono);
+    letter-spacing: .03em;
+  }
+  .t06-rank-wrap { height: 280px; position: relative; margin-top: 6px; }
+
+  /* SOV matrix */
+  .t06-sov-matrix {
+    display: grid;
+    grid-template-columns: 60px repeat(8, 1fr);
+    gap: 3px;
+    margin-top: 6px;
+  }
+  .t06-sov-matrix .ch-h, .t06-sov-matrix .geo-h {
+    padding: 5px 3px;
+    font-size: 10px; letter-spacing: .04em; color: var(--muted);
+    text-transform: uppercase;
+  }
+  .t06-sov-matrix .ch-h { text-align: center; }
+  .t06-sov-matrix .geo-h {
+    text-align: left; padding-left: 4px;
+    font-size: 11.5px; color: var(--ink); text-transform: none;
+  }
+  .t06-sov-cell {
+    border: 1px solid rgba(20,20,15,0.06);
+    border-radius: 3px;
+    padding: 4px 4px;
+    min-height: 38px;
+    text-align: center;
+    position: relative;
+  }
+  .t06-sov-cell .pct {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--ink);
+    line-height: 1.05;
+  }
+  .t06-sov-cell .delta {
+    font-family: var(--mono); font-size: 9.5px; color: var(--ink-soft);
+    margin-top: 1px;
+  }
+  .t06-sov-cell.hotspot::after {
+    content: '⚑'; position: absolute; top: 1px; right: 3px;
+    font-size: 9px; color: var(--accent);
+  }
+  .t06-sov-legend {
+    display: flex; align-items: center; gap: 5px;
+    margin-top: 9px; font-size: 11px; color: var(--muted);
+  }
+  .t06-sov-legend .leg {
+    display: inline-block;
+    padding: 2px 7px; border-radius: 3px;
+    color: var(--ink); font-family: var(--mono); font-size: 10px;
+    border: 1px solid rgba(20,20,15,0.06);
+  }
+
+  /* Refresh velocity table */
+  .t06-vel-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+  .t06-vel-table th {
+    text-align: left; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .t06-vel-table td {
+    padding: 6px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11.5px;
+  }
+  .t06-vel-table td.label {
+    font-family: var(--sans); font-size: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t06-vel-table td.label.us {
+    font-weight: 500; color: var(--ink);
+  }
+  .t06-vel-table td.label .sw { width: 9px; height: 9px; border-radius: 2px; }
+  .t06-vel-bar {
+    display: inline-block;
+    height: 7px; border-radius: 3px;
+    background: var(--line); position: relative; width: 140px; vertical-align: middle;
+    margin-right: 6px;
+  }
+  .t06-vel-bar > span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+
+  /* Headwinds */
+  .t06-hw-item {
+    border: 1px solid var(--line); border-radius: 5px;
+    padding: 8px 10px; margin-bottom: 8px;
+    background: #fcfcf9;
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .t06-hw-item.urgent { border-left: 3px solid var(--bad); }
+  .t06-hw-item.watch  { border-left: 3px solid var(--warn); }
+  .t06-hw-item.info   { border-left: 3px solid var(--muted); opacity: 0.92; }
+  .t06-hw-item .h {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 3px;
+  }
+  .t06-hw-item .sev {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 1px 5px; border-radius: 3px;
+    color: var(--paper);
+  }
+  .t06-hw-item.urgent .sev { background: var(--bad); }
+  .t06-hw-item.watch  .sev { background: var(--warn); }
+  .t06-hw-item.info   .sev { background: var(--muted); }
+  .t06-hw-item .title {
+    font-weight: 500; color: var(--ink); font-size: 12px;
+  }
+  .t06-hw-item .desc {
+    color: var(--ink-soft); margin-top: 2px;
+  }
+
   /* === Modal === */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(20,20,15,.4);
@@ -1481,10 +1612,85 @@
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="06">
-    <div class="placeholder-card">
-      <span class="turn-tag">Coming in Turn 6</span>
-      <h2>06 · Competitive &amp; Market Intelligence</h2>
-      <p>Ranks vs top 5 competitors for each of the 4 games; SOV heatmap by channel × geo (synthetic estimates, Sensor Tower-style); competitor creative refresh cadence; market headwind alerts.</p>
+    <div class="t06-disclosure">
+      <strong>Synthetic data.</strong> In production: live feeds from Sensor Tower / data.ai (rank, SOV, competitor refresh velocity).
+      Demo data is illustrative only · provider-reported confidence ±2–5pp on SOV cells.
+    </div>
+    <div class="t06-grid">
+
+      <div class="t06-main">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Top-grossing rank · last 26 weeks
+              <span class="why" data-tip="Selected game (heavy line) vs top-5 category competitors. Y-axis inverted so rank #1 is at the top. Crossover points indicate competitive position changes.">ⓘ</span>
+            </h3>
+            <div class="ctl-group">
+              <label class="ctl-lbl">Game</label>
+              <select id="t06-game-pick">
+                <option value="sol">Solitaire</option>
+                <option value="spi">Spider Solitaire</option>
+                <option value="tri">TriPeaks</option>
+                <option value="bub">Bubble Shooter Pop</option>
+              </select>
+            </div>
+          </div>
+          <div class="t06-rank-wrap">
+            <canvas id="t06-rank"></canvas>
+          </div>
+          <div class="t06-watermark">synthetic · Sensor Tower-style estimate · top-grossing rank in casual card category</div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Share of Voice · geo × channel
+              <span class="why" data-tip="Estimated share of category impressions captured by the selected game in each (geo × channel) cell. Cell number = current SOV %. Color = 6-month Δ (red = losing share, green = gaining). Hotspot cells mark concentrated competitive pressure.">ⓘ</span>
+            </h3>
+            <span class="h-meta" id="t06-sov-meta"></span>
+          </div>
+          <div class="t06-sov-matrix" id="t06-sov-matrix"></div>
+          <div class="t06-sov-legend">
+            <span>6-month Δ (pp):</span>
+            <span class="leg" style="background:rgb(196,100,110)">≤ −10pp</span>
+            <span class="leg" style="background:rgb(219,162,164)">−5pp</span>
+            <span class="leg" style="background:rgb(244,240,232)">0pp</span>
+            <span class="leg" style="background:rgb(168,194,162)">+5pp</span>
+            <span class="leg" style="background:rgb(107,156,117)">≥ +10pp</span>
+          </div>
+          <div class="t06-watermark">synthetic · Sensor Tower-style estimate · cells reconstruct from impression-share methodology</div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Creative refresh velocity
+              <span class="why" data-tip="Monthly net-new creatives launched, us vs top 5 competitors. Creative pipeline gap is the operational lever for closing rank decline — the velocity number names how much faster a competitor is iterating.">ⓘ</span>
+            </h3>
+            <span class="h-meta" id="t06-vel-meta"></span>
+          </div>
+          <table class="t06-vel-table" id="t06-vel-table"></table>
+          <div class="t06-watermark">synthetic · Sensor Tower-style estimate · creative count derived from app-store screenshot fingerprinting</div>
+        </div>
+
+        <div class="col-card recommendation">
+          <span class="tag">&#9830; Decision insight</span>
+          <div class="body" id="t06-insight">—</div>
+          <div class="footnote" id="t06-insight-foot"></div>
+        </div>
+
+      </div>
+
+      <div class="t06-rail">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Market headwinds</h3>
+            <span class="why" data-tip="Category-level alerts that affect UA economics or competitive position. Severity: urgent (response needed within weeks) · watch (track) · info (logged for context).">ⓘ</span>
+          </div>
+          <div id="t06-headwinds"></div>
+        </div>
+
+      </div>
+
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="07">
@@ -1694,6 +1900,83 @@
       { game:'bub', surface:'Preview video', variant:'15s vs 30s',                   dayX:3,  dayY:14, status:'in-progress' },
       { game:'spi', surface:'Localization',  variant:'DE subtitle copy',             dayX:8,  dayY:14, status:'in-progress' },
       { game:'sol', surface:'Keywords',      variant:'"free solitaire" → "solitaire offline"', dayX:1, dayY:14, status:'pre-readout' }
+    ],
+
+    /* Tab 06 ------------------------------------------------------ */
+    /* Per-game own trajectory (rank start→end, monthly creative refresh).
+       Solitaire is the load-bearing case: rank 2→4 over 26 weeks while a
+       new entrant rises 7→2. Bubble has a smaller decline. TriPeaks is the
+       category leader (1→1). Spider is stable. */
+    T06_OWN: {
+      sol: { startRank: 2, endRank: 4, refreshPerMo: 4, baseSOV: 0.22 },
+      spi: { startRank: 3, endRank: 3, refreshPerMo: 5, baseSOV: 0.24 },
+      tri: { startRank: 1, endRank: 1, refreshPerMo: 5, baseSOV: 0.28 },
+      bub: { startRank: 4, endRank: 5, refreshPerMo: 6, baseSOV: 0.11 }
+    },
+    T06_COMPETITORS: {
+      sol: [
+        { name:'Solitaire Cash',          startRank:7,  endRank:2,  refreshPerMo:12, color:'#a8001f' },
+        { name:'Solitaire Grand Harvest', startRank:5,  endRank:6,  refreshPerMo:8,  color:'#7d6c8f' },
+        { name:'Solitaire Smash',         startRank:9,  endRank:8,  refreshPerMo:6,  color:'#5a7a9b' },
+        { name:'247 Solitaire',           startRank:11, endRank:10, refreshPerMo:3,  color:'#608f6f' },
+        { name:'World of Solitaire',      startRank:14, endRank:13, refreshPerMo:2,  color:'#9c6f55' }
+      ],
+      spi: [
+        { name:'Spider Solitaire+',       startRank:1,  endRank:2,  refreshPerMo:7, color:'#a8001f' },
+        { name:'Spider Master',           startRank:5,  endRank:5,  refreshPerMo:5, color:'#7d6c8f' },
+        { name:'247 Spider',              startRank:8,  endRank:7,  refreshPerMo:4, color:'#5a7a9b' },
+        { name:'Royal Spider',            startRank:11, endRank:10, refreshPerMo:3, color:'#608f6f' },
+        { name:'Spider Pro',              startRank:13, endRank:14, refreshPerMo:2, color:'#9c6f55' }
+      ],
+      tri: [
+        { name:'TriPeaks Adventure',      startRank:3,  endRank:2,  refreshPerMo:6, color:'#a8001f' },
+        { name:'Pyramid Solitaire Saga',  startRank:5,  endRank:6,  refreshPerMo:5, color:'#7d6c8f' },
+        { name:'TriPeaks Voyage',         startRank:7,  endRank:8,  refreshPerMo:4, color:'#5a7a9b' },
+        { name:'TriPeaks Quest',          startRank:11, endRank:10, refreshPerMo:3, color:'#608f6f' },
+        { name:'TriPeaks Tycoon',         startRank:14, endRank:14, refreshPerMo:2, color:'#9c6f55' }
+      ],
+      bub: [
+        { name:'Bubble Witch 3 Saga',     startRank:1,  endRank:1,  refreshPerMo:8,  color:'#a8001f' },
+        { name:'Bubble Shooter Plus',     startRank:6,  endRank:3,  refreshPerMo:11, color:'#7d6c8f' },
+        { name:'Pet Bubble Shooter',      startRank:8,  endRank:7,  refreshPerMo:6,  color:'#5a7a9b' },
+        { name:'Bubble Shooter Cat',      startRank:10, endRank:11, refreshPerMo:4,  color:'#608f6f' },
+        { name:'Bubble Magic',            startRank:14, endRank:13, refreshPerMo:3,  color:'#9c6f55' }
+      ]
+    },
+    T06_GEOS: [
+      { key:'us', name:'US' }, { key:'ca', name:'CA' },
+      { key:'uk', name:'UK' }, { key:'au', name:'AU' },
+      { key:'de', name:'DE' }, { key:'jp', name:'JP' }
+    ],
+    /* Hardcoded SOV hotspots — the cells where competitive pressure is
+       concentrated. Solitaire's three hotspots reinforce its rank-decline
+       narrative (same external-pressure story told via SOV). Other games:
+       small synthetic fluctuations only (generated at render time). */
+    T06_HOTSPOTS: {
+      sol: [
+        { geo:'us', channel:'meta',      sov:0.19, delta:-0.13 },
+        { geo:'us', channel:'googleads', sov:0.21, delta:-0.07 },
+        { geo:'uk', channel:'meta',      sov:0.24, delta:-0.05 }
+      ],
+      spi: [],
+      tri: [],
+      bub: [
+        { geo:'us', channel:'tiktok', sov:0.10, delta:-0.04 }
+      ]
+    },
+    T06_HEADWINDS: [
+      { sev:'urgent', title:'ASA casual card CPI +18% QoQ in US',
+        desc:'Bid pressure from new entrants. Own ASA spend hit at current efficiency targets — reassess US iOS bids within 2 weeks. Reinforces Tab 03\'s ASA-saturation finding.' },
+      { sev:'watch',  title:'TikTok casual card ROAS −22% in Q4',
+        desc:'Algorithm update favoring shopping content. Spider Solitaire and Bubble Shooter Pop most exposed (TikTok-heavy mix).' },
+      { sev:'watch',  title:'Mintegral Pro entering casual card EU',
+        desc:'New ad network. Early-cohort ROAS 1.4× Meta in DE/JP. Worth a $25K test on TriPeaks before competitors lock supply.' },
+      { sev:'watch',  title:'Solitaire category rank inflation',
+        desc:'Top-10 mix in casual-card refreshing every 8 weeks (was every 14). Solitaire Cash and Solitaire Grand Harvest cycling new creative weekly.' },
+      { sev:'info',   title:'Apple SKAN 5.0 GA',
+        desc:'Postback latency 24h → 6h. Improves real-time iOS UA visibility. Re-validate attribution dashboards.' },
+      { sev:'info',   title:'Apple privacy manifest enforcement',
+        desc:'Required for App Store submission next quarter. Coordinate with engineering — non-blocking for UA but check creative pipeline build dependencies.' }
     ]
   };
 
@@ -1740,6 +2023,10 @@
     },
     /* Tab 05 ---------------------------------------------------- */
     t05: {
+      selectedGame: 'sol'
+    },
+    /* Tab 06 ---------------------------------------------------- */
+    t06: {
       selectedGame: 'sol'
     }
   };
@@ -4188,6 +4475,325 @@
   }
 
   /* ============================================================ */
+  /* TAB 06 · COMPETITIVE & MARKET INTELLIGENCE                    */
+  /* ============================================================ */
+
+  /* Generate a 26-week rank time series with a deterministic random walk
+     biased toward the start→end trajectory plus ±0.75-rank noise. No
+     statistical structure beyond the walk; competitor data is fully
+     synthetic and watermarked accordingly. */
+  function generateRankSeries(startRank, endRank, seedKey) {
+    const N = 26;
+    const rng = mulberry32(fnv1a(seedKey) >>> 0);
+    const out = [];
+    for (let i = 0; i < N; i++) {
+      const t = i / (N - 1);
+      const target = startRank + (endRank - startRank) * t;
+      const noise = (rng() - 0.5) * 1.5;
+      out.push({ x: i, y: Math.max(1, target + noise) });
+    }
+    return out;
+  }
+
+  /* Build the SOV grid (6 geos × 8 channels) for one game. Hardcoded
+     hotspots (Solitaire's three; Bubble's one) override the seeded random
+     fluctuations, so the same external-pressure story shows in the same
+     game across rank, SOV, and refresh velocity. */
+  function buildT06SOVGrid(gameKey) {
+    const own = PARAMS.T06_OWN[gameKey];
+    const hotspots = PARAMS.T06_HOTSPOTS[gameKey];
+    const rng = mulberry32((state.seed ^ Math.imul(fnv1a('t06sov:' + gameKey), 0x85EBCA6B)) >>> 0);
+    const grid = [];
+    PARAMS.T06_GEOS.forEach(g => {
+      PARAMS.CHANNELS.forEach(c => {
+        const hot = hotspots.find(h => h.geo === g.key && h.channel === c.key);
+        if (hot) {
+          grid.push({ geo: g, channel: c, sov: hot.sov, delta: hot.delta, hotspot: true });
+        } else {
+          const sov = clamp(own.baseSOV * (0.85 + 0.30 * rng()), 0.05, 0.50);
+          const delta = (rng() - 0.5) * 0.04;   /* ±2pp natural drift */
+          grid.push({ geo: g, channel: c, sov, delta, hotspot: false });
+        }
+      });
+    });
+    return grid;
+  }
+
+  /* Decision insight: combine rank delta, max SOV cell loss, refresh-velocity
+     gap into a competitive-pressure score. Highest-pressure game wins.
+     Computes a response window from rank-trajectory crossover.
+     Recommends preempt (creative acceleration) if velocity gap ≥ 4/mo,
+     else follow (defensive spend). */
+  function buildT06Insight() {
+    const candidates = ['sol','spi','tri','bub'].map(k => {
+      const own = PARAMS.T06_OWN[k];
+      const comps = PARAMS.T06_COMPETITORS[k];
+      const game = state.games.find(g => g.key === k);
+      const grid = buildT06SOVGrid(k);
+      const rankDelta = own.endRank - own.startRank;     /* +ve = declining */
+      const sovHotspots = grid.filter(c => c.delta < -0.04).sort((a, b) => a.delta - b.delta);
+      const maxSovLoss = sovHotspots[0] ? sovHotspots[0].delta : 0;
+      const topCompRefresh = Math.max.apply(null, comps.map(c => c.refreshPerMo));
+      const topCompName = comps.find(c => c.refreshPerMo === topCompRefresh).name;
+      const refreshGap = topCompRefresh - own.refreshPerMo;
+      /* Rising competitor with steepest improvement (lowest endRank − startRank) */
+      const rising = comps.slice().sort((a, b) => (a.endRank - a.startRank) - (b.endRank - b.startRank))[0];
+      const score = Math.max(0, rankDelta) * 12
+                  + (-maxSovLoss) * 100
+                  + Math.max(0, refreshGap) * 1.5;
+      return { gameKey: k, game, own, comps, grid, rankDelta, sovHotspots, maxSovLoss,
+               topCompRefresh, topCompName, refreshGap, rising, score };
+    });
+    candidates.sort((a, b) => b.score - a.score);
+    const top = candidates[0];
+
+    if (top.score < 5) {
+      return {
+        html: 'Portfolio holds stable competitive position across all four games. No game shows the combination of rank decline, SOV erosion, and refresh-velocity gap that would justify a defensive or preemptive spend response this period.',
+        foot: 'Branch: balanced-position · max pressure score = ' + top.score.toFixed(1)
+      };
+    }
+
+    /* Response window: weeks until our rank line crosses the rising
+       competitor's line, by linear extrapolation. Three cases:
+        - alreadyCrossed: competitor has already passed us (w < 0)
+        - weeks: forward-looking crossover window (0 < w < 100)
+        - null:  no convergence trend (rates diverging or competitor stable) */
+    let responseWeeks = null;
+    let alreadyCrossedWeeks = null;
+    let currentGap = null;
+    if (top.rising && top.rising.endRank < top.rising.startRank) {
+      const ourRate  = (top.own.endRank - top.own.startRank) / 26;
+      const compRate = (top.rising.endRank - top.rising.startRank) / 26;
+      if (ourRate - compRate > 1e-6) {
+        const w = (top.rising.endRank - top.own.endRank) / (ourRate - compRate);
+        if (w > 0 && w < 100) responseWeeks = Math.round(w);
+        else if (w < 0 && w > -100) {
+          alreadyCrossedWeeks = Math.round(-w);
+          currentGap = top.own.endRank - top.rising.endRank;  /* +ve = we're behind */
+        }
+      }
+    }
+
+    const hotspotPhrase = top.sovHotspots.length
+      ? top.sovHotspots.slice(0, 2).map(c => c.geo.name + ' × ' + c.channel.name + ' ' +
+          (c.delta * 100).toFixed(0) + 'pp').join(' and ')
+      : 'no individual hotspot above −4pp';
+
+    const verb = top.refreshGap >= 4
+      ? '<strong>preempt with creative pipeline acceleration</strong> — the operational lever (refresh velocity gap) is larger than what defensive spend can buy at current MCPI'
+      : '<strong>follow with defensive spend</strong> — refresh-velocity gap is small enough that creative acceleration alone won\'t close it';
+
+    const html =
+      '<strong>' + top.game.name + '</strong>: ' +
+      (top.rankDelta > 0
+        ? 'rank decline of <strong>' + top.rankDelta + ' positions</strong> over 26 weeks (now #' + top.own.endRank + '), '
+        : 'rank stable at #' + top.own.endRank + ', ') +
+      'with SOV erosion concentrated in <strong>' + hotspotPhrase + '</strong>. ' +
+      'Top competitor by refresh velocity is <strong>' + top.topCompName + '</strong> at <strong>' + top.topCompRefresh + '/mo</strong> ' +
+      'vs our <strong>' + top.own.refreshPerMo + '/mo</strong> (' + top.refreshGap + '/mo gap, ' +
+      (top.refreshGap > 0 ? (top.topCompRefresh / top.own.refreshPerMo).toFixed(1) + '×' : 'no gap') + '). ' +
+      (responseWeeks
+        ? '<strong>Response window: ~' + responseWeeks + ' weeks</strong> before rank crossover with ' + top.rising.name + '. '
+        : alreadyCrossedWeeks
+          ? '<strong>' + top.rising.name + ' already passed us ~' + alreadyCrossedWeeks + ' weeks ago</strong>; current gap ' + currentGap + ' position' + (currentGap === 1 ? '' : 's') + ' and widening at trend rates. '
+          : '') +
+      'Recommendation: ' + verb + '.';
+    return {
+      html,
+      foot: 'Pressure score: ' + top.score.toFixed(1) +
+            ' (rank Δ ' + top.rankDelta + ' · max SOV loss ' + (top.maxSovLoss * 100).toFixed(1) + 'pp · refresh gap ' + top.refreshGap + '/mo) · ' +
+            'cross-tab: reinforces Tab 01\'s ' + (top.rankDelta > 0 ? 'shift-toward' : 'reduce') + ' signal on ' + top.game.name + '.'
+    };
+  }
+
+  /* ============================================================ */
+  /* TAB 06 RENDER                                                 */
+  /* ============================================================ */
+  function renderT06() {
+    if (state.activeTab !== '06') return;
+    document.getElementById('t06-game-pick').value = state.t06.selectedGame;
+    renderT06Rank();
+    renderT06SOV();
+    renderT06Velocity();
+    renderT06Headwinds();
+    const ins = buildT06Insight();
+    document.getElementById('t06-insight').innerHTML = ins.html;
+    document.getElementById('t06-insight-foot').textContent = ins.foot;
+  }
+
+  function renderT06Rank() {
+    destroyChart('t06-rank');
+    const cv = document.getElementById('t06-rank');
+    const k = state.t06.selectedGame;
+    const own = PARAMS.T06_OWN[k];
+    const game = state.games.find(g => g.key === k);
+    const comps = PARAMS.T06_COMPETITORS[k];
+
+    const ownSeries = generateRankSeries(own.startRank, own.endRank, 'rank-own:' + k + ':' + state.seed);
+    const compSeries = comps.map(c => ({
+      data: generateRankSeries(c.startRank, c.endRank, 'rank-' + c.name + ':' + state.seed),
+      meta: c
+    }));
+    const datasets = [
+      {
+        type: 'line', label: game.name + ' (us)',
+        data: ownSeries, borderColor: game.color, backgroundColor: game.color,
+        borderWidth: 2.6, pointRadius: 0, tension: 0.25, fill: false, order: 1
+      },
+      ...compSeries.map(s => ({
+        type: 'line', label: s.meta.name,
+        data: s.data, borderColor: s.meta.color, backgroundColor: s.meta.color,
+        borderWidth: 1.4, pointRadius: 0, tension: 0.25, fill: false, order: 2
+      }))
+    ];
+    /* Compute y-axis range with rank #1 at the top (Chart.js reverse) */
+    const allY = ownSeries.concat(compSeries.flatMap(s => s.data)).map(p => p.y);
+    const yMin = Math.max(1, Math.floor(Math.min.apply(null, allY)) - 1);
+    const yMax = Math.ceil(Math.max.apply(null, allY)) + 1;
+
+    charts['t06-rank'] = new Chart(cv.getContext('2d'), {
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom', align: 'start',
+            labels: { boxWidth: 8, boxHeight: 8, font: { size: 10.5 } }
+          },
+          tooltip: {
+            callbacks: {
+              label: (c) => c.dataset.label + ' — wk ' + Math.round(c.parsed.x) + ' · rank ~' + c.parsed.y.toFixed(1)
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: 0, max: 25,
+            title: { display: true, text: 'Weeks ago (0 = 26 weeks ago, 25 = current)', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 } }
+          },
+          y: {
+            min: yMin, max: yMax, reverse: true,
+            title: { display: true, text: 'Top-grossing rank', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, stepSize: 1, callback: v => '#' + v }
+          }
+        }
+      }
+    });
+  }
+
+  function renderT06SOV() {
+    const k = state.t06.selectedGame;
+    const game = state.games.find(g => g.key === k);
+    const own = PARAMS.T06_OWN[k];
+    const grid = buildT06SOVGrid(k);
+    document.getElementById('t06-sov-meta').textContent =
+      game.name + ' · base SOV ' + (own.baseSOV * 100).toFixed(0) + '% · ' +
+      grid.filter(c => c.hotspot).length + ' hotspot' + (grid.filter(c => c.hotspot).length === 1 ? '' : 's') +
+      ' (Δ ≤ −5pp)';
+
+    const root = document.getElementById('t06-sov-matrix');
+    root.innerHTML = '';
+    /* Header row: empty + 8 channels */
+    let html = '<div></div>';
+    PARAMS.CHANNELS.forEach(ch => {
+      html += '<div class="ch-h">' + ch.name + '</div>';
+    });
+    /* 6 geo rows */
+    PARAMS.T06_GEOS.forEach(geo => {
+      html += '<div class="geo-h">' + geo.name + '</div>';
+      PARAMS.CHANNELS.forEach(ch => {
+        const cell = grid.find(c => c.geo.key === geo.key && c.channel.key === ch.key);
+        const color = sovColor(cell.delta);
+        const deltaStr = (cell.delta * 100 >= 0 ? '+' : '') + (cell.delta * 100).toFixed(1) + 'pp';
+        html += '<div class="t06-sov-cell' + (cell.hotspot ? ' hotspot' : '') + '" style="background:' + color + '" ' +
+                'title="' + game.name + ' in ' + geo.name + ' × ' + ch.name + ' — current SOV ' + (cell.sov*100).toFixed(1) + '%, 6mo Δ ' + deltaStr + (cell.hotspot ? ' · HOTSPOT' : '') + '">' +
+                  '<div class="pct">' + (cell.sov*100).toFixed(0) + '%</div>' +
+                  '<div class="delta">' + deltaStr + '</div>' +
+                '</div>';
+      });
+    });
+    root.innerHTML = html;
+  }
+  function sovColor(delta) {
+    /* Diverging gradient anchored at Δ ∈ [-0.10, +0.10] */
+    const stops = [
+      { v: -0.10, c: [196, 100, 110] },
+      { v: -0.05, c: [219, 162, 164] },
+      { v:  0.00, c: [244, 240, 232] },
+      { v: +0.05, c: [168, 194, 162] },
+      { v: +0.10, c: [107, 156, 117] }
+    ];
+    if (delta <= stops[0].v) return rgb(stops[0].c);
+    if (delta >= stops[stops.length-1].v) return rgb(stops[stops.length-1].c);
+    for (let i = 0; i < stops.length - 1; i++) {
+      if (delta <= stops[i+1].v) {
+        const t = (delta - stops[i].v) / (stops[i+1].v - stops[i].v);
+        const c = [0,1,2].map(j => Math.round(stops[i].c[j] + t * (stops[i+1].c[j] - stops[i].c[j])));
+        return rgb(c);
+      }
+    }
+    return rgb(stops[2].c);
+  }
+
+  function renderT06Velocity() {
+    const k = state.t06.selectedGame;
+    const own = PARAMS.T06_OWN[k];
+    const game = state.games.find(g => g.key === k);
+    const comps = PARAMS.T06_COMPETITORS[k];
+    const all = [
+      { name: game.name + ' (us)', refreshPerMo: own.refreshPerMo, color: game.color, isUs: true }
+    ].concat(comps.map(c => ({ name: c.name, refreshPerMo: c.refreshPerMo, color: c.color, isUs: false })))
+     .sort((a, b) => b.refreshPerMo - a.refreshPerMo);
+
+    const maxRefresh = all[0].refreshPerMo;
+    const topComp = comps.slice().sort((a, b) => b.refreshPerMo - a.refreshPerMo)[0];
+    const gap = topComp.refreshPerMo - own.refreshPerMo;
+    document.getElementById('t06-vel-meta').textContent =
+      gap > 0
+        ? 'Top competitor +' + gap + '/mo (' + (topComp.refreshPerMo / own.refreshPerMo).toFixed(1) + '× our pace)'
+        : 'We lead by ' + (-gap) + '/mo';
+
+    const root = document.getElementById('t06-vel-table');
+    let html = '<thead><tr>' +
+      '<th>Title</th>' +
+      '<th style="text-align:right">Creatives / mo</th>' +
+      '<th style="text-align:right">vs ours</th>' +
+      '</tr></thead><tbody>';
+    all.forEach(item => {
+      const ratio = item.refreshPerMo / own.refreshPerMo;
+      const rel = item.refreshPerMo / maxRefresh;
+      const ratioStr = item.isUs ? '—' : (ratio >= 1 ? '+' : '') + ((ratio - 1) * 100).toFixed(0) + '%';
+      html +=
+        '<tr><td class="label' + (item.isUs ? ' us' : '') + '"><span class="sw" style="background:' + item.color + '"></span>' + item.name + '</td>' +
+        '<td style="text-align:right">' +
+          '<span class="t06-vel-bar"><span style="width:' + (rel*100).toFixed(0) + '%;background:' + item.color + ';opacity:.7"></span></span>' +
+          item.refreshPerMo + '</td>' +
+        '<td style="text-align:right">' + ratioStr + '</td>' +
+        '</tr>';
+    });
+    html += '</tbody>';
+    root.innerHTML = html;
+  }
+
+  function renderT06Headwinds() {
+    const root = document.getElementById('t06-headwinds');
+    const sevLabel = { urgent: 'Urgent', watch: 'Watch', info: 'Info' };
+    /* Sort: urgent first, then watch, then info, preserving original order within each */
+    const order = { urgent: 0, watch: 1, info: 2 };
+    const items = PARAMS.T06_HEADWINDS.slice().sort((a, b) => order[a.sev] - order[b.sev]);
+    root.innerHTML = items.map(h =>
+      '<div class="t06-hw-item ' + h.sev + '">' +
+        '<div class="h"><span class="sev">' + sevLabel[h.sev] + '</span><span class="title">' + h.title + '</span></div>' +
+        '<div class="desc">' + h.desc + '</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  /* ============================================================ */
   /* CSV: parse + validate + sample                                */
   /* ============================================================ */
   const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
@@ -4295,6 +4901,47 @@
       lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
       lines.push('');
       lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else if (state.activeTab === '06') {
+      const k = state.t06.selectedGame;
+      const game = state.games.find(g => g.key === k);
+      const own = PARAMS.T06_OWN[k];
+      const comps = PARAMS.T06_COMPETITORS[k];
+      const grid = buildT06SOVGrid(k);
+      const topComp = comps.slice().sort((a, b) => b.refreshPerMo - a.refreshPerMo)[0];
+      lines.push('## Competitive snapshot · ' + game.name);
+      lines.push('- Top-grossing rank: ' + own.startRank + ' → ' + own.endRank + ' over 26 weeks (Δ ' + (own.endRank - own.startRank >= 0 ? '+' : '') + (own.endRank - own.startRank) + ')');
+      lines.push('- Creative refresh: us ' + own.refreshPerMo + '/mo · top competitor (' + topComp.name + ') ' + topComp.refreshPerMo + '/mo (gap ' + (topComp.refreshPerMo - own.refreshPerMo) + '/mo)');
+      lines.push('');
+      lines.push('### Top-5 competitors (rank trajectory · refresh velocity)');
+      lines.push('| Competitor | Start rank | End rank | Δ | Refresh/mo |');
+      lines.push('|---|---|---|---|---|');
+      comps.forEach(c => {
+        const d = c.endRank - c.startRank;
+        lines.push('| ' + c.name + ' | ' + c.startRank + ' | ' + c.endRank + ' | ' + (d >= 0 ? '+' : '') + d + ' | ' + c.refreshPerMo + ' |');
+      });
+      lines.push('');
+      const hotspots = grid.filter(c => c.delta < -0.04).sort((a, b) => a.delta - b.delta);
+      if (hotspots.length) {
+        lines.push('### SOV hotspots (Δ < −4pp)');
+        lines.push('| Geo | Channel | Current SOV | 6mo Δ |');
+        lines.push('|---|---|---|---|');
+        hotspots.forEach(c => {
+          lines.push('| ' + c.geo.name + ' | ' + c.channel.name + ' | ' + (c.sov*100).toFixed(1) + '% | ' + (c.delta*100).toFixed(1) + 'pp |');
+        });
+        lines.push('');
+      }
+      lines.push('### Market headwinds');
+      const sevLabel = { urgent:'**Urgent**', watch:'Watch', info:'Info' };
+      const order = { urgent:0, watch:1, info:2 };
+      const sortedHW = PARAMS.T06_HEADWINDS.slice().sort((a, b) => order[a.sev] - order[b.sev]);
+      sortedHW.forEach(h => lines.push('- ' + sevLabel[h.sev] + ' · **' + h.title + '** — ' + h.desc));
+      lines.push('');
+      lines.push('Data source: synthetic · Sensor Tower-style estimates · provider-reported confidence ±2–5pp on SOV cells.');
+      lines.push('');
+      lines.push('## Decision insight');
+      lines.push('> ' + document.getElementById('t06-insight').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t06-insight-foot').textContent.trim() + '_');
     } else if (state.activeTab === '05') {
       const allGD = ['sol','spi','tri','bub'].map(buildT05GameData);
       const gd = allGD.find(x => x.gameKey === state.t05.selectedGame);
@@ -4652,6 +5299,13 @@
     });
   }
 
+  function bindT06Controls() {
+    document.getElementById('t06-game-pick').addEventListener('change', e => {
+      state.t06.selectedGame = e.target.value;
+      renderT06();
+    });
+  }
+
   function bindT03Controls() {
     document.querySelectorAll('#t03-view button').forEach(b => {
       b.addEventListener('click', () => {
@@ -4695,13 +5349,14 @@
     else if (state.activeTab === '03') renderT03();
     else if (state.activeTab === '04') renderT04();
     else if (state.activeTab === '05') renderT05();
-    /* Tabs 06–07 remain placeholders. */
+    else if (state.activeTab === '06') renderT06();
+    /* Tab 07 remains a placeholder. */
   }
 
   function init() {
     state.t02.cac = defaultBlendedCAC();
     bindFilters(); bindTabs(); bindDataMode(); bindUpload();
-    bindT01Buttons(); bindT02Controls(); bindT03Controls(); bindT04Controls(); bindT05Controls();
+    bindT01Buttons(); bindT02Controls(); bindT03Controls(); bindT04Controls(); bindT05Controls(); bindT06Controls();
     recompute(); renderActiveTab();
     window.addEventListener('resize', () => {
       if (state.activeTab === '01') renderKPIs();
