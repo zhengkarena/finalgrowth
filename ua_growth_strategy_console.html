@@ -348,6 +348,78 @@
     font-size: 10.5px; color: var(--muted); margin-top: 6px; font-family: var(--mono);
   }
 
+  /* === Tab 02 layout === */
+  .t02-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) {
+    .t02-grid { grid-template-columns: 1fr; }
+  }
+  .t02-main, .t02-rail { display: flex; flex-direction: column; gap: 16px; }
+  .t02-controls {
+    display: flex; flex-wrap: wrap; gap: 10px 18px;
+    padding: 8px 0 14px; margin-bottom: 6px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .ctl-group { display: flex; align-items: center; gap: 8px; }
+  .ctl-lbl {
+    font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+  }
+  .ctl-hint { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+  .seg-toggle.compact button { padding: 4px 8px; font-size: 11.5px; }
+  #t02-cac {
+    width: 70px; padding: 4px 6px; font-family: var(--mono); font-size: 12px;
+    border: 1px solid var(--line); border-radius: 4px; background: var(--paper);
+  }
+  #t02-cac:focus { outline: none; border-color: var(--ink); }
+  .pill-row { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+  .pill-row .pill {
+    padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--paper);
+    font-size: 11.5px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .pill-row .pill .sw {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .pill-row .pill.off { opacity: 0.45; background: var(--chip); }
+
+  .t02-ltv-wrap   { height: 320px; position: relative; margin-top: 4px; }
+  .t02-resid-wrap { height: 160px; position: relative; }
+
+  .t02-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .t02-table th {
+    text-align: left; font-weight: 500; color: var(--muted);
+    font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 8px 6px; border-bottom: 1px solid var(--line);
+  }
+  .t02-table td {
+    padding: 7px 6px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11.5px;
+  }
+  .t02-table td.gname {
+    font-family: var(--sans); font-size: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t02-table td.gname .sw {
+    width: 8px; height: 8px; border-radius: 2px;
+  }
+
+  .t02-rail-sub {
+    color: var(--muted); font-size: 11px; margin: 0 0 10px;
+  }
+  .t02-waterfall { width: 100%; height: 180px; display: block; }
+  .t02-rail-foot {
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+  }
+
   /* === Modal === */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(20,20,15,.4);
@@ -618,10 +690,85 @@
   <!-- Placeholder tabs 02–07                                        -->
   <!-- ============================================================ -->
   <section class="tabpanel" data-tab-panel="02">
-    <div class="placeholder-card">
-      <span class="turn-tag">Coming in Turn 2</span>
-      <h2>02 · LTV Curve &amp; Payback Modeler</h2>
-      <p>Cumulative ARPU curves D0→D360 by cohort × game × channel; fit power-law / log-linear / mixed (IAP+ads) models with residuals; CAC payback marker; per-game P10/P50/P90 payback waterfall; plain-language insight card.</p>
+    <div class="t02-grid">
+
+      <div class="t02-main">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Cumulative ARPU per install · D0–D360</h3>
+            <span class="why" data-tip="Each line is a model fit to one game's observed cumulative ARPU points. Where each line crosses the dashed CAC reference is that game's payback day. Vertical dashed markers annotate the crossing.">Why this matters</span>
+          </div>
+
+          <div class="t02-controls">
+            <div class="ctl-group">
+              <label class="ctl-lbl">Fit model</label>
+              <div class="seg-toggle compact" id="t02-model">
+                <button data-model="power" class="active" type="button" data-tip="y = a·t^b. Saturating power-law, classical for casual mobile LTV. Two parameters; fit via OLS on log-log.">Power-law</button>
+                <button data-model="loglin" type="button" data-tip="y = a·ln(1+t) + c. Slower decay than power-law; useful when ad revenue contributes a near-constant daily increment.">Log-linear</button>
+                <button data-model="mixed"  type="button" data-tip="y = a·ln(1+t) + b·t + c. Saturating IAP component plus a linear ads component. Three parameters; fit via OLS on a 3-basis design matrix.">Mixed (IAP+Ads)</button>
+              </div>
+            </div>
+            <div class="ctl-group">
+              <label class="ctl-lbl">CAC reference ($)</label>
+              <input type="number" id="t02-cac" min="0.50" max="20" step="0.10" />
+              <span class="ctl-hint" id="t02-cac-hint">portfolio blend</span>
+              <button class="mini-btn" id="t02-cac-reset" type="button">reset</button>
+            </div>
+            <div class="ctl-group">
+              <label class="ctl-lbl">Show</label>
+              <div class="pill-row" id="t02-pills"></div>
+            </div>
+          </div>
+
+          <div class="t02-ltv-wrap">
+            <canvas id="t02-ltv"></canvas>
+          </div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Residuals  (observed − fitted)</h3>
+            <span class="why" data-tip="If residuals show a clear pattern (curvature, fan-out at large t), the model is misspecified. Random scatter near 0 means the model is capturing the structure.">ⓘ</span>
+          </div>
+          <div class="t02-resid-wrap">
+            <canvas id="t02-resid"></canvas>
+          </div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Fitted parameters &amp; goodness of fit</h3>
+            <span class="h-meta" id="t02-fit-meta"></span>
+          </div>
+          <table class="t02-table" id="t02-params">
+            <thead><tr><th>Game</th><th>Parameters</th><th>R²</th><th>RMSE</th><th>Payback @ CAC</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="t02-rail">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Payback waterfall</h3>
+            <span class="why" data-tip="P10 / P50 / P90 days to recoup CAC, derived from 200 bootstrap fits per game under the same per-game CV that drives Tab 01's CIs. Wider bar = noisier game.">ⓘ</span>
+          </div>
+          <p class="t02-rail-sub">days to recoup CAC under sampling noise</p>
+          <svg id="t02-waterfall" class="t02-waterfall"></svg>
+          <div class="t02-rail-foot" id="t02-waterfall-foot"></div>
+        </div>
+
+        <div class="col-card recommendation">
+          <span class="tag">&#9830; Decision insight</span>
+          <div class="body" id="t02-insight">—</div>
+          <div class="footnote" id="t02-insight-foot"></div>
+        </div>
+
+      </div>
+
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="03">
@@ -724,10 +871,10 @@
   /* ============================================================ */
   const PARAMS = {
     GAMES: [
-      { key:'sol', name:'Solitaire',          mu:0.55, sigma:0.08, pb50:110, pb90:145, sat:0.75, color:'#4a6f8f' },
-      { key:'spi', name:'Spider Solitaire',   mu:0.60, sigma:0.14, pb50:140, pb90:190, sat:0.67, color:'#7d6c8f' },
-      { key:'tri', name:'TriPeaks',           mu:0.85, sigma:0.16, pb50:85,  pb90:120, sat:0.60, color:'#9c6f55' },
-      { key:'bub', name:'Bubble Shooter Pop', mu:0.48, sigma:0.20, pb50:180, pb90:240, sat:0.80, color:'#608f6f' }
+      { key:'sol', name:'Solitaire',          mu:0.55, sigma:0.08, pb50:110, pb90:145, sat:0.75, color:'#4a6f8f', cac:4.50 },
+      { key:'spi', name:'Spider Solitaire',   mu:0.60, sigma:0.14, pb50:140, pb90:190, sat:0.67, color:'#7d6c8f', cac:4.00 },
+      { key:'tri', name:'TriPeaks',           mu:0.85, sigma:0.16, pb50:85,  pb90:120, sat:0.60, color:'#9c6f55', cac:3.80 },
+      { key:'bub', name:'Bubble Shooter Pop', mu:0.48, sigma:0.20, pb50:180, pb90:240, sat:0.80, color:'#608f6f', cac:2.90 }
     ],
     CORR: [
       [1.00, 0.50, 0.35, 0.20],
@@ -765,7 +912,14 @@
     maxRoasW: PARAMS.CURRENT_W.slice(),
     minRiskW: PARAMS.CURRENT_W.slice(),
     cloud:    [],       // 500 sampled allocations
-    seed:     0
+    seed:     0,
+    /* Tab 02 ---------------------------------------------------- */
+    t02: {
+      model: 'power',           // 'power' | 'loglin' | 'mixed'
+      cac: 0,                   // computed at startup; user-overridable
+      cacIsCustom: false,
+      selectedGames: ['sol','spi','tri','bub']
+    }
   };
 
   /* ============================================================ */
@@ -789,7 +943,11 @@
       const spark = generateSpark(rng, 90, dailySpend, 0.18);
       return {
         ...g, muE, sigE, pb10, pb50: pb50, pb90, margROAS,
-        spendMonthly, sparkData: spark
+        spendMonthly, sparkData: spark,
+        /* Tab-02 anchors derived from the same μ_g, σ_g powering Tab-01 CIs.
+           CV_g = σ_g/μ_g flows into the LTV bootstrap noise. */
+        arpuD30: muE * g.cac,
+        cv: sigE / muE
       };
     });
   }
@@ -885,6 +1043,172 @@
   function fmtRoas(v)        { return v.toFixed(2); }
   function fmtDays(v)        { return Math.round(v) + 'd'; }
   function clamp(v, lo, hi)  { return Math.max(lo, Math.min(hi, v)); }
+
+  /* ============================================================ */
+  /* LTV MATH (Tab 02)                                             */
+  /* ============================================================ */
+  const LTV_DAYS = [1, 3, 7, 14, 30, 60, 90, 150, 240, 360];
+
+  /* Generate one realization of observed cumulative ARPU per install for a
+     game. The data-generating process is power-law y_true = α·t^β with
+     β ∈ [0.35, 0.55] and α anchored at y_true(30) = arpuD30. Multiplicative
+     lognormal noise: y_obs = y_true · exp(CV·√0.6 · z). The √0.6 factor
+     damps cohort-level noise so the fits are stable on 10 points. */
+  function generateObservedLTV(g, seed) {
+    const rng = mulberry32(seed >>> 0);
+    const beta  = 0.35 + 0.20 * rng();
+    const alpha = g.arpuD30 / Math.pow(30, beta);
+    const sigLog = g.cv * Math.sqrt(0.6);
+    const points = LTV_DAYS.map(t => {
+      const yTrue = alpha * Math.pow(t, beta);
+      return { t, y: Math.max(0.01, yTrue * Math.exp(sigLog * gauss(rng))) };
+    });
+    return { points, alphaTrue: alpha, betaTrue: beta };
+  }
+
+  function r2AndRMSE(yObs, yFit) {
+    const n = yObs.length;
+    const meanY = yObs.reduce((a, b) => a + b, 0) / n;
+    let SSres = 0, SStot = 0;
+    for (let i = 0; i < n; i++) {
+      SSres += (yObs[i] - yFit[i]) * (yObs[i] - yFit[i]);
+      SStot += (yObs[i] - meanY) * (yObs[i] - meanY);
+    }
+    return { R2: 1 - SSres / SStot, RMSE: Math.sqrt(SSres / n) };
+  }
+
+  /* Power law: y = a·t^b — log-log OLS. */
+  function fitPower(points) {
+    const n = points.length;
+    const lx = points.map(p => Math.log(p.t));
+    const ly = points.map(p => Math.log(p.y));
+    const mx = lx.reduce((a, b) => a + b, 0) / n;
+    const my = ly.reduce((a, b) => a + b, 0) / n;
+    let num = 0, den = 0;
+    for (let i = 0; i < n; i++) {
+      num += (lx[i] - mx) * (ly[i] - my);
+      den += (lx[i] - mx) * (lx[i] - mx);
+    }
+    const b = num / den;
+    const a = Math.exp(my - b * mx);
+    const fit = points.map(p => a * Math.pow(p.t, b));
+    const gof = r2AndRMSE(points.map(p => p.y), fit);
+    return {
+      type: 'power', a, b, fit,
+      residuals: points.map((p, i) => p.y - fit[i]),
+      ...gof,
+      predict: t => a * Math.pow(t, b),
+      paybackClosedForm: cac => Math.pow(cac / a, 1 / b)
+    };
+  }
+
+  /* Log-linear: y = a·ln(1+t) + c — direct OLS on basis ln(1+t). */
+  function fitLogLin(points) {
+    const n = points.length;
+    const X = points.map(p => Math.log(1 + p.t));
+    const Y = points.map(p => p.y);
+    const mx = X.reduce((a, b) => a + b, 0) / n;
+    const my = Y.reduce((a, b) => a + b, 0) / n;
+    let num = 0, den = 0;
+    for (let i = 0; i < n; i++) {
+      num += (X[i] - mx) * (Y[i] - my);
+      den += (X[i] - mx) * (X[i] - mx);
+    }
+    const a = num / den;
+    const c = my - a * mx;
+    const fit = points.map(p => a * Math.log(1 + p.t) + c);
+    const gof = r2AndRMSE(Y, fit);
+    return {
+      type: 'loglin', a, c, fit,
+      residuals: points.map((p, i) => p.y - fit[i]),
+      ...gof,
+      predict: t => a * Math.log(1 + t) + c,
+      paybackClosedForm: cac => Math.exp((cac - c) / a) - 1
+    };
+  }
+
+  /* Mixed (IAP+Ads): y = a·ln(1+t) + b·t + c — 3-basis OLS via 3×3 normal eqs. */
+  function fitMixed(points) {
+    const n = points.length;
+    const xtx = [[0,0,0],[0,0,0],[0,0,0]];
+    const xty = [0, 0, 0];
+    for (let k = 0; k < n; k++) {
+      const x = [Math.log(1 + points[k].t), points[k].t, 1];
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) xtx[i][j] += x[i] * x[j];
+        xty[i] += x[i] * points[k].y;
+      }
+    }
+    const beta = solve3x3(xtx, xty);
+    const a = beta[0], b = beta[1], c = beta[2];
+    const fit = points.map(p => a * Math.log(1 + p.t) + b * p.t + c);
+    const gof = r2AndRMSE(points.map(p => p.y), fit);
+    return {
+      type: 'mixed', a, b, c, fit,
+      residuals: points.map((p, i) => p.y - fit[i]),
+      ...gof,
+      predict: t => a * Math.log(1 + t) + b * t + c,
+      paybackClosedForm: null
+    };
+  }
+
+  function solve3x3(A, b) {
+    const M = A.map((row, i) => [row[0], row[1], row[2], b[i]]);
+    for (let i = 0; i < 3; i++) {
+      let piv = i;
+      for (let k = i + 1; k < 3; k++) if (Math.abs(M[k][i]) > Math.abs(M[piv][i])) piv = k;
+      [M[i], M[piv]] = [M[piv], M[i]];
+      for (let k = i + 1; k < 3; k++) {
+        const f = M[k][i] / M[i][i];
+        for (let j = i; j < 4; j++) M[k][j] -= f * M[i][j];
+      }
+    }
+    const x = [0, 0, 0];
+    for (let i = 2; i >= 0; i--) {
+      let s = M[i][3];
+      for (let j = i + 1; j < 3; j++) s -= M[i][j] * x[j];
+      x[i] = s / M[i][i];
+    }
+    return x;
+  }
+
+  /* Solve LTV(t) = CAC. Closed-form for power and loglin; bisection for mixed. */
+  function solvePayback(fit, cac, maxT) {
+    maxT = maxT || 730;
+    if (fit.paybackClosedForm) {
+      const t = fit.paybackClosedForm(cac);
+      if (!isFinite(t) || t <= 0)   return null;
+      if (t > maxT)                 return null;
+      return t;
+    }
+    if (fit.predict(0.5) >= cac) return 0.5;
+    if (fit.predict(maxT)  < cac) return null;
+    let lo = 0.5, hi = maxT;
+    for (let i = 0; i < 50; i++) {
+      const mid = (lo + hi) / 2;
+      if (fit.predict(mid) >= cac) hi = mid; else lo = mid;
+    }
+    return hi;
+  }
+
+  /* Bootstrap K independent observed-data realizations, refit, recompute payback.
+     Returns sorted P10/P50/P90 of payback days. Uses CV_g = σ_g/μ_g — the same
+     σ_g that drives Tab 01's prediction intervals. */
+  function bootstrapPayback(g, baseSeed, model, cac, K) {
+    const fitFn = model === 'power' ? fitPower : (model === 'loglin' ? fitLogLin : fitMixed);
+    const out = [];
+    for (let k = 0; k < K; k++) {
+      const seed = (baseSeed ^ Math.imul(k + 1, 0x9E3779B9)) >>> 0;
+      const obs = generateObservedLTV(g, seed);
+      const fit = fitFn(obs.points);
+      const pb = solvePayback(fit, cac);
+      if (pb !== null && isFinite(pb)) out.push(pb);
+    }
+    out.sort((a, b) => a - b);
+    if (!out.length) return { p10: null, p50: null, p90: null, n: 0, K };
+    const q = p => out[Math.floor(p * (out.length - 1))];
+    return { p10: q(0.10), p50: q(0.50), p90: q(0.90), n: out.length, K };
+  }
 
   /* ============================================================ */
   /* CHART INSTANCES (kept for teardown)                           */
@@ -1312,6 +1636,347 @@
   }
 
   /* ============================================================ */
+  /* TAB 02 RENDER                                                 */
+  /* ============================================================ */
+  const paybackMarkerPlugin = {
+    id: 'paybackMarkers',
+    afterDatasetsDraw(chart, _args, opts) {
+      const markers = (opts && opts.markers) || [];
+      if (!markers.length) return;
+      const { ctx, scales: { x }, chartArea } = chart;
+      ctx.save();
+      ctx.font = '10px ui-monospace, monospace';
+      markers.forEach((m, idx) => {
+        if (m.day == null || !isFinite(m.day)) return;
+        const px = x.getPixelForValue(m.day);
+        if (px < chartArea.left || px > chartArea.right) return;
+        ctx.strokeStyle = m.color;
+        ctx.setLineDash([3, 3]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(px, chartArea.top);
+        ctx.lineTo(px, chartArea.bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = m.color;
+        const labelY = chartArea.top + 12 + (idx % 2) * 14;
+        ctx.fillText('PB ' + Math.round(m.day) + 'd', px + 4, labelY);
+      });
+      ctx.restore();
+    }
+  };
+  if (window.Chart) Chart.register(paybackMarkerPlugin);
+
+  function defaultBlendedCAC() {
+    return PARAMS.GAMES.reduce((s, g, i) => s + PARAMS.CURRENT_W[i] * g.cac, 0);
+  }
+
+  function renderT02() {
+    if (state.activeTab !== '02') return;
+    const t02 = state.t02;
+    if (!t02.cacIsCustom) t02.cac = defaultBlendedCAC();
+
+    /* Build per-game observed data + fits for ALL three models. We render the
+       active model on the chart but compute the others so toggling is
+       instantaneous and the param table can show fit-quality diagnostics. */
+    const fits = state.games.map((g, i) => {
+      const obs = generateObservedLTV(g, (state.seed ^ Math.imul(i + 7, 0x85EBCA6B)) >>> 0);
+      return {
+        game: g, idx: i, observed: obs,
+        power:  fitPower (obs.points),
+        loglin: fitLogLin(obs.points),
+        mixed:  fitMixed (obs.points)
+      };
+    });
+    const waterfall = state.games.map((g, i) =>
+      bootstrapPayback(
+        g, (state.seed ^ Math.imul(i + 13, 0xC2B2AE35)) >>> 0,
+        t02.model, t02.cac, 200
+      )
+    );
+
+    renderT02Controls();
+    renderT02LTVChart(fits, t02);
+    renderT02Residuals(fits, t02);
+    renderT02ParamTable(fits, t02);
+    renderT02Waterfall(waterfall);
+    renderT02Insight(waterfall, t02);
+  }
+
+  function renderT02Controls() {
+    const t02 = state.t02;
+    document.querySelectorAll('#t02-model button').forEach(b =>
+      b.classList.toggle('active', b.dataset.model === t02.model));
+    const inp = document.getElementById('t02-cac');
+    if (inp && document.activeElement !== inp) inp.value = t02.cac.toFixed(2);
+    const hint = document.getElementById('t02-cac-hint');
+    hint.textContent = t02.cacIsCustom ? 'custom' : 'portfolio blend';
+    /* Pills */
+    const pills = document.getElementById('t02-pills');
+    pills.innerHTML = '';
+    state.games.forEach(g => {
+      const on = t02.selectedGames.includes(g.key);
+      const p = document.createElement('span');
+      p.className = 'pill' + (on ? '' : ' off');
+      p.dataset.key = g.key;
+      p.innerHTML = '<span class="sw" style="background:' + g.color + '"></span>' + g.name;
+      p.addEventListener('click', () => {
+        const set = new Set(t02.selectedGames);
+        if (set.has(g.key)) set.delete(g.key); else set.add(g.key);
+        if (set.size === 0) return; /* Always keep ≥1 selected */
+        t02.selectedGames = state.games.map(x => x.key).filter(k => set.has(k));
+        renderT02();
+      });
+      pills.appendChild(p);
+    });
+  }
+
+  function renderT02LTVChart(fits, t02) {
+    destroyChart('t02-ltv');
+    const cv = document.getElementById('t02-ltv');
+    const visible = fits.filter(f => t02.selectedGames.includes(f.game.key));
+
+    const datasets = [];
+    const markers = [];
+    visible.forEach(f => {
+      const fit = f[t02.model];
+      /* fitted curve, sampled densely for smooth rendering */
+      const curve = [];
+      for (let t = 0.5; t <= 360; t += 4) curve.push({ x: t, y: fit.predict(t) });
+      datasets.push({
+        type: 'line', label: f.game.name,
+        data: curve,
+        borderColor: f.game.color,
+        backgroundColor: f.game.color,
+        borderWidth: 1.8, pointRadius: 0, tension: 0, fill: false, order: 2
+      });
+      datasets.push({
+        type: 'line', label: f.game.name + ' obs',
+        data: f.observed.points.map(p => ({ x: p.t, y: p.y })),
+        borderColor: f.game.color, backgroundColor: '#ffffff',
+        pointRadius: 3, pointBorderWidth: 1.5, pointStyle: 'circle',
+        showLine: false, order: 1
+      });
+      const pb = solvePayback(fit, t02.cac);
+      markers.push({ day: pb, color: f.game.color });
+    });
+    /* CAC reference */
+    datasets.push({
+      type: 'line', label: 'CAC reference  $' + t02.cac.toFixed(2),
+      data: [{ x: 0, y: t02.cac }, { x: 360, y: t02.cac }],
+      borderColor: '#a8001f', backgroundColor: '#a8001f',
+      borderDash: [4, 4], borderWidth: 1.4, pointRadius: 0, fill: false, order: 5
+    });
+
+    const allY = visible.flatMap(f => f.observed.points.map(p => p.y));
+    const yMax = Math.max(t02.cac * 1.6, Math.max.apply(null, allY) * 1.1);
+
+    charts['t02-ltv'] = new Chart(cv.getContext('2d'), {
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom', align: 'start',
+            labels: {
+              boxWidth: 8, boxHeight: 8, font: { size: 11 },
+              filter: it => !/ obs$/.test(it.text)
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (c) => c.dataset.label + ' — D' + Math.round(c.parsed.x) +
+                            ' = $' + c.parsed.y.toFixed(2)
+            }
+          },
+          paybackMarkers: { markers }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: 0, max: 360,
+            title: { display: true, text: 'Days since install', color: '#6e6e63', font: { size: 11 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 } }
+          },
+          y: {
+            min: 0, max: yMax,
+            title: { display: true, text: 'Cumulative ARPU per install ($)', color: '#6e6e63', font: { size: 11 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => '$' + v.toFixed(2) }
+          }
+        }
+      }
+    });
+  }
+
+  function renderT02Residuals(fits, t02) {
+    destroyChart('t02-resid');
+    const cv = document.getElementById('t02-resid');
+    const visible = fits.filter(f => t02.selectedGames.includes(f.game.key));
+    const datasets = visible.map(f => ({
+      label: f.game.name,
+      data: f[t02.model].residuals.map((r, i) => ({ x: f.observed.points[i].t, y: r })),
+      borderColor: f.game.color, backgroundColor: f.game.color,
+      pointRadius: 3, pointStyle: 'circle', showLine: false
+    }));
+    /* zero reference */
+    datasets.push({
+      label: 'zero', data: [{ x: 0, y: 0 }, { x: 360, y: 0 }],
+      borderColor: '#cfcfc5', borderWidth: 1, pointRadius: 0, type: 'line',
+      borderDash: [2, 2]
+    });
+    const allRes = visible.flatMap(f => f[t02.model].residuals.map(Math.abs));
+    const span = Math.max(0.1, Math.max.apply(null, allRes) * 1.15);
+    charts['t02-resid'] = new Chart(cv.getContext('2d'), {
+      type: 'scatter',
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => c.dataset.label + ' — D' + Math.round(c.parsed.x) +
+                            ' residual ' + (c.parsed.y >= 0 ? '+' : '') + c.parsed.y.toFixed(3)
+            }
+          }
+        },
+        scales: {
+          x: { type: 'linear', min: 0, max: 360,
+               title: { display: true, text: 'Days', color: '#6e6e63', font: { size: 10 } },
+               grid: { color: 'rgba(226,226,220,0.6)' },
+               ticks: { color: '#6e6e63', font: { size: 10 } } },
+          y: { min: -span, max: span,
+               title: { display: true, text: 'observed − fitted ($)', color: '#6e6e63', font: { size: 10 } },
+               grid: { color: 'rgba(226,226,220,0.6)' },
+               ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => '$' + v.toFixed(2) } }
+        }
+      }
+    });
+  }
+
+  function renderT02ParamTable(fits, t02) {
+    const tbody = document.querySelector('#t02-params tbody');
+    tbody.innerHTML = '';
+    const meta = document.getElementById('t02-fit-meta');
+    meta.textContent = 'model = ' + (
+      t02.model === 'power'  ? 'y = a·t^b' :
+      t02.model === 'loglin' ? 'y = a·ln(1+t) + c' :
+                               'y = a·ln(1+t) + b·t + c'
+    );
+
+    fits.forEach(f => {
+      const fit = f[t02.model];
+      const params =
+        t02.model === 'power'  ? `a=${fit.a.toFixed(3)} · b=${fit.b.toFixed(3)}` :
+        t02.model === 'loglin' ? `a=${fit.a.toFixed(3)} · c=${fit.c.toFixed(3)}` :
+                                 `a=${fit.a.toFixed(3)} · b=${fit.b.toFixed(3)} · c=${fit.c.toFixed(3)}`;
+      const pb = solvePayback(fit, t02.cac);
+      const pbStr = pb === null ? '> 730d (no payback in window)' : Math.round(pb) + ' d';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="gname"><span class="sw" style="background:${f.game.color}"></span>${f.game.name}</td>
+        <td>${params}</td>
+        <td>${fit.R2.toFixed(3)}</td>
+        <td>$${fit.RMSE.toFixed(3)}</td>
+        <td>${pbStr}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderT02Waterfall(wf) {
+    const svg = document.getElementById('t02-waterfall');
+    const W = svg.clientWidth || 320, rowH = 36, padTop = 18, padBot = 22, padL = 90, padR = 14;
+    const H = padTop + rowH * wf.length + padBot;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('height', H);
+
+    const all = wf.flatMap(w => [w.p10, w.p50, w.p90]).filter(v => v != null);
+    const xMin = 0;
+    const xMax = Math.max(60, Math.max.apply(null, all) * 1.08 || 200);
+    const xs = v => padL + (W - padL - padR) * (v - xMin) / (xMax - xMin);
+
+    const out = [];
+    /* axis */
+    out.push(`<line x1="${padL}" y1="${H - padBot + 2}" x2="${W - padR}" y2="${H - padBot + 2}" stroke="#cfcfc5"/>`);
+    [0, 90, 180, 270, 360].filter(t => t <= xMax).forEach(t => {
+      out.push(`<line x1="${xs(t)}" y1="${padTop - 4}" x2="${xs(t)}" y2="${H - padBot + 2}" stroke="#eeeee8"/>`);
+      out.push(`<text x="${xs(t)}" y="${H - padBot + 14}" font-size="9.5" fill="#6e6e63" text-anchor="middle" font-family="monospace">${t}d</text>`);
+    });
+
+    wf.forEach((w, i) => {
+      const g = state.games[i];
+      const yMid = padTop + rowH * (i + 0.5);
+      out.push(`<text x="${padL - 8}" y="${yMid + 4}" font-size="11.5" fill="#14140f" text-anchor="end">${g.name}</text>`);
+      if (w.p10 == null) {
+        out.push(`<text x="${padL + 4}" y="${yMid + 4}" font-size="10.5" fill="#962d2d" font-family="monospace">no payback within 730d in ${w.K - w.n}/${w.K} sims</text>`);
+        return;
+      }
+      const x10 = xs(w.p10), x50 = xs(w.p50), x90 = xs(w.p90);
+      /* P10–P90 bar */
+      out.push(`<rect x="${x10}" y="${yMid - 7}" width="${Math.max(2, x90 - x10)}" height="14" fill="${g.color}" opacity="0.18"/>`);
+      out.push(`<line x1="${x10}" y1="${yMid - 9}" x2="${x10}" y2="${yMid + 9}" stroke="${g.color}" stroke-width="1.4"/>`);
+      out.push(`<line x1="${x90}" y1="${yMid - 9}" x2="${x90}" y2="${yMid + 9}" stroke="${g.color}" stroke-width="1.4"/>`);
+      out.push(`<line x1="${x10}" y1="${yMid}" x2="${x90}" y2="${yMid}" stroke="${g.color}" stroke-width="1.6"/>`);
+      /* P50 marker */
+      out.push(`<circle cx="${x50}" cy="${yMid}" r="4" fill="${g.color}" stroke="#fff" stroke-width="1.2"/>`);
+      out.push(`<text x="${x50}" y="${yMid - 11}" font-size="9.5" fill="${g.color}" text-anchor="middle" font-family="monospace">${Math.round(w.p50)}d</text>`);
+      out.push(`<text x="${x10}" y="${yMid + 21}" font-size="8.5" fill="#6e6e63" text-anchor="middle" font-family="monospace">P10 ${Math.round(w.p10)}</text>`);
+      out.push(`<text x="${x90}" y="${yMid + 21}" font-size="8.5" fill="#6e6e63" text-anchor="middle" font-family="monospace">P90 ${Math.round(w.p90)}</text>`);
+    });
+    svg.innerHTML = out.join('');
+    document.getElementById('t02-waterfall-foot').textContent =
+      'K=200 bootstrap fits per game · CV_g = σ_g/μ_g (same noise driver as Tab 01 CIs) · CAC = $' + state.t02.cac.toFixed(2);
+  }
+
+  function renderT02Insight(wf, t02) {
+    const games = state.games;
+    const T = 90; /* cash-flow tolerance threshold, days */
+    const enriched = wf.map((w, i) => ({ g: games[i], ...w }));
+    const insightEl = document.getElementById('t02-insight');
+    const footEl    = document.getElementById('t02-insight-foot');
+
+    /* (1) Borderline tail risk: P50 ≤ T but P90 > T */
+    const borderline = enriched
+      .filter(x => x.p50 != null && x.p90 != null && x.p50 <= T && x.p90 > T)
+      .sort((a, b) => b.p90 - a.p90);
+    /* (2) Dangerous tail: P90 > 2T */
+    const dangerous = enriched
+      .filter(x => x.p90 != null && x.p90 > 2 * T)
+      .sort((a, b) => b.p90 - a.p90);
+    /* (3) Tightest payback */
+    const tight = enriched
+      .filter(x => x.p50 != null)
+      .sort((a, b) => a.p50 - b.p50)[0];
+
+    let html, kind;
+    if (borderline.length) {
+      const w = borderline[0];
+      kind = 'borderline-tail';
+      html = `<strong>${w.g.name}</strong>'s payback holds at <strong>P50 = ${Math.round(w.p50)}d</strong> but the right tail stretches to <strong>P90 = ${Math.round(w.p90)}d</strong>. ` +
+             `If cash-flow tolerance is ≤ ${T} days, <strong>optimize D7 retention on ${w.g.name} before any scale commitment</strong> — the binding constraint is tail risk, not central tendency.`;
+    } else if (dangerous.length) {
+      const w = dangerous[0];
+      kind = 'dangerous-tail';
+      html = `<strong>${w.g.name}</strong>'s payback distribution is dangerously wide (P10 ${Math.round(w.p10)}d / P50 ${Math.round(w.p50)}d / <strong>P90 ${Math.round(w.p90)}d</strong>). ` +
+             `<strong>Hold incremental UA flat on ${w.g.name}</strong> until either P90 < ${2 * T}d or the LTV model RMSE drops — expanding now is gambling on the right tail.`;
+    } else if (tight) {
+      kind = 'incremental-scale';
+      html = `<strong>${tight.g.name}</strong> has the tightest payback (P10 ${Math.round(tight.p10)}d / P50 ${Math.round(tight.p50)}d / P90 ${Math.round(tight.p90)}d) and the most reliable cash-flow profile. ` +
+             `<strong>Best candidate for incremental scale</strong> — payback predictability is currently the scarcer resource than expected return.`;
+    } else {
+      kind = 'no-payback';
+      html = `No game reached payback within the 730-day window in a majority of bootstrap sims at CAC = $${t02.cac.toFixed(2)}. ` +
+             `<strong>Lower the CAC reference or revisit the LTV model</strong> before drawing portfolio conclusions.`;
+    }
+    insightEl.innerHTML = html;
+    footEl.textContent =
+      'Insight kind: ' + kind + ' · model = ' + t02.model + ' · CAC = $' + t02.cac.toFixed(2) +
+      ' · noise = lognormal with CV_g = σ_g/μ_g (Tab-01 σ_g)';
+  }
+
+  /* ============================================================ */
   /* CSV: parse + validate + sample                                */
   /* ============================================================ */
   const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
@@ -1419,6 +2084,39 @@
       lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
       lines.push('');
       lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else if (state.activeTab === '02') {
+      const t02 = state.t02;
+      const fits = state.games.map((g, i) => {
+        const obs = generateObservedLTV(g, (state.seed ^ Math.imul(i + 7, 0x85EBCA6B)) >>> 0);
+        return { g, fit: (t02.model === 'power' ? fitPower : t02.model === 'loglin' ? fitLogLin : fitMixed)(obs.points) };
+      });
+      const wf = state.games.map((g, i) =>
+        bootstrapPayback(g, (state.seed ^ Math.imul(i + 13, 0xC2B2AE35)) >>> 0,
+                         t02.model, t02.cac, 200));
+      lines.push('## LTV model: ' + t02.model + '   (CAC = $' + t02.cac.toFixed(2) + ')');
+      lines.push('');
+      lines.push('| Game | Parameters | R² | RMSE | Payback @ CAC | P10 / P50 / P90 |');
+      lines.push('|---|---|---|---|---|---|');
+      fits.forEach((f, i) => {
+        const fit = f.fit;
+        const params =
+          t02.model === 'power'  ? `a=${fit.a.toFixed(3)}, b=${fit.b.toFixed(3)}` :
+          t02.model === 'loglin' ? `a=${fit.a.toFixed(3)}, c=${fit.c.toFixed(3)}` :
+                                   `a=${fit.a.toFixed(3)}, b=${fit.b.toFixed(3)}, c=${fit.c.toFixed(3)}`;
+        const pb = solvePayback(fit, t02.cac);
+        const pbStr = pb === null ? '> 730d' : Math.round(pb) + 'd';
+        const w = wf[i];
+        const wfStr = w.p50 == null ? '—' :
+          `${Math.round(w.p10)} / ${Math.round(w.p50)} / ${Math.round(w.p90)} d`;
+        lines.push(`| ${f.g.name} | ${params} | ${fit.R2.toFixed(3)} | $${fit.RMSE.toFixed(3)} | ${pbStr} | ${wfStr} |`);
+      });
+      lines.push('');
+      lines.push('**Noise model:** lognormal multiplicative, CV_g = σ_g/μ_g — same per-game variance driver as Tab 01 prediction intervals.');
+      lines.push('');
+      lines.push('## Decision insight');
+      lines.push('> ' + document.getElementById('t02-insight').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t02-insight-foot').textContent.trim() + '_');
     } else {
       lines.push('## ' + tabTitle);
       lines.push('');
@@ -1561,17 +2259,47 @@
     document.getElementById('btn-export').addEventListener('click', exportMemo);
   }
 
+  function bindT02Controls() {
+    document.querySelectorAll('#t02-model button').forEach(b => {
+      b.addEventListener('click', () => {
+        state.t02.model = b.dataset.model;
+        renderT02();
+      });
+    });
+    const cacInp = document.getElementById('t02-cac');
+    cacInp.addEventListener('input', () => {
+      const v = parseFloat(cacInp.value);
+      if (isFinite(v) && v > 0) {
+        state.t02.cac = v;
+        state.t02.cacIsCustom = true;
+        renderT02();
+      }
+    });
+    document.getElementById('t02-cac-reset').addEventListener('click', () => {
+      state.t02.cacIsCustom = false;
+      state.t02.cac = defaultBlendedCAC();
+      renderT02();
+    });
+  }
+
   function renderActiveTab() {
     if (state.activeTab === '01') renderT01();
-    /* Tabs 02–07 are placeholders; nothing to render in Turn 1. */
+    else if (state.activeTab === '02') renderT02();
+    /* Tabs 03–07 remain placeholders. */
   }
 
   function init() {
-    bindFilters(); bindTabs(); bindDataMode(); bindUpload(); bindT01Buttons();
+    state.t02.cac = defaultBlendedCAC();
+    bindFilters(); bindTabs(); bindDataMode(); bindUpload();
+    bindT01Buttons(); bindT02Controls();
     recompute(); renderActiveTab();
     window.addEventListener('resize', () => {
-      if (state.activeTab === '01') {
-        renderKPIs();   /* re-draw whisker SVGs at new widths */
+      if (state.activeTab === '01') renderKPIs();
+      else if (state.activeTab === '02') {
+        const wf = state.games.map((g, i) =>
+          bootstrapPayback(g, (state.seed ^ Math.imul(i + 13, 0xC2B2AE35)) >>> 0,
+                           state.t02.model, state.t02.cac, 200));
+        renderT02Waterfall(wf);
       }
     });
   }
