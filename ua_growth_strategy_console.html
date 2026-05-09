@@ -301,7 +301,7 @@
   .kpi .delta-line.pos { color: var(--good); }
   .kpi .delta-line.neg { color: var(--bad); }
   .kpi .delta-line.neutral { color: var(--muted); }
-  .whisker-svg { width: 100%; height: 38px; margin-top: 8px; display: block; }
+  .whisker-svg { width: 100%; height: 44px; margin-top: 8px; display: block; }
 
   /* === Frontier (right col) === */
   .frontier-wrap { height: 280px; position: relative; }
@@ -319,6 +319,18 @@
   .frontier-legend .item { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
   .frontier-legend .dot {
     width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink);
+  }
+  .constraint-note {
+    margin-top: 8px; padding: 6px 10px;
+    border: 1px dashed var(--line); border-radius: 4px;
+    background: #fbfbf6;
+    font-size: 11px; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .constraint-note .lbl {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+    margin-right: 2px;
   }
   .recommendation {
     margin-top: 14px; padding: 12px 14px;
@@ -586,6 +598,10 @@
             <div class="item"><span class="dot" style="background:#2a6b3f;border-color:#2a6b3f;"></span>Max ROAS</div>
             <div class="item"><span class="dot" style="background:#4a6f8f;border-color:#4a6f8f;"></span>Min risk</div>
           </div>
+          <div class="constraint-note">
+            <span class="lbl">Constraint</span> min 5% per live title
+            <span class="why" data-tip="Live games carry mandatory minimum spend: cutting a title to 0% breaks ASO momentum, severs the measurement signal needed to re-engage the audience, and forfeits option value. Standard UA portfolios apply a 3–10% floor; we use 5%. Setting MIN_WEIGHT=0 in code reproduces the unconstrained frontier.">ⓘ</span>
+          </div>
 
           <div class="recommendation">
             <span class="tag">&#9830; Recommendation</span>
@@ -720,7 +736,12 @@
       [0.20, 0.15, 0.25, 1.00]
     ],
     CURRENT_W: [0.30, 0.20, 0.30, 0.20],
-    BUDGET: 1_000_000
+    BUDGET: 1_000_000,
+    /* Minimum allocation per live title. Real UA portfolios always carry a
+       floor: zeroing a live game means cutting off measurement, breaking ASO
+       momentum, and forfeiting the option value of re-engaging the audience.
+       Surfaced explicitly in the UI under the frontier. */
+    MIN_WEIGHT: 0.05
   };
 
   /* ============================================================ */
@@ -802,16 +823,20 @@
     return Math.sqrt(Math.max(v, 0));
   }
 
-  /* Grid search on the 4-simplex with step 1/N */
-  function searchSimplex(games, S, objective) {
-    const N = 40;                // 2.5% steps; ~12k feasible 4-tuples
+  /* Grid search on the 4-simplex with step 1/N, subject to a per-title
+     minimum-weight floor (default 5%). Mirrors min/max box constraints in
+     standard mean-variance optimizers. */
+  function searchSimplex(games, S, objective, minPct) {
+    const N = 40;                // 2.5% steps; ~7k feasible 4-tuples under floor
+    const m = Math.round((minPct || 0) * N);
     const isMin = objective === 'minrisk';
     let bestVal = isMin ? Infinity : -Infinity;
     let bestW = null;
-    for (let a = 0; a <= N; a++) {
-      for (let b = 0; b <= N - a; b++) {
-        for (let c = 0; c <= N - a - b; c++) {
+    for (let a = m; a <= N - 3*m; a++) {
+      for (let b = m; b <= N - a - 2*m; b++) {
+        for (let c = m; c <= N - a - b - m; c++) {
           const d = N - a - b - c;
+          if (d < m) continue;
           const w = [a/N, b/N, c/N, d/N];
           const mu = pMu(w, games);
           const sg = pSigma(w, S);
@@ -870,9 +895,9 @@
     state.games   = buildGameStats(state.seed);
     const S       = buildSigma(state.games);
     state.sigma   = S;
-    state.optimalW = searchSimplex(state.games, S, 'sharpe');
-    state.maxRoasW = searchSimplex(state.games, S, 'maxroas');
-    state.minRiskW = searchSimplex(state.games, S, 'minrisk');
+    state.optimalW = searchSimplex(state.games, S, 'sharpe',  PARAMS.MIN_WEIGHT);
+    state.maxRoasW = searchSimplex(state.games, S, 'maxroas', PARAMS.MIN_WEIGHT);
+    state.minRiskW = searchSimplex(state.games, S, 'minrisk', PARAMS.MIN_WEIGHT);
     state.cloud    = sampleCloud(state.games, S, 500, state.seed);
   }
 
@@ -1100,18 +1125,21 @@
   }
   function drawWhisker(svgId, mean, lo, hi, baseline, axisLo, axisHi, fmt) {
     const svg = document.getElementById(svgId);
-    const W = svg.clientWidth || 300, H = 38;
+    const W = svg.clientWidth || 300, H = 44;
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const pad = 6;
     const xs = v => pad + (W - 2*pad) * (v - axisLo) / (axisHi - axisLo);
-    const cy = H/2;
+    const cy = 22;
     const xLo = xs(lo), xHi = xs(hi), xM = xs(mean), xB = xs(baseline);
+    /* Anchor the "cur" label so it can't run off the axis edges. */
+    const labelAnchor = xB < pad + 14 ? 'start' : (xB > W - pad - 14 ? 'end' : 'middle');
     svg.innerHTML = `
       <line x1="${pad}" y1="${cy}" x2="${W-pad}" y2="${cy}" stroke="#e2e2dc" stroke-width="1"/>
       <line x1="${xLo}" y1="${cy-7}" x2="${xLo}" y2="${cy+7}" stroke="#14140f" stroke-width="1"/>
       <line x1="${xHi}" y1="${cy-7}" x2="${xHi}" y2="${cy+7}" stroke="#14140f" stroke-width="1"/>
       <line x1="${xLo}" y1="${cy}" x2="${xHi}" y2="${cy}" stroke="#14140f" stroke-width="1.5"/>
-      <line x1="${xB}" y1="${cy-12}" x2="${xB}" y2="${cy+12}" stroke="#6e6e63" stroke-width="1" stroke-dasharray="3 3"/>
+      <line x1="${xB}" y1="${cy-13}" x2="${xB}" y2="${cy+13}" stroke="#6e6e63" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="${xB}" y="${cy-15}" font-size="8.5" fill="#6e6e63" font-family="monospace" text-anchor="${labelAnchor}">cur</text>
       <circle cx="${xM}" cy="${cy}" r="4" fill="#a8001f" stroke="#fff" stroke-width="1"/>
       <text x="${pad}" y="${H-2}" font-size="9" fill="#6e6e63" font-family="monospace">${fmt(axisLo)}</text>
       <text x="${W-pad}" y="${H-2}" font-size="9" fill="#6e6e63" font-family="monospace" text-anchor="end">${fmt(axisHi)}</text>
@@ -1370,6 +1398,8 @@
       lines.push(row('Sandbox', w));
       lines.push(row('Current plan', wC));
       lines.push(row('Sharpe-optimal', wO));
+      lines.push('');
+      lines.push('**Constraint:** min ' + (PARAMS.MIN_WEIGHT*100).toFixed(0) + '% per live title (applied to all three optima).');
       lines.push('');
       lines.push('## Allocation weights');
       lines.push('| Game | Current | Sandbox | Sharpe-optimal |');
