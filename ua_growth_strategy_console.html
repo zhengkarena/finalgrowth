@@ -775,6 +775,21 @@
     margin-right: 6px;
   }
   .t05-src-bar > span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+  .t05-src-foot {
+    margin: 8px 0 0; padding-top: 6px;
+    border-top: 1px dashed var(--line-soft);
+    font-size: 10.5px; color: var(--muted); line-height: 1.5;
+  }
+  .t05-secondary {
+    display: block;
+    padding: 8px 10px;
+    background: #fdf6e8;
+    border-left: 2px solid var(--warn);
+    border-radius: 0 4px 4px 0;
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+  .t05-secondary strong { color: var(--warn); }
 
   /* Keyword table */
   .t05-kw-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 6px; }
@@ -1422,6 +1437,7 @@
             <span class="h-meta" id="t05-src-meta"></span>
           </div>
           <table class="t05-src-table" id="t05-src-table"></table>
+          <p class="t05-src-foot" id="t05-src-foot"></p>
         </div>
 
         <div class="col-card">
@@ -1613,9 +1629,18 @@
        TriPeaks and Solitaire above category benchmark; Spider mid;
        Bubble below — sets up a clean test recommendation. */
     T05_GAMES: {
+      /* TriPeaks iapCVR=0.07 (below 8–18% category band): TriPeaks earns the
+         highest D30 ROAS in the portfolio (see Tab 01) primarily from rewarded
+         video and interstitials, not IAP. Casual-card category benchmarks
+         assume an IAP-heavy monetization mix; ad-monetization-heavy titles
+         under-index here. The funnel flags this as a real weakness; the
+         insight surfaces it as a secondary monetization concern (not a
+         store-listing test target — IAP rate isn't fixable by icon or
+         screenshot work). Counter-balances Tab 02's "TriPeaks fastest
+         payback" so the title isn't uniformly idealized across the console. */
       sol: { impM: 80, pdpCVR: 0.082, instCVR: 0.30, d1Ret: 0.42, iapCVR: 0.12 },
       spi: { impM: 30, pdpCVR: 0.070, instCVR: 0.26, d1Ret: 0.35, iapCVR: 0.08 },
-      tri: { impM: 60, pdpCVR: 0.090, instCVR: 0.32, d1Ret: 0.38, iapCVR: 0.16 },
+      tri: { impM: 60, pdpCVR: 0.090, instCVR: 0.32, d1Ret: 0.38, iapCVR: 0.07 },
       bub: { impM: 35, pdpCVR: 0.058, instCVR: 0.22, d1Ret: 0.30, iapCVR: 0.07 }
     },
     T05_SOURCES: [
@@ -3887,11 +3912,25 @@
         });
       }
     });
+    /* Secondary flags: IAP CVR below the category lower bound. Surfaced for
+       cross-tab visibility, but explicitly NOT mapped to a store-listing
+       surface — IAP conversion isn't fixable by icon or screenshot work. */
+    const iapFlags = allGameData
+      .map(gd => ({ gd, gap: B.iapCVR.lo - gd.iapCVR }))
+      .filter(x => x.gap > 0)
+      .sort((a, b) => b.gap - a.gap);
+    const iapNote = iapFlags.length
+      ? '<br><br><span class="t05-secondary"><strong>Secondary flag:</strong> ' +
+        iapFlags.map(f => f.gd.game.name + ' IAP CVR ' + (f.gd.iapCVR*100).toFixed(1) + '% (' + (f.gap*100).toFixed(1) + 'pp below the ' + (B.iapCVR.lo*100).toFixed(0) + '% lower bound)').join('; ') +
+        '. Note: IAP rate is a monetization concern, not a store-listing surface — flagged here for cross-tab visibility but not actionable from this tab.</span>'
+      : '';
+
     if (!candidates.length) {
       return {
         html: 'All four games sit at or above the directional category benchmarks at every stage of the store funnel. ' +
-              'Test cycles can target incremental gains — try a localization or keyword refresh — rather than gap-closing.',
-        foot: 'Branch: balanced-state · no candidate (game × stage) below benchmark midpoint.'
+              'Test cycles can target incremental gains — try a localization or keyword refresh — rather than gap-closing.' + iapNote,
+        foot: 'Branch: balanced-state · no candidate (game × stage) below benchmark midpoint.' +
+              (iapFlags.length ? ' · ' + iapFlags.length + ' IAP secondary flag' + (iapFlags.length === 1 ? '' : 's') : '')
       };
     }
     /* Pick highest-impact gap (largest install lift if closed) */
@@ -3905,10 +3944,11 @@
         (top.benchRange.lo * 100).toFixed(0) + '–' + (top.benchRange.hi * 100).toFixed(0) + '%). ' +
         'Run a <strong>' + top.surface + '</strong> test on ' + top.gd.game.name + ' next — ' + top.rationale + '. ' +
         'Closing this gap at current upstream volume would deliver <strong>~' +
-        Math.round(top.installLift / 1000).toLocaleString() + 'K incremental installs/mo</strong>.',
+        Math.round(top.installLift / 1000).toLocaleString() + 'K incremental installs/mo</strong>.' + iapNote,
       foot:
         'Branch: gap-closing · ' + candidates.length + ' (game × stage) cells below benchmark · ' +
-        'sorted by projected install lift'
+        'sorted by projected install lift' +
+        (iapFlags.length ? ' · ' + iapFlags.length + ' IAP secondary flag' + (iapFlags.length === 1 ? '' : 's') : '')
     };
   }
 
@@ -4070,6 +4110,18 @@
     });
     html += '</tbody>';
     root.innerHTML = html;
+    /* Disclosure footnote: per-source CVRs are derived from authored
+       intent factors then share-normalized so the source-decomposed totals
+       reconstruct the blended PDP and Install volumes exactly. Honest
+       disclosure beats silent normalization. */
+    const foot = document.getElementById('t05-src-foot');
+    if (foot) {
+      foot.innerHTML =
+        'Per-source CVRs derived from relative intent factors ' +
+        '(<span data-tip="Search Ads 1.30× / Browse 0.70× / Referral 1.00× / Web 1.50× / Direct 1.20× — share-weighted aggregate normalized to reproduce the blended baseline."><span style="border-bottom:1px dotted var(--muted);cursor:help">PDP intent factors</span></span> · ' +
+        '<span data-tip="Search Ads 1.20× / Browse 0.85× / Referral 1.00× / Web 1.40× / Direct 1.30× — PDP-weighted aggregate normalized to reproduce the blended baseline."><span style="border-bottom:1px dotted var(--muted);cursor:help">Install intent factors</span></span>), ' +
+        'share-normalized so source-decomposed totals reconstruct the blended PDP and Install volumes exactly.';
+    }
   }
 
   function renderT05Keywords(gd) {
