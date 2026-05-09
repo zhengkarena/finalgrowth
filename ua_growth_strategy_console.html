@@ -100,6 +100,45 @@
   .btn:hover { border-color: var(--ink); }
   .btn-primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+  /* === Executive summary header (above tab strip, below filter bar) === */
+  .exec-summary {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 9px 28px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px 32px;
+    font-size: 11.5px;
+  }
+  .exec-summary .exec-row {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 2px 0;
+  }
+  .exec-summary .exec-name {
+    font-weight: 500;
+    font-size: 11.5px;
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+  .exec-summary .exec-narr {
+    color: var(--ink-soft);
+    font-size: 11.5px;
+    line-height: 1.45;
+    min-width: 0;
+  }
+  .exec-summary .exec-narr .lead {
+    color: var(--ink); font-weight: 500;
+  }
+  .exec-summary .exec-narr .clause {
+    color: var(--ink-soft);
+  }
+  .exec-summary .exec-narr .sep {
+    color: var(--muted); margin: 0 4px;
+  }
+  @media (max-width: 1100px) {
+    .exec-summary { grid-template-columns: 1fr; padding: 8px 16px; }
+  }
+
   /* === Tab strip === */
   .tabstrip {
     display: flex; gap: 0; padding: 0 22px;
@@ -726,6 +765,35 @@
     width: 7px; height: 7px; border-radius: 50%;
   }
 
+  .t04-pergame-h {
+    margin: 14px 0 6px;
+    font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 10px; border-top: 1px solid var(--line-soft);
+  }
+  .t04-pergame-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  .t04-pergame-table th {
+    text-align: right; font-weight: 500; color: var(--muted);
+    font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 4px 3px; border-bottom: 1px solid var(--line);
+  }
+  .t04-pergame-table th:first-child { text-align: left; }
+  .t04-pergame-table td {
+    padding: 5px 3px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11px; text-align: right;
+  }
+  .t04-pergame-table td.gname {
+    font-family: var(--sans); font-size: 11.5px; text-align: left;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .t04-pergame-table td.gname .sw { width: 7px; height: 7px; border-radius: 2px; }
+  .t04-pergame-table td.risk { font-family: var(--sans); font-size: 11px; }
+  .t04-pergame-table td.risk.healthy  { color: var(--good); }
+  .t04-pergame-table td.risk.thin     { color: var(--warn); }
+  .t04-pergame-table td.risk.critical { color: var(--bad); font-weight: 500; }
+  .t04-pergame-foot {
+    margin: 6px 0 0; font-size: 10px; color: var(--muted); line-height: 1.5;
+  }
   .t04-defs {
     font-size: 11.5px; line-height: 1.5; color: var(--ink-soft);
   }
@@ -953,6 +1021,27 @@
   }
   .t06-vel-bar > span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
 
+  /* Pressure ranking */
+  .t06-rail-sub { color: var(--muted); font-size: 11px; margin: 0 0 8px; }
+  .t06-press-row {
+    display: grid; grid-template-columns: 18px 12px 1fr 50px 56px;
+    gap: 6px; align-items: center;
+    padding: 6px 4px; border-radius: 3px;
+    font-size: 11.5px;
+  }
+  .t06-press-row.selected { background: #fbf8ee; border: 1px solid #ecdfb6; padding: 5px 4px; }
+  .t06-press-row .rk { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .t06-press-row .swatch { width: 9px; height: 9px; border-radius: 2px; }
+  .t06-press-row .nm { color: var(--ink); font-size: 12px; }
+  .t06-press-row .score { font-family: var(--mono); font-size: 11.5px; text-align: right; color: var(--ink); }
+  .t06-press-row .tag {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 1px 5px; border-radius: 3px; text-align: center;
+  }
+  .t06-press-row .tag.winner { background: var(--accent); color: var(--paper); }
+  .t06-press-row .tag.selected { background: var(--ink); color: var(--paper); }
+
   /* Headwinds */
   .t06-hw-item {
     border: 1px solid var(--line); border-radius: 5px;
@@ -1133,6 +1222,14 @@
   }
   .modal .ok.show { display: block; }
   .modal-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .upload-mapping { margin: 8px 0 12px; padding: 8px 10px; background: #fcfcf9; border: 1px solid var(--line); border-radius: 4px; }
+  .upload-mapping h4 { margin: 0 0 6px; font-family: var(--serif); font-size: 12.5px; font-weight: 500; color: var(--ink); }
+  .mapping-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+  .mapping-table th, .mapping-table td { text-align: left; padding: 4px 6px; vertical-align: top; border-bottom: 1px solid var(--line-soft); }
+  .mapping-table th { font-weight: 500; color: var(--muted); font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; }
+  .mapping-table tr:last-child td { border-bottom: none; }
+  .mapping-table code { font-family: var(--mono); font-size: 10px; background: var(--chip); padding: 1px 4px; border-radius: 2px; }
+  .mapping-note { font-size: 10px; color: var(--muted); margin: 5px 0 0; line-height: 1.45; }
 
   /* === Footer === */
   footer {
@@ -1246,6 +1343,8 @@
     <button class="btn" id="btn-reset" type="button">Reset filters</button>
   </div>
 </nav>
+
+<div class="exec-summary" id="exec-summary" role="status" aria-label="Portfolio summary"></div>
 
 <nav class="tabstrip" id="tabstrip" role="tablist">
   <button data-tab="01" class="active" type="button"><span class="num">01</span>Portfolio Allocator</button>
@@ -1631,6 +1730,9 @@
           </div>
           <p class="t04-rail-sub">creatives by stage (concept breakdown)</p>
           <div id="t04-pipeline"></div>
+          <div class="t04-pergame-h">By game · replacement risk</div>
+          <table class="t04-pergame-table" id="t04-pergame-table"></table>
+          <p class="t04-pergame-foot">healthy: testing ≥ 3 OR testing/scaling ≥ 0.5 · thin: 1–2 testing · critical: 0 testing</p>
         </div>
 
         <div class="col-card">
@@ -1799,6 +1901,15 @@
 
         <div class="col-card">
           <div class="col-h">
+            <h3>Pressure ranking</h3>
+            <span class="why" data-tip="All 4 games ranked by competitive-pressure score. Score = max(0,rank Δ)·12 + (−max SOV loss)·100 + max(0,refresh gap)·1.5. Selected game highlighted; portfolio winner tagged.">ⓘ</span>
+          </div>
+          <p class="t06-rail-sub">selected game highlighted · winner tagged</p>
+          <div id="t06-pressure"></div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
             <h3>Market headwinds</h3>
             <span class="why" data-tip="Category-level alerts that affect UA economics or competitive position. Severity: urgent (response needed within weeks) · watch (track) · info (logged for context).">ⓘ</span>
           </div>
@@ -1912,6 +2023,40 @@
   <div class="modal">
     <h3>Upload your UA dataset</h3>
     <p>CSV, headers case-insensitive, column order flexible. Required columns: <code style="font-family:var(--mono);">date, game, channel, geo, os, spend_usd, installs</code>. Optional columns flagged with &#9888; if missing.</p>
+    <div class="upload-mapping">
+      <h4>How your data drives the model</h4>
+      <table class="mapping-table">
+        <thead><tr><th>Schema column(s)</th><th>Drives</th><th>Used in</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>spend_usd</code>, <code>installs</code></td>
+            <td>V, K saturation params (Michaelis-Menten fit)</td>
+            <td>Tab 03 saturation curves, MCPI ranking</td>
+          </tr>
+          <tr>
+            <td><code>roas_d30</code></td>
+            <td>μ_g, σ_g (mean/SD of monthly ROAS)</td>
+            <td>Tab 01 PIs, Tab 02 bootstrap, Tab 03 bands, Tab 04 shrinkage σ², Tab 05 CIs, Tab 07 forecast bands</td>
+          </tr>
+          <tr>
+            <td><code>arpu_dN</code></td>
+            <td>LTV curve fit (power-law / log-linear / mixed)</td>
+            <td>Tab 02 LTV chart, Tab 07 cash-flow timing</td>
+          </tr>
+          <tr>
+            <td><code>channel_mix</code> (derived)</td>
+            <td>Per-game channel allocation</td>
+            <td>Tab 03 cell anchors</td>
+          </tr>
+          <tr>
+            <td><code>store_pdp_views</code>, <code>store_installs</code></td>
+            <td>PDP / Install CVRs</td>
+            <td>Tab 05 funnel</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="mapping-note">Optional columns gracefully degrade — model-imputed values are flagged with &#9888; in the UI.</p>
+    </div>
     <div class="err" id="upload-err"></div>
     <div class="ok"  id="upload-ok"></div>
     <label class="drop" id="upload-drop">
@@ -2586,6 +2731,8 @@
     state.maxRoasW = searchSimplex(state.games, S, 'maxroas', PARAMS.MIN_WEIGHT, PARAMS.MAX_WEIGHT);
     state.minRiskW = searchSimplex(state.games, S, 'minrisk', PARAMS.MIN_WEIGHT, PARAMS.MAX_WEIGHT);
     state.cloud    = sampleCloud(state.games, S, 500, state.seed);
+    /* Update the always-visible header card alongside the tab content. */
+    if (typeof renderExecSummary === 'function') renderExecSummary();
   }
 
   function renderT01() {
@@ -4271,6 +4418,39 @@
         '<div class="legend">' + legend + '</div>' +
       '</div>';
     }).join('') + '</div>';
+    renderT04PipelinePerGame(creatives);
+  }
+
+  /* Per-game stage counts + replacement-risk classifier. Different cut of
+     the same data — surfaces game-level pipeline issues that the concept-
+     level funnel above can't see (e.g., TriPeaks scaling 7 / fatigued 1 /
+     testing 0 — pipeline drying up). */
+  function renderT04PipelinePerGame(creatives) {
+    const root = document.getElementById('t04-pergame-table');
+    if (!root) return;
+    let html = '<thead><tr>' +
+      '<th>Game</th><th>Test</th><th>Scale</th><th>Fatig</th><th>Kill</th><th style="text-align:left">Risk</th>' +
+      '</tr></thead><tbody>';
+    state.games.forEach(g => {
+      const inGame = creatives.filter(c => c.gameKey === g.key);
+      const stages = { testing:0, scaling:0, fatigued:0, killed:0 };
+      inGame.forEach(c => stages[c.stage]++);
+      const testing = stages.testing, scaling = stages.scaling;
+      let risk, riskCls;
+      if (testing === 0) { risk = '⚠ critical'; riskCls = 'critical'; }
+      else if (testing >= 3 || (scaling > 0 && testing / scaling >= 0.5)) { risk = '✓ healthy'; riskCls = 'healthy'; }
+      else { risk = '⚠ thin'; riskCls = 'thin'; }
+      html += '<tr>' +
+        '<td class="gname"><span class="sw" style="background:' + g.color + '"></span>' + g.name + '</td>' +
+        '<td>' + testing + '</td>' +
+        '<td>' + scaling + '</td>' +
+        '<td>' + stages.fatigued + '</td>' +
+        '<td>' + stages.killed + '</td>' +
+        '<td class="risk ' + riskCls + '" style="text-align:left">' + risk + '</td>' +
+        '</tr>';
+    });
+    html += '</tbody>';
+    root.innerHTML = html;
   }
 
   /* ---- Insight ---- */
@@ -4768,11 +4948,13 @@
     return grid;
   }
 
-  /* Decision insight: combine rank delta, max SOV cell loss, refresh-velocity
-     gap into a competitive-pressure score. Highest-pressure game wins.
-     Computes a response window from rank-trajectory crossover.
-     Recommends preempt (creative acceleration) if velocity gap ≥ 4/mo,
-     else follow (defensive spend). */
+  /* Decision insight: produces the SELECTED game's recommendation. Computes
+     pressure score for all 4 games (returned as `ranking` so the rail card
+     can show relative position). Branches on the selected game's score:
+       - score < 5 + selected:   stable-position branch (maintain cadence)
+       - score ≥ 5 + selected:   3-way preempt / follow-fundamentals /
+                                 follow-velocity branching (existing logic
+                                 from prior turns, unchanged) */
   function buildT06Insight() {
     const candidates = ['sol','spi','tri','bub'].map(k => {
       const own = PARAMS.T06_OWN[k];
@@ -4785,7 +4967,6 @@
       const topCompRefresh = Math.max.apply(null, comps.map(c => c.refreshPerMo));
       const topCompName = comps.find(c => c.refreshPerMo === topCompRefresh).name;
       const refreshGap = topCompRefresh - own.refreshPerMo;
-      /* Rising competitor with steepest improvement (lowest endRank − startRank) */
       const rising = comps.slice().sort((a, b) => (a.endRank - a.startRank) - (b.endRank - b.startRank))[0];
       const score = Math.max(0, rankDelta) * 12
                   + (-maxSovLoss) * 100
@@ -4793,13 +4974,39 @@
       return { gameKey: k, game, own, comps, grid, rankDelta, sovHotspots, maxSovLoss,
                topCompRefresh, topCompName, refreshGap, rising, score };
     });
-    candidates.sort((a, b) => b.score - a.score);
-    const top = candidates[0];
+    /* Sorted ranking returned for the rail card */
+    const ranking = candidates.slice().sort((a, b) => b.score - a.score);
 
+    /* Pull the SELECTED game's data for the insight body */
+    const top = candidates.find(c => c.gameKey === state.t06.selectedGame);
+
+    /* Stable-position branch — selected game has low pressure */
     if (top.score < 5) {
+      const rankPhrase = top.rankDelta === 0
+        ? 'rank stable at #' + top.own.endRank + ' over 26 weeks'
+        : 'rank moved by ' + top.rankDelta + ' position' + (Math.abs(top.rankDelta) === 1 ? '' : 's') + ' over 26 weeks';
+      const compPhrase = (top.rising && top.rising.endRank < top.rising.startRank)
+        ? 'closest rising competitor (' + top.rising.name + ') ' +
+          (top.rising.endRank > top.own.endRank
+            ? 'remains ' + (top.rising.endRank - top.own.endRank) + ' position' + (Math.abs(top.rising.endRank - top.own.endRank) === 1 ? '' : 's') + ' behind, no immediate crossover threat'
+            : 'already passed but pressure score remains low')
+        : 'no rising competitor active in category';
+      const veloPhrase = top.refreshGap > 0
+        ? 'refresh-velocity gap ' + top.refreshGap + '/mo (small)'
+        : 'refresh velocity matched or leading';
+      const portfolioWinner = ranking[0];
+      const otherHighPressure = ranking.filter(r => r.gameKey !== top.gameKey && r.score >= 5).map(r => r.game.name);
+      const reallocPhrase = otherHighPressure.length
+        ? 'reallocate test cycles toward higher-pressure titles (<strong>' + otherHighPressure.join(', ') + '</strong> — see ranking on right)'
+        : 'no higher-pressure title in portfolio this period';
       return {
-        html: 'Portfolio holds stable competitive position across all four games. No game shows the combination of rank decline, SOV erosion, and refresh-velocity gap that would justify a defensive or preemptive spend response this period.',
-        foot: 'Branch: balanced-position · max pressure score = ' + top.score.toFixed(1)
+        html:
+          '<strong>' + top.game.name + '</strong>: ' + rankPhrase + '; ' + compPhrase + '. ' +
+          veloPhrase[0].toUpperCase() + veloPhrase.slice(1) + '. ' +
+          'Recommendation: <strong>maintain current cadence</strong>; ' + reallocPhrase + '.',
+        foot: 'Branch: stable-position · pressure score ' + top.score.toFixed(1) +
+              ' (portfolio winner: ' + portfolioWinner.game.name + ' at ' + portfolioWinner.score.toFixed(1) + ')',
+        ranking
       };
     }
 
@@ -4897,7 +5104,8 @@
       foot: 'Branch: ' + branchTag +
             ' · pressure score ' + top.score.toFixed(1) +
             ' (rank Δ ' + top.rankDelta + ' · max SOV loss ' + (top.maxSovLoss * 100).toFixed(1) + 'pp · refresh gap ' + top.refreshGap + '/mo · IAP ' + (realizedIAP*100).toFixed(1) + '%) · ' +
-            'cross-tab: reinforces Tab 01\'s ' + (top.rankDelta > 0 ? 'shift-toward' : 'reduce') + ' signal on ' + top.game.name + '.'
+            'cross-tab: reinforces Tab 01\'s ' + (top.rankDelta > 0 ? 'shift-toward' : 'reduce') + ' signal on ' + top.game.name + '.',
+      ranking
     };
   }
 
@@ -4914,6 +5122,31 @@
     const ins = buildT06Insight();
     document.getElementById('t06-insight').innerHTML = ins.html;
     document.getElementById('t06-insight-foot').textContent = ins.foot;
+    renderT06PressureRanking(ins.ranking);
+  }
+
+  function renderT06PressureRanking(ranking) {
+    const root = document.getElementById('t06-pressure');
+    if (!root) return;
+    root.innerHTML = '';
+    const winnerKey = ranking[0].gameKey;
+    const selectedKey = state.t06.selectedGame;
+    ranking.forEach((c, i) => {
+      const isSelected = c.gameKey === selectedKey;
+      const isWinner = c.gameKey === winnerKey;
+      let tagHtml = '';
+      if (isWinner) tagHtml = '<span class="tag winner">winner</span>';
+      else if (isSelected) tagHtml = '<span class="tag selected">selected</span>';
+      else tagHtml = '<span></span>';
+      root.insertAdjacentHTML('beforeend',
+        '<div class="t06-press-row' + (isSelected ? ' selected' : '') + '">' +
+          '<span class="rk">#' + (i + 1) + '</span>' +
+          '<span class="swatch" style="background:' + c.game.color + '"></span>' +
+          '<span class="nm">' + c.game.name + '</span>' +
+          '<span class="score">' + c.score.toFixed(1) + '</span>' +
+          tagHtml +
+        '</div>');
+    });
   }
 
   function renderT06Rank() {
@@ -5470,6 +5703,141 @@
       '</div>';
     });
     root.innerHTML = html;
+  }
+
+  /* ============================================================ */
+  /* EXECUTIVE SUMMARY · derived per-game narratives               */
+  /* ============================================================ */
+
+  /* Compose 4 narratives from a priority-ranked clause library. Each
+     clause reads from current state (state.optimalW, state.games,
+     state.t04._creatives) or static PARAMS. Filter changes seed
+     state.games and state.optimalW via recompute(); creatives
+     regenerate when seed changes via ensureCreatives. */
+  function buildPortfolioNarratives() {
+    ensureCreatives();
+    const blendedCAC = defaultBlendedCAC();
+    const paybacks = state.games.map((g, i) =>
+      bootstrapPayback(g, (state.seed ^ Math.imul(i + 13, 0xC2B2AE35)) >>> 0,
+                       'power', blendedCAC, 100));
+    const validP50 = paybacks.filter(p => p.p50 != null).map(p => p.p50);
+    const minP50 = validP50.length ? Math.min.apply(null, validP50) : null;
+
+    const allElig = state.t04._creatives.filter(c => c.totalImp >= 50_000 && c.stage !== 'killed');
+    const globalTop = allElig.length
+      ? shrinkRankings(allElig).sort((a, b) => b.shrunkROAS - a.shrunkROAS)[0]
+      : null;
+
+    const narratives = {};
+    state.games.forEach((g, i) => {
+      const k = g.key;
+      const rev = PARAMS.T07_REV_BASELINE[k];
+      const clauses = [];
+      let lead = null;
+
+      /* Archetype lead (from monetization profile + revenue scale) */
+      if (rev.iapShare >= 0.60 && rev.monthly >= 1.4e6) lead = 'Mature anchor';
+      else if (rev.adShare >= 0.60 && rev.monthly >= 1.4e6) lead = 'Ad-monetization-heavy';
+      else if (rev.monthly < 0.6e6) lead = 'Structural weakness';
+
+      /* Tab 02 — payback signal */
+      const pb = paybacks[i];
+      if (pb && pb.p50 != null) {
+        if (pb.p50 <= 90 && pb.p90 > 90 && !lead) lead = 'Borderline payback tail';
+        if (pb.p50 === minP50) clauses.push({ p: 9, t: 'fastest payback' });
+      }
+
+      /* Tab 04 — viral creative (only meaningful for Bubble at this seed) */
+      if (globalTop && globalTop.gameKey === k && lead === 'Structural weakness') {
+        clauses.push({
+          p: 10,
+          t: 'viral ' + globalTop.conceptName + ' × ' + globalTop.channelName + ' (' + globalTop.id + ')'
+        });
+      }
+
+      /* Tab 07 — forecast bias (systematic only) */
+      const hist = PARAMS.T07_HISTORY[k];
+      const biases = hist.map(q => (q.actual - q.forecast) / q.forecast);
+      const meanBias = biases.reduce((s, x) => s + x, 0) / biases.length;
+      if (Math.abs(meanBias) >= 0.10) {
+        clauses.push({
+          p: 9,
+          t: 'forecast bias ' + (meanBias >= 0 ? '+' : '') + (meanBias * 100).toFixed(1) + '%'
+        });
+      }
+
+      /* Tab 07 — highest contribution margin (TriPeaks, by construction) */
+      if (lead === 'Ad-monetization-heavy') {
+        clauses.push({ p: 8, t: 'highest contribution margin' });
+      }
+
+      /* Tab 05 — IAP weakness */
+      const iap = PARAMS.T05_GAMES[k].iapCVR;
+      const floor = PARAMS.T05_BENCHMARKS.iapCVR.lo;
+      if (iap < floor) {
+        const text = lead === 'Ad-monetization-heavy'
+          ? 'IAP CVR structurally low'
+          : 'IAP ' + (iap * 100).toFixed(1) + '% below ' + (floor * 100).toFixed(0) + '% floor';
+        clauses.push({ p: 7, t: text });
+      }
+
+      /* Tab 06 — rank pressure */
+      const own = PARAMS.T06_OWN[k];
+      if (own.endRank - own.startRank > 0) {
+        clauses.push({ p: 7, t: 'defending external rank pressure' });
+      }
+
+      /* Tab 01 — allocation gap */
+      const allocDelta = state.optimalW[i] - PARAMS.CURRENT_W[i];
+      if (allocDelta >= 0.05) {
+        clauses.push({ p: 6, t: 'under-allocated +' + Math.round(allocDelta * 100) + 'pp' });
+      } else if (allocDelta <= -0.05) {
+        clauses.push({ p: 6, t: 'over-allocated ' + Math.round(allocDelta * 100) + 'pp' });
+      }
+
+      /* Tab 04 — pipeline status (only if not already framed by Structural weakness) */
+      if (lead !== 'Structural weakness') {
+        const stages = {};
+        state.t04._creatives.filter(c => c.gameKey === k && c.stage !== 'killed').forEach(c => {
+          stages[c.stage] = (stages[c.stage] || 0) + 1;
+        });
+        const testing = stages.testing || 0;
+        const scaling = stages.scaling || 0;
+        if (testing >= 3) clauses.push({ p: 5, t: 'active testing pipeline' });
+        else if (testing === 0 && scaling >= 3) clauses.push({ p: 5, t: 'testing pipeline dry' });
+      }
+
+      /* Sort by priority desc, take top 3 */
+      clauses.sort((a, b) => b.p - a.p);
+      narratives[k] = {
+        lead, clauses: clauses.slice(0, 3).map(c => c.t)
+      };
+    });
+    return narratives;
+  }
+
+  function renderExecSummary() {
+    const narratives = buildPortfolioNarratives();
+    const root = document.getElementById('exec-summary');
+    if (!root) return;
+    root.innerHTML = '';
+    state.games.forEach(g => {
+      const n = narratives[g.key];
+      let body = '';
+      if (n.lead) {
+        body += '<span class="lead">' + n.lead + '</span>';
+        if (n.clauses.length) body += '<span class="sep">—</span>';
+      }
+      n.clauses.forEach((c, i) => {
+        if (i > 0) body += '<span class="sep">·</span>';
+        body += '<span class="clause">' + c + '</span>';
+      });
+      root.insertAdjacentHTML('beforeend',
+        '<div class="exec-row">' +
+          '<span class="exec-name" style="color:' + g.color + '">' + g.name + '</span>' +
+          '<span class="exec-narr">' + body + '</span>' +
+        '</div>');
+    });
   }
 
   /* ============================================================ */
