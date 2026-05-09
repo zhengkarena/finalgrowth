@@ -735,6 +735,109 @@
   }
   .t04-defs > div:last-child { border-bottom: none; }
 
+  /* === Tab 05 layout === */
+  .t05-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) { .t05-grid { grid-template-columns: 1fr; } }
+  .t05-main, .t05-rail { display: flex; flex-direction: column; gap: 16px; }
+  .t05-note {
+    margin: -2px 0 8px;
+    padding: 6px 10px;
+    background: #fbf8ee; border: 1px solid #ecdfb6; border-radius: 4px;
+    font-size: 11px; color: #6e5d24;
+  }
+  .t05-funnel { width: 100%; height: 360px; display: block; }
+
+  /* Source breakdown table */
+  .t05-src-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 6px; }
+  .t05-src-table th {
+    text-align: left; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .t05-src-table td {
+    padding: 6px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11.5px;
+  }
+  .t05-src-table td.sname {
+    font-family: var(--sans); display: flex; align-items: center; gap: 6px;
+  }
+  .t05-src-table td.sname .sw { width: 8px; height: 8px; border-radius: 2px; }
+  .t05-src-table td.bar-cell { padding-right: 0; }
+  .t05-src-bar {
+    display: inline-block;
+    height: 6px; border-radius: 3px;
+    background: var(--line); position: relative; width: 70px; vertical-align: middle;
+    margin-right: 6px;
+  }
+  .t05-src-bar > span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+
+  /* Keyword table */
+  .t05-kw-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 6px; }
+  .t05-kw-table th {
+    text-align: left; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .t05-kw-table td {
+    padding: 5px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11px;
+  }
+  .t05-kw-table td.kw {
+    font-family: var(--sans); font-size: 12px; color: var(--ink);
+  }
+  .t05-kw-table td.delta-up   { color: var(--good); }
+  .t05-kw-table td.delta-down { color: var(--bad); }
+  .t05-kw-table td.delta-flat { color: var(--muted); }
+
+  /* A/B tests panel */
+  .t05-ab-item {
+    border: 1px solid var(--line); border-radius: 5px;
+    padding: 8px 10px; margin-bottom: 8px;
+    background: #fcfcf9;
+    font-size: 11.5px;
+  }
+  .t05-ab-item .h {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .t05-ab-item .h .game {
+    font-weight: 500; color: var(--ink); font-size: 12px;
+  }
+  .t05-ab-item .h .surface {
+    font-family: var(--mono); color: var(--muted); font-size: 10.5px;
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .t05-ab-item .v { color: var(--ink-soft); }
+  .t05-ab-item .progress {
+    margin-top: 5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .t05-ab-item .progress .bar-wrap {
+    flex: 1; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden;
+  }
+  .t05-ab-item .progress .bar { height: 100%; background: var(--ink); }
+  .t05-ab-item .progress .meta {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+  }
+  .t05-ab-item.pre  .progress .bar { background: var(--warn); }
+
+  /* Benchmark reference */
+  .t05-bench-note { font-size: 11px; color: var(--muted); margin: 0 0 10px; }
+  .t05-bench-row {
+    display: grid; grid-template-columns: 1fr 100px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 12px;
+  }
+  .t05-bench-row:last-child { border-bottom: none; }
+  .t05-bench-row .nm { color: var(--ink-soft); }
+  .t05-bench-row .rg { font-family: var(--mono); color: var(--ink); text-align: right; font-size: 11.5px; }
+
   /* === Modal === */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(20,20,15,.4);
@@ -1285,10 +1388,80 @@
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="05">
-    <div class="placeholder-card">
-      <span class="turn-tag">Coming in Turn 5</span>
-      <h2>05 · ASO &amp; Store Conversion Funnel</h2>
-      <p>Impression → PDP view → install → D1 retain → first IAP funnel split by traffic source, with directional casual-card benchmarks; top 20 keyword install contribution + rank trend; current store A/B test status.</p>
+    <div class="t05-grid">
+
+      <div class="t05-main">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Store conversion funnel · pre &amp; post-install
+              <span class="why" data-tip="Two-tier funnel by design. Pre-install (top): store impression → PDP view → install — the store-listing's job. Post-install (bottom): install → D1 retain → 1st IAP — the product's job. Each transition labeled against directional casual-card category benchmarks.">ⓘ</span>
+            </h3>
+            <div class="ctl-group">
+              <label class="ctl-lbl">Game</label>
+              <select id="t05-game-pick">
+                <option value="sol">Solitaire</option>
+                <option value="spi">Spider Solitaire</option>
+                <option value="tri">TriPeaks</option>
+                <option value="bub">Bubble Shooter Pop</option>
+              </select>
+            </div>
+          </div>
+          <p class="t05-note">
+            <strong>Scope:</strong> store impressions are App Store / Play Store listing exposures, not ad-creative impressions.
+            This funnel measures the store-listing surface only — ad-creative funnels live in the previous tool.
+          </p>
+          <svg id="t05-funnel" class="t05-funnel"></svg>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>By traffic source
+              <span class="why" data-tip="Per-source PDP CVR and Install CVR for the selected game. Helps diagnose which traffic blend is dragging or boosting the blended rates above. Source mix is held constant per game; only intent multipliers vary.">ⓘ</span>
+            </h3>
+            <span class="h-meta" id="t05-src-meta"></span>
+          </div>
+          <table class="t05-src-table" id="t05-src-table"></table>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Top 20 keywords</h3>
+            <span class="h-meta" id="t05-kw-meta"></span>
+          </div>
+          <table class="t05-kw-table" id="t05-kw-table"></table>
+        </div>
+
+        <div class="col-card recommendation">
+          <span class="tag">&#9830; Decision insight</span>
+          <div class="body" id="t05-insight">—</div>
+          <div class="footnote" id="t05-insight-foot"></div>
+        </div>
+
+      </div>
+
+      <div class="t05-rail">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>A/B tests in flight</h3>
+            <span class="why" data-tip="Operational view of active store-listing experiments. The A/B test math (frequentist + Bayesian sample size) lives in the previous tool — this panel tracks status, not statistics.">ⓘ</span>
+          </div>
+          <div id="t05-ab"></div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Category benchmarks</h3>
+          </div>
+          <p class="t05-bench-note">
+            <strong>Source:</strong> AppsFlyer / Adjust-style ranges, casual card category. Directional only — not normative for any single title.
+          </p>
+          <div id="t05-bench"></div>
+        </div>
+
+      </div>
+
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="06">
@@ -1431,6 +1604,71 @@
       { key:'testimonial', name:'Testimonial',   baseROAS:0.15, fatigue:0.03, color:'#7d6c8f' },
       { key:'cinematic',   name:'Cinematic',     baseROAS:0.18, fatigue:0.06, color:'#4a6f8f' },
       { key:'metagame',    name:'Metagame',      baseROAS:0.17, fatigue:0.10, color:'#a89058' }
+    ],
+
+    /* Tab 05 ------------------------------------------------------ */
+    /* Per-game store-funnel baselines. impM = monthly store impressions
+       in millions (organic + ASA). pdpCVR / instCVR / d1Ret / iapCVR
+       are central tendencies; perturbed by global seed at render time.
+       TriPeaks and Solitaire above category benchmark; Spider mid;
+       Bubble below — sets up a clean test recommendation. */
+    T05_GAMES: {
+      sol: { impM: 80, pdpCVR: 0.082, instCVR: 0.30, d1Ret: 0.42, iapCVR: 0.12 },
+      spi: { impM: 30, pdpCVR: 0.070, instCVR: 0.26, d1Ret: 0.35, iapCVR: 0.08 },
+      tri: { impM: 60, pdpCVR: 0.090, instCVR: 0.32, d1Ret: 0.38, iapCVR: 0.16 },
+      bub: { impM: 35, pdpCVR: 0.058, instCVR: 0.22, d1Ret: 0.30, iapCVR: 0.07 }
+    },
+    T05_SOURCES: [
+      { key:'search',   name:'Search Ads', shareImp:0.40, multPDP:1.30, multInst:1.20, color:'#5a7a9b' },
+      { key:'browse',   name:'Browse',     shareImp:0.30, multPDP:0.70, multInst:0.85, color:'#7d6c8f' },
+      { key:'referral', name:'Referral',   shareImp:0.10, multPDP:1.00, multInst:1.00, color:'#9c6f55' },
+      { key:'web',      name:'Web',        shareImp:0.08, multPDP:1.50, multInst:1.40, color:'#4a6f8f' },
+      { key:'direct',   name:'Direct',     shareImp:0.12, multPDP:1.20, multInst:1.30, color:'#608f6f' }
+    ],
+    T05_BENCHMARKS: {
+      pdpCVR:  { lo: 0.05, hi: 0.10, label: 'Imp → PDP CVR' },
+      instCVR: { lo: 0.25, hi: 0.35, label: 'PDP → Install CVR' },
+      d1Ret:   { lo: 0.28, hi: 0.42, label: 'D1 retention' },
+      iapCVR:  { lo: 0.08, hi: 0.18, label: 'D1 → 1st IAP (30d)' }
+    },
+    T05_KEYWORDS: {
+      sol: [
+        'solitaire','classic solitaire','klondike solitaire','solitaire free',
+        'solitaire offline','solitaire card game','solitaire classic',
+        'card games','solitaire games','free card games','klondike','patience',
+        'solitaire collection','spider solitaire','solitaire tripeaks',
+        'free solitaire','solitaire 2024','single player card','solitaire pro',
+        'puzzle games'
+      ],
+      spi: [
+        'spider solitaire','spider','spider card','spider game','spider free',
+        'spider 2 suit','spider 4 suit','spider classic','spider solitaire free',
+        'spider patience','card games','solitaire spider','spider offline',
+        'free spider','spider solitaire pro','klondike','spider solitaire 2024',
+        'patience','solitaire collection','single player card'
+      ],
+      tri: [
+        'tripeaks','tri peaks','tripeaks solitaire','peaks solitaire',
+        'tripeaks free','tripeaks card','tripeaks classic','triple peaks',
+        'card games','solitaire tripeaks','free tripeaks','peaks card',
+        'tripeaks adventure','solitaire collection','klondike','solitaire',
+        'tripeaks 2024','tripeaks offline','tripeaks pro','puzzle games'
+      ],
+      bub: [
+        'bubble shooter','bubble pop','bubble game','bubble shooter free',
+        'bubble blast','bubble shooter offline','pop bubble','bubble puzzle',
+        'shoot bubbles','bubble shooter classic','bubble shooter 2024',
+        'bubble pop game','bubble breaker','match bubbles','bubble adventure',
+        'bubble shooter pro','arcade games','puzzle games','color bubble',
+        'bubble witch'
+      ]
+    },
+    T05_AB_TESTS: [
+      { game:'sol', surface:'Icon',          variant:'A4 — cleaner board',           dayX:12, dayY:14, status:'in-progress' },
+      { game:'tri', surface:'Screenshots',   variant:'B — gameplay first, 1.6 ratio',dayX:6,  dayY:14, status:'in-progress' },
+      { game:'bub', surface:'Preview video', variant:'15s vs 30s',                   dayX:3,  dayY:14, status:'in-progress' },
+      { game:'spi', surface:'Localization',  variant:'DE subtitle copy',             dayX:8,  dayY:14, status:'in-progress' },
+      { game:'sol', surface:'Keywords',      variant:'"free solitaire" → "solitaire offline"', dayX:1, dayY:14, status:'pre-readout' }
     ]
   };
 
@@ -1474,6 +1712,10 @@
       rankingMethod: 'shrunk',  // 'raw' | 'shrunk'
       minImpressions: 50_000,
       _creatives: null          // generated lazily, cached per seed
+    },
+    /* Tab 05 ---------------------------------------------------- */
+    t05: {
+      selectedGame: 'sol'
     }
   };
 
@@ -3527,6 +3769,373 @@
   }
 
   /* ============================================================ */
+  /* TAB 05 · ASO & STORE CONVERSION FUNNEL                        */
+  /* ============================================================ */
+
+  /* Per-game store funnel snapshot. Imp/PDP/Install/D1/IAP volumes,
+     blended CVRs, and per-source decomposition. Rates are perturbed
+     ±10% from the per-game baseline using the global filter seed so
+     the funnel reacts to the filter bar like the rest of the console. */
+  function buildT05GameData(gameKey) {
+    const baseline = PARAMS.T05_GAMES[gameKey];
+    const game = state.games.find(g => g.key === gameKey);
+    const rng = mulberry32((state.seed ^ Math.imul(fnv1a('t05:' + gameKey), 0x85EBCA6B)) >>> 0);
+    /* Apply ±10% perturbation per stage */
+    const j = () => 0.90 + 0.20 * rng();
+    const imp     = baseline.impM * 1e6 * j();
+    const pdpCVR  = clamp(baseline.pdpCVR  * j(), 0.01, 0.30);
+    const instCVR = clamp(baseline.instCVR * j(), 0.05, 0.60);
+    const d1Ret   = clamp(baseline.d1Ret   * j(), 0.10, 0.70);
+    const iapCVR  = clamp(baseline.iapCVR  * j(), 0.01, 0.40);
+    const pdpVol  = imp     * pdpCVR;
+    const instVol = pdpVol  * instCVR;
+    const d1Vol   = instVol * d1Ret;
+    const iapVol  = d1Vol   * iapCVR;
+    /* Per-source decomposition. Source multipliers (multPDP, multInst) are
+       authored as relative-intent factors ("Search has 1.3× the PDP CVR
+       intent of average"). To keep the source-decomposed totals exactly
+       reconstructing the blended baseline (Σ srcPdp = pdpVol etc.), we
+       normalize the multipliers by the share-weighted aggregate.
+         Σ srcPdp  = imp · pdpCVR  · Σ(shareImp · multPDP)/wPdp     = pdpVol
+         Σ srcInst = imp · pdpCVR · instCVR · …(both weights cancel) = instVol */
+    const wPdp = PARAMS.T05_SOURCES.reduce((s, x) => s + x.shareImp * x.multPDP, 0);
+    const postPdpShare = PARAMS.T05_SOURCES.map(s => (s.shareImp * s.multPDP) / wPdp);
+    const wInst = PARAMS.T05_SOURCES.reduce((sum, s, i) => sum + postPdpShare[i] * s.multInst, 0);
+    const sources = PARAMS.T05_SOURCES.map((s, i) => {
+      const srcImp = imp * s.shareImp;
+      const srcPdpCVR  = clamp(pdpCVR  * s.multPDP  / wPdp,  0.005, 0.40);
+      const srcInstCVR = clamp(instCVR * s.multInst / wInst, 0.05,  0.70);
+      const srcPdp  = srcImp * srcPdpCVR;
+      const srcInst = srcPdp * srcInstCVR;
+      return { ...s, imp: srcImp, pdpCVR: srcPdpCVR, instCVR: srcInstCVR, pdp: srcPdp, inst: srcInst };
+    });
+    return {
+      game, gameKey, imp, pdpCVR, instCVR, d1Ret, iapCVR,
+      pdpVol, instVol, d1Vol, iapVol, sources, cv: game.cv
+    };
+  }
+
+  /* 90% CI on a CVR estimate, scaled by per-game month-over-month CV.
+     halfWidth = 1.645 · p · CV_g · 0.25. The 0.25 factor calibrates
+     against typical week-to-week ASO CVR variation we'd see in real
+     reporting. Same σ_g driver as Tabs 01–04 — Bubble (CV=0.46) gets
+     a noticeably wider band than Solitaire (CV=0.12). */
+  function cvrCI(p, cv) {
+    const halfWidth = 1.645 * p * cv * 0.25;
+    return { p, lo: Math.max(0, p - halfWidth), hi: p + halfWidth, halfWidth };
+  }
+
+  /* Bench status: ✓ within range, ⚠ below low end, ↑ above high end. */
+  function benchStatus(rate, bench) {
+    if (rate < bench.lo) return { sym: '⚠', cls: 'warn', text: 'below cat. range' };
+    if (rate > bench.hi) return { sym: '↑', cls: 'good', text: 'above cat. range' };
+    return { sym: '✓', cls: 'ok', text: 'within cat. range' };
+  }
+
+  /* Generate per-game keyword table. 20 hardcoded keywords/game; ranks,
+     7-day deltas, and install attribution drawn from the seeded RNG with
+     a Zipf-like install distribution (top keyword gets ~3× the median). */
+  function generateKeywords(gameKey, gameInstalls) {
+    const terms = PARAMS.T05_KEYWORDS[gameKey];
+    const rng = mulberry32((state.seed ^ Math.imul(fnv1a('kw:' + gameKey), 0xC2B2AE35)) >>> 0);
+    /* Zipf-like share distribution; sums to ~0.55 of game installs (rest is non-keyword) */
+    const N = terms.length;
+    const rawShares = terms.map((_, i) => 1 / Math.pow(i + 1, 0.7) * (0.85 + 0.30 * rng()));
+    const totalRaw = rawShares.reduce((s, x) => s + x, 0);
+    const keywordedShare = 0.55;
+    const shares = rawShares.map(s => s / totalRaw * keywordedShare);
+    return terms.map((t, i) => {
+      const installs = Math.round(shares[i] * gameInstalls);
+      const baseRank = 1 + Math.floor(rng() * 30);   // current rank 1–30
+      const delta = Math.round((rng() - 0.55) * 8);  // bias slightly toward improvement
+      const prevRank = Math.max(1, baseRank + delta);
+      return {
+        term: t, rank: baseRank, prevRank, delta: prevRank - baseRank,
+        installs, share: shares[i]
+      };
+    }).sort((a, b) => b.installs - a.installs);
+  }
+
+  /* Insight builder: find biggest gap-from-benchmark across games × stages,
+     map to the corresponding store-listing surface. */
+  function buildT05Insight(allGameData) {
+    const B = PARAMS.T05_BENCHMARKS;
+    const candidates = [];
+    allGameData.forEach(gd => {
+      /* PDP CVR gap vs benchmark midpoint */
+      const pdpMid = (B.pdpCVR.lo + B.pdpCVR.hi) / 2;
+      const pdpGap = pdpMid - gd.pdpCVR;
+      if (pdpGap > 0.005) {
+        const installLift = pdpGap * gd.imp * gd.instCVR;
+        candidates.push({
+          gd, stage: 'PDP CVR', surface: 'icon + screenshots',
+          gap: pdpGap, currentRate: gd.pdpCVR, benchRange: B.pdpCVR,
+          installLift,
+          rationale: 'first-impression conversion is dragging — listing visuals are the dominant lever'
+        });
+      }
+      /* Install CVR gap */
+      const instMid = (B.instCVR.lo + B.instCVR.hi) / 2;
+      const instGap = instMid - gd.instCVR;
+      if (instGap > 0.01) {
+        const installLift = instGap * gd.pdpVol;
+        candidates.push({
+          gd, stage: 'Install CVR', surface: 'screenshots + preview video',
+          gap: instGap, currentRate: gd.instCVR, benchRange: B.instCVR,
+          installLift,
+          rationale: 'page-detail conversion is dragging — convince-on-PDP assets are the dominant lever'
+        });
+      }
+    });
+    if (!candidates.length) {
+      return {
+        html: 'All four games sit at or above the directional category benchmarks at every stage of the store funnel. ' +
+              'Test cycles can target incremental gains — try a localization or keyword refresh — rather than gap-closing.',
+        foot: 'Branch: balanced-state · no candidate (game × stage) below benchmark midpoint.'
+      };
+    }
+    /* Pick highest-impact gap (largest install lift if closed) */
+    const top = candidates.sort((a, b) => b.installLift - a.installLift)[0];
+    return {
+      html:
+        '<strong>' + top.gd.game.name + '</strong>’s <strong>' + top.stage + '</strong> sits at <strong>' +
+        (top.currentRate * 100).toFixed(1) + '%</strong>, ' +
+        (top.gap * 100).toFixed(1) + 'pp below the category midpoint of ' +
+        ((top.benchRange.lo + top.benchRange.hi) / 2 * 100).toFixed(0) + '% (range ' +
+        (top.benchRange.lo * 100).toFixed(0) + '–' + (top.benchRange.hi * 100).toFixed(0) + '%). ' +
+        'Run a <strong>' + top.surface + '</strong> test on ' + top.gd.game.name + ' next — ' + top.rationale + '. ' +
+        'Closing this gap at current upstream volume would deliver <strong>~' +
+        Math.round(top.installLift / 1000).toLocaleString() + 'K incremental installs/mo</strong>.',
+      foot:
+        'Branch: gap-closing · ' + candidates.length + ' (game × stage) cells below benchmark · ' +
+        'sorted by projected install lift'
+    };
+  }
+
+  /* ============================================================ */
+  /* TAB 05 RENDER                                                 */
+  /* ============================================================ */
+  function renderT05() {
+    if (state.activeTab !== '05') return;
+    document.getElementById('t05-game-pick').value = state.t05.selectedGame;
+
+    const allGD = ['sol','spi','tri','bub'].map(buildT05GameData);
+    const gd = allGD.find(x => x.gameKey === state.t05.selectedGame);
+
+    renderT05Funnel(gd);
+    renderT05Sources(gd);
+    renderT05Keywords(gd);
+    renderT05ABTests();
+    renderT05Benchmarks();
+
+    const ins = buildT05Insight(allGD);
+    document.getElementById('t05-insight').innerHTML = ins.html;
+    document.getElementById('t05-insight-foot').textContent = ins.foot;
+  }
+
+  /* Two-tier SVG funnel. Pre-install: Imp → PDP → Install (top half).
+     Post-install: Install → D1 → IAP (bottom half). Each transition
+     labeled with rate, 90% CI (where σ_g applies), benchmark, status. */
+  function renderT05Funnel(gd) {
+    const svg = document.getElementById('t05-funnel');
+    const W = svg.clientWidth || 700;
+    const padX = 14;
+    const innerW = W - 2 * padX;
+    const H = 380;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('height', H);
+
+    const B = PARAMS.T05_BENCHMARKS;
+    const pdpCI  = cvrCI(gd.pdpCVR,  gd.cv);
+    const instCI = cvrCI(gd.instCVR, gd.cv);
+
+    const pre = [
+      { label: 'Store impressions', vol: gd.imp,     color: gd.game.color, alpha: 0.55 },
+      { label: 'PDP views',         vol: gd.pdpVol,  color: gd.game.color, alpha: 0.75 },
+      { label: 'Installs',          vol: gd.instVol, color: gd.game.color, alpha: 0.95 }
+    ];
+    const post = [
+      { label: 'Installs',  vol: gd.instVol, color: gd.game.color, alpha: 0.95 },
+      { label: 'D1 retain', vol: gd.d1Vol,   color: '#5d8a72',     alpha: 0.85 },
+      { label: '1st IAP (30d)', vol: gd.iapVol, color: '#a8001f',  alpha: 0.85 }
+    ];
+    const preTransitions = [
+      { rate: gd.pdpCVR,  ci: pdpCI,  bench: B.pdpCVR,  cvLabel: 'CV_g='+gd.cv.toFixed(2) },
+      { rate: gd.instCVR, ci: instCI, bench: B.instCVR, cvLabel: 'CV_g='+gd.cv.toFixed(2) }
+    ];
+    const postTransitions = [
+      { rate: gd.d1Ret,  bench: B.d1Ret  },
+      { rate: gd.iapCVR, bench: B.iapCVR }
+    ];
+
+    const out = [];
+    /* === Pre-install funnel === */
+    let y = 8;
+    out.push(`<text x="${padX}" y="${y+10}" font-size="10" font-family="var(--mono),monospace" fill="#6e6e63" letter-spacing=".06em">PRE-INSTALL · STORE LISTING</text>`);
+    y += 18;
+    pre.forEach((s, i) => {
+      const rel = s.vol / pre[0].vol;
+      const barW = innerW * rel;
+      const x = padX + (innerW - barW) / 2;
+      const barH = 26;
+      out.push(`<rect x="${x}" y="${y}" width="${barW}" height="${barH}" fill="${s.color}" opacity="${s.alpha}" rx="3" ry="3"/>`);
+      const labelInside = barW > 220;
+      if (labelInside) {
+        out.push(`<text x="${x + 8}" y="${y + 17}" font-size="11.5" fill="#fff" font-family="-apple-system,sans-serif">${s.label}</text>`);
+        out.push(`<text x="${x + barW - 8}" y="${y + 17}" font-size="11" fill="#fff" font-family="var(--mono),monospace" text-anchor="end">${fmtBigNum(s.vol)}</text>`);
+      } else {
+        out.push(`<text x="${padX}" y="${y + 17}" font-size="11.5" fill="#14140f" font-family="-apple-system,sans-serif">${s.label}</text>`);
+        out.push(`<text x="${W - padX}" y="${y + 17}" font-size="11" fill="#14140f" font-family="var(--mono),monospace" text-anchor="end">${fmtBigNum(s.vol)}</text>`);
+      }
+      y += barH;
+      if (i < pre.length - 1) {
+        const tr = preTransitions[i];
+        const status = benchStatus(tr.rate, tr.bench);
+        const txtColor = status.cls === 'warn' ? '#962d2d' : (status.cls === 'good' ? '#2a6b3f' : '#6e6e63');
+        out.push(
+          `<text x="${W/2}" y="${y + 12}" font-size="11" fill="${txtColor}" text-anchor="middle" font-family="var(--mono),monospace">` +
+            `↓ ${(tr.rate*100).toFixed(2)}% ` +
+            `<tspan fill="#6e6e63">±${(tr.ci.halfWidth*100).toFixed(2)}pp</tspan>` +
+            ` · bench ${(tr.bench.lo*100).toFixed(0)}–${(tr.bench.hi*100).toFixed(0)}% ${status.sym}` +
+          `</text>`
+        );
+        y += 22;
+      }
+    });
+    /* divider */
+    y += 8;
+    out.push(`<line x1="${padX}" y1="${y}" x2="${W-padX}" y2="${y}" stroke="#e2e2dc" stroke-dasharray="2 3"/>`);
+    y += 14;
+
+    /* === Post-install funnel === */
+    out.push(`<text x="${padX}" y="${y+10}" font-size="10" font-family="var(--mono),monospace" fill="#6e6e63" letter-spacing=".06em">POST-INSTALL · D1 + MONETIZATION</text>`);
+    y += 18;
+    post.forEach((s, i) => {
+      const rel = s.vol / post[0].vol;
+      const barW = innerW * rel;
+      const x = padX + (innerW - barW) / 2;
+      const barH = 24;
+      out.push(`<rect x="${x}" y="${y}" width="${barW}" height="${barH}" fill="${s.color}" opacity="${s.alpha}" rx="3" ry="3"/>`);
+      const labelInside = barW > 200;
+      if (labelInside) {
+        out.push(`<text x="${x + 8}" y="${y + 16}" font-size="11.5" fill="#fff" font-family="-apple-system,sans-serif">${s.label}</text>`);
+        out.push(`<text x="${x + barW - 8}" y="${y + 16}" font-size="11" fill="#fff" font-family="var(--mono),monospace" text-anchor="end">${fmtBigNum(s.vol)}</text>`);
+      } else {
+        out.push(`<text x="${padX}" y="${y + 16}" font-size="11.5" fill="#14140f" font-family="-apple-system,sans-serif">${s.label}</text>`);
+        out.push(`<text x="${W - padX}" y="${y + 16}" font-size="11" fill="#14140f" font-family="var(--mono),monospace" text-anchor="end">${fmtBigNum(s.vol)}</text>`);
+      }
+      y += barH;
+      if (i < post.length - 1) {
+        const tr = postTransitions[i];
+        const status = benchStatus(tr.rate, tr.bench);
+        const txtColor = status.cls === 'warn' ? '#962d2d' : (status.cls === 'good' ? '#2a6b3f' : '#6e6e63');
+        out.push(
+          `<text x="${W/2}" y="${y + 12}" font-size="11" fill="${txtColor}" text-anchor="middle" font-family="var(--mono),monospace">` +
+            `↓ ${(tr.rate*100).toFixed(1)}% · bench ${(tr.bench.lo*100).toFixed(0)}–${(tr.bench.hi*100).toFixed(0)}% ${status.sym}` +
+          `</text>`
+        );
+        y += 22;
+      }
+    });
+    svg.innerHTML = out.join('');
+  }
+
+  function fmtBigNum(v) {
+    if (v >= 1e6) return (v/1e6).toFixed(1) + 'M';
+    if (v >= 1e3) return (v/1e3).toFixed(0) + 'K';
+    return Math.round(v).toString();
+  }
+
+  function renderT05Sources(gd) {
+    const root = document.getElementById('t05-src-table');
+    document.getElementById('t05-src-meta').textContent =
+      gd.game.name + ' · 5 sources, share-of-imp held constant per game';
+    let html = '<thead><tr>' +
+      '<th>Source</th>' +
+      '<th style="text-align:right">Imp share</th>' +
+      '<th style="text-align:right">PDP CVR</th>' +
+      '<th style="text-align:right">Install CVR</th>' +
+      '<th style="text-align:right">Installs/mo</th>' +
+      '</tr></thead><tbody>';
+    const maxInst = Math.max.apply(null, gd.sources.map(s => s.inst));
+    gd.sources.forEach(s => {
+      const rel = s.inst / maxInst;
+      html +=
+        '<tr><td class="sname"><span class="sw" style="background:' + s.color + '"></span>' + s.name + '</td>' +
+        '<td style="text-align:right">' + (s.shareImp * 100).toFixed(0) + '%</td>' +
+        '<td style="text-align:right">' + (s.pdpCVR * 100).toFixed(2) + '%</td>' +
+        '<td style="text-align:right">' + (s.instCVR * 100).toFixed(1) + '%</td>' +
+        '<td class="bar-cell" style="text-align:right"><span class="t05-src-bar"><span style="width:' + (rel*100).toFixed(0) + '%;background:' + s.color + ';opacity:.7"></span></span>' +
+          fmtBigNum(s.inst) + '</td></tr>';
+    });
+    html += '</tbody>';
+    root.innerHTML = html;
+  }
+
+  function renderT05Keywords(gd) {
+    const kws = generateKeywords(gd.gameKey, gd.instVol);
+    const eligible = kws.filter(k => k.installs >= 50);
+    const top20 = eligible.slice(0, 20);
+    document.getElementById('t05-kw-meta').textContent =
+      'Ranked by 30-day install contribution · min 50 installs to qualify · n=' + eligible.length + ' eligible';
+    const root = document.getElementById('t05-kw-table');
+    let html = '<thead><tr>' +
+      '<th>Keyword</th>' +
+      '<th style="text-align:right">Rank</th>' +
+      '<th style="text-align:right">Δ 7d</th>' +
+      '<th style="text-align:right">Installs/mo</th>' +
+      '<th style="text-align:right">% of game</th>' +
+      '</tr></thead><tbody>';
+    top20.forEach(k => {
+      let dCls = 'delta-flat', dStr = '—';
+      if (k.delta > 0) { dCls = 'delta-up';   dStr = '▲ ' + k.delta; }
+      else if (k.delta < 0) { dCls = 'delta-down'; dStr = '▼ ' + (-k.delta); }
+      html +=
+        '<tr><td class="kw">' + k.term + '</td>' +
+        '<td style="text-align:right">' + k.rank + '</td>' +
+        '<td class="' + dCls + '" style="text-align:right">' + dStr + '</td>' +
+        '<td style="text-align:right">' + fmtBigNum(k.installs) + '</td>' +
+        '<td style="text-align:right">' + (k.share * 100).toFixed(1) + '%</td></tr>';
+    });
+    html += '</tbody>';
+    root.innerHTML = html;
+  }
+
+  function renderT05ABTests() {
+    const root = document.getElementById('t05-ab');
+    const games = state.games;
+    let html = '';
+    PARAMS.T05_AB_TESTS.forEach(t => {
+      const game = games.find(g => g.key === t.game);
+      const cls = t.status === 'pre-readout' ? 'pre' : '';
+      html +=
+        '<div class="t05-ab-item ' + cls + '">' +
+          '<div class="h"><span class="game">' + game.name + '</span><span class="surface">' + t.surface + '</span></div>' +
+          '<div class="v">' + t.variant + '</div>' +
+          '<div class="progress">' +
+            '<span class="bar-wrap"><span class="bar" style="width:' + (t.dayX/t.dayY*100).toFixed(0) + '%"></span></span>' +
+            '<span class="meta">day ' + t.dayX + ' / ' + t.dayY + ' · ' + t.status + '</span>' +
+          '</div>' +
+        '</div>';
+    });
+    root.innerHTML = html;
+  }
+
+  function renderT05Benchmarks() {
+    const root = document.getElementById('t05-bench');
+    const B = PARAMS.T05_BENCHMARKS;
+    const rows = [
+      { name: 'Impression → PDP CVR',     range: (B.pdpCVR.lo*100).toFixed(0) + '–' + (B.pdpCVR.hi*100).toFixed(0) + '%' },
+      { name: 'PDP → Install CVR',        range: (B.instCVR.lo*100).toFixed(0) + '–' + (B.instCVR.hi*100).toFixed(0) + '%' },
+      { name: 'D1 retention',             range: (B.d1Ret.lo*100).toFixed(0) + '–' + (B.d1Ret.hi*100).toFixed(0) + '%' },
+      { name: 'D1 → 1st IAP (30d)',       range: (B.iapCVR.lo*100).toFixed(0) + '–' + (B.iapCVR.hi*100).toFixed(0) + '%' }
+    ];
+    root.innerHTML = rows.map(r =>
+      '<div class="t05-bench-row"><span class="nm">' + r.name + '</span><span class="rg">' + r.range + '</span></div>'
+    ).join('');
+  }
+
+  /* ============================================================ */
   /* CSV: parse + validate + sample                                */
   /* ============================================================ */
   const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
@@ -3634,6 +4243,49 @@
       lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
       lines.push('');
       lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else if (state.activeTab === '05') {
+      const allGD = ['sol','spi','tri','bub'].map(buildT05GameData);
+      const gd = allGD.find(x => x.gameKey === state.t05.selectedGame);
+      const B = PARAMS.T05_BENCHMARKS;
+      lines.push('## Store funnel snapshot · ' + gd.game.name);
+      lines.push('| Stage | Volume | Rate | 90% CI | Benchmark | Status |');
+      lines.push('|---|---|---|---|---|---|');
+      const pdpCI  = cvrCI(gd.pdpCVR,  gd.cv);
+      const instCI = cvrCI(gd.instCVR, gd.cv);
+      const pdpStat  = benchStatus(gd.pdpCVR,  B.pdpCVR);
+      const instStat = benchStatus(gd.instCVR, B.instCVR);
+      const d1Stat   = benchStatus(gd.d1Ret,   B.d1Ret);
+      const iapStat  = benchStatus(gd.iapCVR,  B.iapCVR);
+      lines.push('| Impressions | ' + fmtBigNum(gd.imp)     + ' | — | — | — | — |');
+      lines.push('| PDP views   | ' + fmtBigNum(gd.pdpVol)  + ' | ' + (gd.pdpCVR*100).toFixed(2)+'% | ±' + (pdpCI.halfWidth*100).toFixed(2) + 'pp | ' + (B.pdpCVR.lo*100).toFixed(0)+'–'+(B.pdpCVR.hi*100).toFixed(0)+'% | ' + pdpStat.sym + ' ' + pdpStat.text + ' |');
+      lines.push('| Installs    | ' + fmtBigNum(gd.instVol) + ' | ' + (gd.instCVR*100).toFixed(2)+'% | ±' + (instCI.halfWidth*100).toFixed(2) + 'pp | ' + (B.instCVR.lo*100).toFixed(0)+'–'+(B.instCVR.hi*100).toFixed(0)+'% | ' + instStat.sym + ' ' + instStat.text + ' |');
+      lines.push('| D1 retain   | ' + fmtBigNum(gd.d1Vol)   + ' | ' + (gd.d1Ret*100).toFixed(1)+'% | n/a | ' + (B.d1Ret.lo*100).toFixed(0)+'–'+(B.d1Ret.hi*100).toFixed(0)+'% | ' + d1Stat.sym + ' ' + d1Stat.text + ' |');
+      lines.push('| 1st IAP     | ' + fmtBigNum(gd.iapVol)  + ' | ' + (gd.iapCVR*100).toFixed(1)+'% | n/a | ' + (B.iapCVR.lo*100).toFixed(0)+'–'+(B.iapCVR.hi*100).toFixed(0)+'% | ' + iapStat.sym + ' ' + iapStat.text + ' |');
+      lines.push('');
+      lines.push('CI scaling: 90% half-width = 1.645 · p · CV_g · 0.25, where CV_g = ' + gd.cv.toFixed(2) + ' (' + gd.game.name + ' from Tab 01).');
+      lines.push('');
+      lines.push('## Top 20 keywords · ' + gd.game.name);
+      lines.push('Ranked by 30-day install contribution. Min 50 installs.');
+      const kws = generateKeywords(gd.gameKey, gd.instVol).filter(k => k.installs >= 50).slice(0, 20);
+      lines.push('| Keyword | Rank | Δ 7d | Installs/mo | % of game |');
+      lines.push('|---|---|---|---|---|');
+      kws.forEach(k => {
+        const ds = k.delta > 0 ? '▲ ' + k.delta : (k.delta < 0 ? '▼ ' + (-k.delta) : '—');
+        lines.push('| ' + k.term + ' | ' + k.rank + ' | ' + ds + ' | ' + fmtBigNum(k.installs) + ' | ' + (k.share*100).toFixed(1) + '% |');
+      });
+      lines.push('');
+      lines.push('## A/B tests in flight');
+      PARAMS.T05_AB_TESTS.forEach(t => {
+        const game = state.games.find(g => g.key === t.game);
+        lines.push('- **' + game.name + '** · ' + t.surface + ' · ' + t.variant + ' · day ' + t.dayX + '/' + t.dayY + ' · ' + t.status);
+      });
+      lines.push('');
+      lines.push('Benchmarks: directional · casual card category · AppsFlyer/Adjust-style ranges (not normative).');
+      lines.push('');
+      lines.push('## Decision insight');
+      lines.push('> ' + document.getElementById('t05-insight').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t05-insight-foot').textContent.trim() + '_');
     } else if (state.activeTab === '04') {
       ensureCreatives();
       const creatives = state.t04._creatives;
@@ -3941,6 +4593,13 @@
     });
   }
 
+  function bindT05Controls() {
+    document.getElementById('t05-game-pick').addEventListener('change', e => {
+      state.t05.selectedGame = e.target.value;
+      renderT05();
+    });
+  }
+
   function bindT03Controls() {
     document.querySelectorAll('#t03-view button').forEach(b => {
       b.addEventListener('click', () => {
@@ -3983,13 +4642,14 @@
     else if (state.activeTab === '02') renderT02();
     else if (state.activeTab === '03') renderT03();
     else if (state.activeTab === '04') renderT04();
-    /* Tabs 05–07 remain placeholders. */
+    else if (state.activeTab === '05') renderT05();
+    /* Tabs 06–07 remain placeholders. */
   }
 
   function init() {
     state.t02.cac = defaultBlendedCAC();
     bindFilters(); bindTabs(); bindDataMode(); bindUpload();
-    bindT01Buttons(); bindT02Controls(); bindT03Controls(); bindT04Controls();
+    bindT01Buttons(); bindT02Controls(); bindT03Controls(); bindT04Controls(); bindT05Controls();
     recompute(); renderActiveTab();
     window.addEventListener('resize', () => {
       if (state.activeTab === '01') renderKPIs();
@@ -3998,6 +4658,9 @@
           bootstrapPayback(g, (state.seed ^ Math.imul(i + 13, 0xC2B2AE35)) >>> 0,
                            state.t02.model, state.t02.cac, 200));
         renderT02Waterfall(wf);
+      }
+      else if (state.activeTab === '05') {
+        renderT05Funnel(buildT05GameData(state.t05.selectedGame));
       }
     });
   }
