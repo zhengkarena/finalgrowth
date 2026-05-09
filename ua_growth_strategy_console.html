@@ -420,6 +420,139 @@
     font-family: var(--mono); font-size: 10.5px; color: var(--muted);
   }
 
+  /* === Tab 03 layout === */
+  .t03-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) {
+    .t03-grid { grid-template-columns: 1fr; }
+  }
+  .t03-main, .t03-rail { display: flex; flex-direction: column; gap: 16px; }
+  .t03-controls, .t03-wi-controls {
+    display: flex; flex-wrap: wrap; gap: 10px 18px;
+    padding: 8px 0 14px; margin-bottom: 4px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .t03-wi-controls { padding-bottom: 0; border-bottom: none; }
+  .ctl-toggle {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; color: var(--ink-soft); cursor: pointer;
+  }
+  .ctl-toggle input { margin: 0; }
+  .ctl-prefix {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+  }
+  #t03-wi-amount {
+    width: 90px; padding: 4px 6px; font-family: var(--mono); font-size: 12px;
+    border: 1px solid var(--line); border-radius: 4px; background: var(--paper);
+  }
+  #t03-wi-amount:focus { outline: none; border-color: var(--ink); }
+  #t03-game-pick, #t03-chan-pick {
+    appearance: none; -webkit-appearance: none;
+    background: var(--paper); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 4px 22px 4px 8px;
+    font-family: inherit; font-size: 12px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%236e6e63' d='M5 7L1 3h8z'/></svg>");
+    background-repeat: no-repeat; background-position: right 6px center;
+  }
+
+  .t03-sat-wrap  { height: 320px; position: relative; margin-top: 6px; }
+  .t03-mcpi-wrap { height: 220px; position: relative; }
+
+  .t03-wi-result {
+    margin-top: 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .wi-card {
+    border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px;
+    background: #fcfcf9;
+  }
+  .wi-card.opt { border-color: var(--ink); background: #fbfbf6; }
+  .wi-card .h {
+    font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .wi-card .h.opt-h { color: var(--accent); }
+  .wi-card .big {
+    font-family: var(--mono); font-size: 18px; color: var(--ink);
+  }
+  .wi-card .sub {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    margin-top: 2px;
+  }
+  .wi-table {
+    width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 8px;
+  }
+  .wi-table th {
+    text-align: left; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .wi-table td {
+    padding: 5px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11px;
+  }
+  .wi-table td.cell-name {
+    font-family: var(--sans); font-size: 11.5px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .wi-table td.cell-name .sw {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .wi-summary {
+    grid-column: 1 / -1;
+    display: flex; gap: 16px; align-items: baseline;
+    padding-top: 8px; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .wi-summary .win {
+    font-family: var(--mono); color: var(--good); font-weight: 500;
+  }
+  .wi-summary .win.neg { color: var(--bad); }
+
+  .t03-rail-sub {
+    color: var(--muted); font-size: 11px; margin: 0 0 10px;
+  }
+  .t03-rank { display: flex; flex-direction: column; gap: 5px; }
+  .t03-rank-row {
+    display: grid; grid-template-columns: 12px 1fr 56px 80px;
+    gap: 8px; align-items: center;
+    padding: 5px 4px; border-radius: 4px;
+    font-size: 11.5px;
+  }
+  .t03-rank-row .nm { font-size: 11.5px; color: var(--ink); }
+  .t03-rank-row .nm .sub { color: var(--muted); font-size: 10px; }
+  .t03-rank-row .mcpi {
+    font-family: var(--mono); font-size: 12px; text-align: right;
+  }
+  .t03-rank-row .bar-wrap {
+    height: 5px; background: var(--line); border-radius: 3px; overflow: hidden;
+    position: relative;
+  }
+  .t03-rank-row .bar { height: 100%; }
+  .t03-rank-row .swatch { width: 8px; height: 8px; border-radius: 50%; }
+
+  .t03-divers {
+    font-size: 12px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .t03-divers .stage {
+    margin: 6px 0; padding: 8px 10px;
+    background: #fcfcf9; border-left: 2px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+  }
+  .t03-divers .stage .lbl {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 2px;
+  }
+  .t03-divers .stage .body {
+    font-size: 12px; color: var(--ink);
+  }
+  .t03-divers .stage .body strong { font-weight: 600; }
+
   /* === Modal === */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(20,20,15,.4);
@@ -772,10 +905,108 @@
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="03">
-    <div class="placeholder-card">
-      <span class="turn-tag">Coming in Turn 3</span>
-      <h2>03 · Marginal Efficiency &amp; Saturation</h2>
-      <p>Per channel × game saturation curves with Michaelis-Menten fits; marginal CPI overlay; diversification panel for incremental budget; "What-if +$X" optimizer returning channel split, expected installs delta, blended CPI.</p>
+    <div class="t03-grid">
+
+      <div class="t03-main">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Saturation curves · Michaelis-Menten</h3>
+            <span class="why" data-tip="Each curve is installs = V·s/(K+s) for one (game × channel) cell. Where the curve flattens, the next dollar buys fewer installs. The filled dot is current spend — visually unmistakable when a channel is on the steep linear region vs the flat saturated region.">Why this matters</span>
+          </div>
+          <div class="t03-controls">
+            <div class="ctl-group">
+              <label class="ctl-lbl">View</label>
+              <div class="seg-toggle compact" id="t03-view">
+                <button data-view="by-game"    class="active" type="button" data-tip="Show 8 channel curves for one game.">by Game</button>
+                <button data-view="by-channel" type="button" data-tip="Show 4 game curves for one channel.">by Channel</button>
+              </div>
+            </div>
+            <div class="ctl-group" id="t03-game-pick-wrap">
+              <label class="ctl-lbl">Game</label>
+              <select id="t03-game-pick">
+                <option value="sol">Solitaire</option>
+                <option value="spi">Spider Solitaire</option>
+                <option value="tri">TriPeaks</option>
+                <option value="bub">Bubble Shooter Pop</option>
+              </select>
+            </div>
+            <div class="ctl-group" id="t03-chan-pick-wrap" style="display:none;">
+              <label class="ctl-lbl">Channel</label>
+              <select id="t03-chan-pick"></select>
+            </div>
+            <div class="ctl-group">
+              <label class="ctl-toggle">
+                <input type="checkbox" id="t03-bands" />
+                <span>Show 90% band</span>
+              </label>
+              <span class="ctl-hint" data-tip="Delta-method 90% prediction band on installs(s), propagated from CV_g = σ_g/μ_g — same noise driver as Tab 01 CIs and Tab 02 waterfall.">ⓘ</span>
+            </div>
+          </div>
+          <div class="t03-sat-wrap">
+            <canvas id="t03-sat"></canvas>
+          </div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Marginal CPI curves
+              <span class="why" data-tip="MCPI(s) = (K+s)²/(K·V), the closed-form derivative dSpend/dInstalls. Where MCPI rises steeply, the channel is saturating: the next install is buying you nothing.">ⓘ</span>
+            </h3>
+            <span class="h-meta" id="t03-mcpi-meta"></span>
+          </div>
+          <div class="t03-mcpi-wrap">
+            <canvas id="t03-mcpi"></canvas>
+          </div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>What-if · incremental budget allocation</h3>
+            <span class="why" data-tip="Solves the Lagrangian condition for the +$X allocation: target MCPI* such that all funded cells equate marginal returns. The naive baseline shown alongside dumps everything into the single lowest-MCPI cell — useful for surfacing how much the optimization is actually worth.">ⓘ</span>
+          </div>
+          <div class="t03-wi-controls">
+            <div class="ctl-group">
+              <label class="ctl-lbl">Add this month</label>
+              <span class="ctl-prefix">$</span>
+              <input type="number" id="t03-wi-amount" min="1000" max="2000000" step="5000" value="100000" />
+              <button class="btn-primary" id="t03-wi-go" type="button">Optimize</button>
+              <button class="mini-btn" id="t03-wi-presets" data-amount="50000"  type="button">+$50K</button>
+              <button class="mini-btn" id="t03-wi-presets-2" data-amount="250000" type="button">+$250K</button>
+            </div>
+          </div>
+          <div class="t03-wi-result" id="t03-wi-result"></div>
+        </div>
+
+        <div class="col-card recommendation">
+          <span class="tag">&#9830; Decision insight</span>
+          <div class="body" id="t03-insight">—</div>
+          <div class="footnote" id="t03-insight-foot"></div>
+        </div>
+
+      </div>
+
+      <div class="t03-rail">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Marginal CPI ranking</h3>
+            <span class="why" data-tip="Per (game, channel) cell, MCPI at current spend. Lowest MCPI = most headroom for next dollar. Highlighted bar shows position relative to the cell's own linear-regime CPI.">ⓘ</span>
+          </div>
+          <p class="t03-rail-sub" id="t03-rank-sub">at current spend</p>
+          <div class="t03-rank" id="t03-rank"></div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Diversification advisor</h3>
+            <span class="why" data-tip="When a saturating channel is pushed past its useful range, where should the overflow go? This panel computes the next-best alternative cell and how much spend it can absorb before its MCPI matches the saturated cell's current MCPI.">ⓘ</span>
+          </div>
+          <div id="t03-diversify"></div>
+        </div>
+
+      </div>
+
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="04">
@@ -892,7 +1123,30 @@
          diversification so the portfolio actually behaves like a portfolio.
        Both bounds are surfaced under the frontier. */
     MIN_WEIGHT: 0.05,
-    MAX_WEIGHT: 0.60
+    MAX_WEIGHT: 0.60,
+
+    /* Tab 03 ------------------------------------------------------ */
+    /* Channel-level saturation parameters. Each (game, channel) cell
+       has a Michaelis-Menten curve installs(s) = V·s/(K+s); V and K
+       are derived per-cell from currentSpend, linearCPI = baseCPI·cpiMul,
+       and the channel's saturation fraction at that spend. */
+    CHANNELS: [
+      { key:'asa',        name:'ASA',        baseCPI: 5.50, sat: 0.70, color:'#5a7a9b' },
+      { key:'googleads',  name:'Google Ads', baseCPI: 4.20, sat: 0.55, color:'#7a8b6a' },
+      { key:'meta',       name:'Meta',       baseCPI: 4.00, sat: 0.60, color:'#9b6e8e' },
+      { key:'applovin',   name:'AppLovin',   baseCPI: 2.50, sat: 0.40, color:'#c69058' },
+      { key:'unity',      name:'Unity',      baseCPI: 2.30, sat: 0.45, color:'#7d8a8b' },
+      { key:'moloco',     name:'Moloco',     baseCPI: 3.00, sat: 0.50, color:'#a89058' },
+      { key:'ironsource', name:'ironSource', baseCPI: 2.80, sat: 0.50, color:'#9b9b6a' },
+      { key:'tiktok',     name:'TikTok',     baseCPI: 3.40, sat: 0.35, color:'#c66e6e' }
+    ],
+    CHANNEL_MIX: {
+      sol: [0.30, 0.25, 0.15, 0.10, 0.05, 0.05, 0.05, 0.05],
+      spi: [0.20, 0.20, 0.15, 0.15, 0.10, 0.10, 0.05, 0.05],
+      tri: [0.15, 0.20, 0.20, 0.15, 0.10, 0.10, 0.05, 0.05],
+      bub: [0.10, 0.15, 0.15, 0.15, 0.10, 0.10, 0.10, 0.15]
+    },
+    CPI_MUL: { sol: 1.05, spi: 0.95, tri: 1.00, bub: 0.85 }
   };
 
   /* ============================================================ */
@@ -919,6 +1173,15 @@
       cac: 0,                   // computed at startup; user-overridable
       cacIsCustom: false,
       selectedGames: ['sol','spi','tri','bub']
+    },
+    /* Tab 03 ---------------------------------------------------- */
+    t03: {
+      view: 'by-game',          // 'by-game' | 'by-channel'
+      selectedGame: 'sol',
+      selectedChannel: 'meta',
+      showBands: false,
+      whatIfAmount: 100000,
+      lastWhatIf: null          // cached optimizer result for memo export
     }
   };
 
@@ -1977,6 +2240,489 @@
   }
 
   /* ============================================================ */
+  /* TAB 03 · MARGINAL EFFICIENCY & SATURATION                     */
+  /* ============================================================ */
+
+  /* Build all 32 (game, channel) cells. K and V are derived such that
+     the channel's stated saturation fraction holds at the cell's
+     current spend, with linearCPI (= K/V) preserved. */
+  function buildSatCells(games) {
+    const out = [];
+    games.forEach((g, gi) => {
+      const monthlyG = PARAMS.BUDGET * PARAMS.CURRENT_W[gi];
+      const mix = PARAMS.CHANNEL_MIX[g.key];
+      PARAMS.CHANNELS.forEach((c, ci) => {
+        const spend = monthlyG * mix[ci];
+        const linearCPI = c.baseCPI * PARAMS.CPI_MUL[g.key];
+        const sat = c.sat;
+        const K = spend * (1 - sat) / sat;
+        const V = K / linearCPI;
+        const installs = V * spend / (K + spend);
+        const mcpi = (K + spend) * (K + spend) / (K * V);
+        out.push({
+          gameKey: g.key, gameName: g.name, gameColor: g.color, gameIdx: gi,
+          channelKey: c.key, channelName: c.name, channelColor: c.color, channelIdx: ci,
+          spend, linearCPI, sat, K, V,
+          currentInstalls: installs,
+          currentMCPI: mcpi,
+          cv: g.cv
+        });
+      });
+    });
+    return out;
+  }
+
+  /* Closed-form analytics on a Michaelis-Menten cell. */
+  const MM = {
+    installs : (V, K, s) => V * s / (K + s),
+    mcpi     : (V, K, s) => (K + s) * (K + s) / (K * V),
+    spendForMCPI: (V, K, mcpi) => Math.sqrt(mcpi * K * V) - K,
+    /* Delta-method 1-σ on installs assuming independent multiplicative
+       lognormal noise on V and K with relative SD = cv:
+         Var(installs) ≈ installs² · cv² · (1 + (K/(K+s))²) */
+    sd: (V, K, s, cv) => {
+      const inst = V * s / (K + s);
+      const factor = K / (K + s);
+      return inst * cv * Math.sqrt(1 + factor * factor);
+    }
+  };
+
+  /* "What-if" optimizer: given +$X total, find target MCPI* such that
+     the sum of per-cell incremental spends equals X. At the optimum, every
+     funded cell has MCPI(s_new) = MCPI*. Solved by bisection. */
+  function whatIfOptimize(cells, X) {
+    let lo = Math.min.apply(null, cells.map(c => c.currentMCPI));
+    let hi = lo * 30 + 50;
+    for (let i = 0; i < 80; i++) {
+      const mid = (lo + hi) / 2;
+      let total = 0;
+      for (let j = 0; j < cells.length; j++) {
+        const c = cells[j];
+        const sNew = MM.spendForMCPI(c.V, c.K, mid);
+        const ds = sNew - c.spend;
+        if (ds > 0) total += ds;
+      }
+      if (total < X) lo = mid; else hi = mid;
+    }
+    const mcpiStar = (lo + hi) / 2;
+    const allocs = cells.map(c => {
+      const sNew = MM.spendForMCPI(c.V, c.K, mcpiStar);
+      const ds = sNew - c.spend;
+      if (ds <= 0) return { cell: c, deltaSpend: 0, deltaInstalls: 0, sNew: c.spend, mcpiNew: c.currentMCPI };
+      const deltaInstalls = MM.installs(c.V, c.K, sNew) - c.currentInstalls;
+      return { cell: c, deltaSpend: ds, deltaInstalls, sNew, mcpiNew: mcpiStar };
+    }).filter(a => a.deltaSpend > 0)
+      .sort((a, b) => b.deltaSpend - a.deltaSpend);
+    const totSpend    = allocs.reduce((s, a) => s + a.deltaSpend, 0);
+    const totInstalls = allocs.reduce((s, a) => s + a.deltaInstalls, 0);
+    return { mcpiStar, allocs, totSpend, totInstalls, blendedMCPI: totSpend / Math.max(totInstalls, 1e-9) };
+  }
+
+  /* Naive baseline: dump entire +$X into the single lowest-current-MCPI cell. */
+  function whatIfNaive(cells, X) {
+    const target = cells.slice().sort((a, b) => a.currentMCPI - b.currentMCPI)[0];
+    const sNew = target.spend + X;
+    const installsNew = MM.installs(target.V, target.K, sNew);
+    const deltaInstalls = installsNew - target.currentInstalls;
+    return { cell: target, deltaSpend: X, deltaInstalls, sNew,
+             blendedMCPI: X / Math.max(deltaInstalls, 1e-9), mcpiAtNew: MM.mcpi(target.V, target.K, sNew) };
+  }
+
+  /* Diversification advisor: identify the most-saturated cell and
+     compute how much spend the next-best alternative can absorb before
+     its MCPI matches the saturated cell's current MCPI. */
+  function diversifyAdvisor(cells) {
+    /* Score saturation by current_MCPI / linearCPI ratio (= dimensionless
+       ratio capturing how far past linear regime the cell is sitting). */
+    const cellsByPress = cells.slice()
+      .map(c => ({ ...c, press: c.currentMCPI / c.linearCPI }))
+      .sort((a, b) => b.press - a.press);
+    const tight   = cellsByPress[0];
+    const tightMCPI = tight.currentMCPI;
+
+    /* Candidate alternatives: not the saturated cell, MCPI < tightMCPI,
+       sorted by lowest current MCPI (most headroom). */
+    const alts = cells.filter(c => !(c.gameKey === tight.gameKey && c.channelKey === tight.channelKey))
+      .filter(c => c.currentMCPI < tightMCPI)
+      .sort((a, b) => a.currentMCPI - b.currentMCPI);
+    if (!alts.length) return { tight, stages: [] };
+
+    const stages = [];
+    let mcpiAlready = 0;
+    for (let i = 0; i < Math.min(3, alts.length); i++) {
+      const alt = alts[i];
+      const targetMCPI = Math.min(tightMCPI, alts[i + 1] ? alts[i + 1].currentMCPI : tightMCPI);
+      const sCap = MM.spendForMCPI(alt.V, alt.K, targetMCPI);
+      const absorbable = Math.max(0, sCap - alt.spend);
+      const installsCap = MM.installs(alt.V, alt.K, sCap);
+      stages.push({
+        alt, absorbable, targetMCPI,
+        addInstalls: installsCap - alt.currentInstalls
+      });
+      mcpiAlready = alt.currentMCPI;
+    }
+    return { tight, stages, alts: alts.slice(0, 3) };
+  }
+
+  /* Insight: largest exploitable inefficiency in the portfolio. */
+  function buildT03Insight(cells, optResult, naiveResult, X) {
+    const sortedAsc  = cells.slice().sort((a, b) => a.currentMCPI - b.currentMCPI);
+    const sortedDesc = cells.slice().sort((a, b) => b.currentMCPI - a.currentMCPI);
+    const lowest  = sortedAsc[0];
+    const highest = sortedDesc[0];
+    const ratio   = highest.currentMCPI / lowest.currentMCPI;
+
+    /* If we have an active what-if and optimization beats naive by ≥10%,
+       lead with the optimization gain. Otherwise, lead with the
+       inefficiency between extremes. */
+    const winPct = (optResult && naiveResult && naiveResult.deltaInstalls > 0)
+      ? (optResult.totInstalls / naiveResult.deltaInstalls - 1) * 100
+      : null;
+
+    let html, foot;
+    if (winPct != null && winPct >= 10) {
+      html =
+        'On +$' + (X / 1000).toFixed(0) + 'K incremental, the equate-marginals split delivers ' +
+        '<strong>' + Math.round(optResult.totInstalls).toLocaleString() + ' installs</strong> at blended MCPI <strong>$' + optResult.blendedMCPI.toFixed(2) + '</strong>, ' +
+        'vs <strong>' + Math.round(naiveResult.deltaInstalls).toLocaleString() + ' installs</strong> at MCPI <strong>$' + naiveResult.blendedMCPI.toFixed(2) + '</strong> for the dump-into-lowest-MCPI baseline. ' +
+        'Optimization wins by <strong>' + winPct.toFixed(0) + '%</strong> — the gap is the cost of ignoring the cross-channel saturation curvature.';
+      foot = 'Inefficiency exploited: '+ highest.gameName+' × '+highest.channelName+' MCPI $'+highest.currentMCPI.toFixed(2)+
+             '   vs   '+lowest.gameName+' × '+lowest.channelName+' MCPI $'+lowest.currentMCPI.toFixed(2)+
+             '   ('+ratio.toFixed(1)+'× ratio across the portfolio).';
+    } else {
+      html =
+        '<strong>' + highest.gameName + ' × ' + highest.channelName + '</strong> is the most-saturated cell — current MCPI <strong>$' + highest.currentMCPI.toFixed(2) +
+        '</strong>, ' + (highest.currentMCPI / highest.linearCPI).toFixed(1) + '× its linear-regime CPI of $' + highest.linearCPI.toFixed(2) + '. ' +
+        '<strong>' + lowest.gameName + ' × ' + lowest.channelName + '</strong> sits at MCPI $' + lowest.currentMCPI.toFixed(2) + ', the cheapest unsaturated cell in the portfolio. ' +
+        'Diverting $25K from the former to the latter improves portfolio MCPI without raising total spend.';
+      foot = 'Run a what-if above to quantify how much the equate-marginals split beats the naive baseline.';
+    }
+    return { html, foot };
+  }
+
+  /* ============================================================ */
+  /* TAB 03 RENDER                                                 */
+  /* ============================================================ */
+  function renderT03() {
+    if (state.activeTab !== '03') return;
+    const t03 = state.t03;
+    const cells = buildSatCells(state.games);
+    state.t03._cells = cells;
+
+    /* Populate channel select if needed */
+    const chSel = document.getElementById('t03-chan-pick');
+    if (chSel && !chSel.options.length) {
+      PARAMS.CHANNELS.forEach(c => {
+        const o = document.createElement('option');
+        o.value = c.key; o.textContent = c.name;
+        chSel.appendChild(o);
+      });
+      chSel.value = t03.selectedChannel;
+    }
+    /* View / pick wrappers */
+    document.querySelectorAll('#t03-view button').forEach(b =>
+      b.classList.toggle('active', b.dataset.view === t03.view));
+    document.getElementById('t03-game-pick-wrap').style.display = t03.view === 'by-game' ? '' : 'none';
+    document.getElementById('t03-chan-pick-wrap').style.display = t03.view === 'by-channel' ? '' : 'none';
+    document.getElementById('t03-game-pick').value = t03.selectedGame;
+    document.getElementById('t03-bands').checked = t03.showBands;
+
+    const visible = t03.view === 'by-game'
+      ? cells.filter(c => c.gameKey    === t03.selectedGame)
+      : cells.filter(c => c.channelKey === t03.selectedChannel);
+
+    renderT03SatChart(visible, t03);
+    renderT03MCPIChart(visible, t03);
+    renderT03Ranking(visible, t03);
+    renderT03Diversify(cells);
+
+    /* Re-run what-if with current amount on every recompute (so it stays
+       in sync with filter-driven game stats). */
+    const X = state.t03.whatIfAmount;
+    const opt   = whatIfOptimize(cells, X);
+    const naive = whatIfNaive(cells, X);
+    state.t03.lastWhatIf = { X, opt, naive };
+    renderT03WhatIf(opt, naive, X);
+
+    const ins = buildT03Insight(cells, opt, naive, X);
+    document.getElementById('t03-insight').innerHTML = ins.html;
+    document.getElementById('t03-insight-foot').textContent = ins.foot;
+  }
+
+  function renderT03SatChart(cells, t03) {
+    destroyChart('t03-sat');
+    const cv = document.getElementById('t03-sat');
+    const xMax = Math.max.apply(null, cells.map(c => c.spend)) * 3;
+    const datasets = [];
+    cells.forEach(c => {
+      const color = t03.view === 'by-game' ? c.channelColor : c.gameColor;
+      const label = t03.view === 'by-game' ? c.channelName : c.gameName;
+      const N = 60;
+      const curve = [];
+      for (let i = 0; i <= N; i++) {
+        const x = (i / N) * xMax;
+        curve.push({ x, y: MM.installs(c.V, c.K, x) });
+      }
+      /* Optional 90% band */
+      if (t03.showBands) {
+        const lower = [], upper = [];
+        for (let i = 0; i <= N; i++) {
+          const x = (i / N) * xMax;
+          const mu = MM.installs(c.V, c.K, x);
+          const sd = MM.sd(c.V, c.K, x, c.cv);
+          lower.push({ x, y: Math.max(0, mu - 1.6449 * sd) });
+          upper.push({ x, y: mu + 1.6449 * sd });
+        }
+        datasets.push({
+          type: 'line', label: label + ' P10', data: lower,
+          borderColor: 'transparent', backgroundColor: hexToRgba(color, 0.10),
+          pointRadius: 0, fill: '+1', order: 5
+        });
+        datasets.push({
+          type: 'line', label: label + ' P90', data: upper,
+          borderColor: 'transparent', backgroundColor: 'transparent',
+          pointRadius: 0, fill: false, order: 5
+        });
+      }
+      datasets.push({
+        type: 'line', label, data: curve,
+        borderColor: color, backgroundColor: color,
+        borderWidth: 1.7, pointRadius: 0, tension: 0.25, fill: false, order: 2
+      });
+    });
+    /* Single scatter dataset for all current-spend dots — multi-color points */
+    datasets.push({
+      type: 'scatter', label: 'Current spend',
+      data: cells.map(c => ({ x: c.spend, y: c.currentInstalls })),
+      pointRadius: 7, pointHoverRadius: 9,
+      pointBackgroundColor: cells.map(c => t03.view === 'by-game' ? c.channelColor : c.gameColor),
+      pointBorderColor: '#ffffff', pointBorderWidth: 2.5,
+      showLine: false, order: 1
+    });
+
+    charts['t03-sat'] = new Chart(cv.getContext('2d'), {
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom', align: 'start',
+            labels: {
+              boxWidth: 8, boxHeight: 8, font: { size: 11 },
+              filter: it => !/ P10$| P90$|^Current spend$/.test(it.text)
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (cx) => {
+                if (cx.dataset.label === 'Current spend') {
+                  const c = cells[cx.dataIndex];
+                  return c.gameName + ' × ' + c.channelName +
+                    ' — current $' + (c.spend/1000).toFixed(0) + 'K · ' +
+                    Math.round(c.currentInstalls).toLocaleString() + ' installs · MCPI $' + c.currentMCPI.toFixed(2);
+                }
+                return cx.dataset.label + ' — $' + (cx.parsed.x/1000).toFixed(0) + 'K · ' +
+                       Math.round(cx.parsed.y).toLocaleString() + ' installs';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: 0, max: xMax,
+            title: { display: true, text: 'Monthly spend ($)', color: '#6e6e63', font: { size: 11 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => '$' + (v/1000).toFixed(0) + 'K' }
+          },
+          y: {
+            min: 0,
+            title: { display: true, text: 'Monthly installs', color: '#6e6e63', font: { size: 11 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => v >= 1000 ? (v/1000).toFixed(1) + 'K' : v }
+          }
+        }
+      }
+    });
+  }
+
+  function hexToRgba(hex, a) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0,2), 16),
+          g = parseInt(h.substring(2,4), 16),
+          b = parseInt(h.substring(4,6), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+  }
+
+  function renderT03MCPIChart(cells, t03) {
+    destroyChart('t03-mcpi');
+    const cv = document.getElementById('t03-mcpi');
+    const xMax = Math.max.apply(null, cells.map(c => c.spend)) * 3;
+    const datasets = [];
+    cells.forEach(c => {
+      const color = t03.view === 'by-game' ? c.channelColor : c.gameColor;
+      const label = t03.view === 'by-game' ? c.channelName : c.gameName;
+      const N = 60;
+      const curve = [];
+      for (let i = 1; i <= N; i++) {           /* skip s=0 (mcpi == linearCPI) */
+        const x = (i / N) * xMax;
+        curve.push({ x, y: MM.mcpi(c.V, c.K, x) });
+      }
+      datasets.push({
+        type: 'line', label, data: curve,
+        borderColor: color, backgroundColor: color,
+        borderWidth: 1.5, pointRadius: 0, tension: 0.25, fill: false
+      });
+    });
+    /* Current-spend dots on MCPI chart */
+    datasets.push({
+      type: 'scatter', label: 'Current spend',
+      data: cells.map(c => ({ x: c.spend, y: c.currentMCPI })),
+      pointRadius: 6, pointBackgroundColor: cells.map(c => t03.view === 'by-game' ? c.channelColor : c.gameColor),
+      pointBorderColor: '#ffffff', pointBorderWidth: 2,
+      showLine: false
+    });
+    /* Cap the y-axis: MCPI explodes at saturation. Use 99th percentile. */
+    const allMCPIs = cells.flatMap(c => {
+      const a = [];
+      for (let i = 1; i <= 30; i++) a.push(MM.mcpi(c.V, c.K, (i/30)*xMax));
+      return a;
+    });
+    allMCPIs.sort((a, b) => a - b);
+    const yCap = Math.min(allMCPIs[Math.floor(allMCPIs.length * 0.95)], 50);
+
+    document.getElementById('t03-mcpi-meta').textContent =
+      'closed form · MCPI(s) = (K + s)² / (K · V)';
+
+    charts['t03-mcpi'] = new Chart(cv.getContext('2d'), {
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (cx) => cx.dataset.label + ' — $' + (cx.parsed.x/1000).toFixed(0) + 'K · MCPI $' + cx.parsed.y.toFixed(2)
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: 0, max: xMax,
+            title: { display: true, text: 'Monthly spend ($)', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => '$' + (v/1000).toFixed(0) + 'K' }
+          },
+          y: {
+            min: 0, max: yCap,
+            title: { display: true, text: 'Marginal CPI ($ / next install)', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => '$' + v.toFixed(0) }
+          }
+        }
+      }
+    });
+  }
+
+  function renderT03Ranking(visible, t03) {
+    const sub = document.getElementById('t03-rank-sub');
+    sub.textContent = t03.view === 'by-game'
+      ? state.games.find(g => g.key === t03.selectedGame).name + ' · 8 channels at current spend'
+      : PARAMS.CHANNELS.find(c => c.key === t03.selectedChannel).name + ' · 4 games at current spend';
+    const root = document.getElementById('t03-rank');
+    root.innerHTML = '';
+    const sorted = visible.slice().sort((a, b) => a.currentMCPI - b.currentMCPI);
+    const maxMCPI = Math.max.apply(null, sorted.map(c => c.currentMCPI));
+    sorted.forEach(c => {
+      const color = t03.view === 'by-game' ? c.channelColor : c.gameColor;
+      const name  = t03.view === 'by-game' ? c.channelName : c.gameName;
+      const sub   = '$' + (c.spend/1000).toFixed(0) + 'K · ' + (c.sat*100).toFixed(0) + '% sat';
+      const ratio = c.currentMCPI / maxMCPI;
+      const row = document.createElement('div');
+      row.className = 't03-rank-row';
+      row.innerHTML = `
+        <span class="swatch" style="background:${color}"></span>
+        <span class="nm">${name}<span class="sub"> · ${sub}</span></span>
+        <span class="bar-wrap"><span class="bar" style="width:${(ratio*100).toFixed(0)}%;background:${color};opacity:0.55"></span></span>
+        <span class="mcpi">$${c.currentMCPI.toFixed(2)}</span>
+      `;
+      root.appendChild(row);
+    });
+  }
+
+  function renderT03Diversify(cells) {
+    const root = document.getElementById('t03-diversify');
+    const adv = diversifyAdvisor(cells);
+    if (!adv.stages.length) {
+      root.innerHTML = '<p class="t03-rail-sub">No exploitable diversification under current allocation.</p>';
+      return;
+    }
+    const t = adv.tight;
+    let html = '<p style="margin:0 0 6px;font-size:12px;color:var(--ink);">' +
+               'Most saturated: <strong>' + t.gameName + ' × ' + t.channelName + '</strong> at MCPI $' + t.currentMCPI.toFixed(2) +
+               ' (' + (t.currentMCPI / t.linearCPI).toFixed(1) + '× its linear CPI).</p>';
+    html += '<div class="t03-divers"><p style="font-size:11.5px;color:var(--muted);margin:0 0 4px;">Overflow absorption order:</p>';
+    adv.stages.forEach((stg, i) => {
+      const a = stg.alt;
+      html += `
+        <div class="stage">
+          <span class="lbl">Stage ${i+1}</span>
+          <div class="body">
+            <strong>${a.gameName} × ${a.channelName}</strong> can absorb up to
+            <strong>$${(stg.absorbable/1000).toFixed(0)}K</strong> incremental
+            (current MCPI $${a.currentMCPI.toFixed(2)} → target $${stg.targetMCPI.toFixed(2)}),
+            yielding <strong>+${Math.round(stg.addInstalls).toLocaleString()}</strong> installs
+            before saturating to the next alternative.
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    root.innerHTML = html;
+  }
+
+  function renderT03WhatIf(opt, naive, X) {
+    const root = document.getElementById('t03-wi-result');
+    if (!opt.allocs.length) {
+      root.innerHTML = '<p class="t03-rail-sub">All cells already at or above the target MCPI — no incremental allocation feasible at $' + (X/1000).toFixed(0) + 'K.</p>';
+      return;
+    }
+    const winPct = naive.deltaInstalls > 0
+      ? (opt.totInstalls / naive.deltaInstalls - 1) * 100
+      : null;
+    const winClass = (winPct == null) ? 'neutral' : (winPct >= 0 ? '' : 'neg');
+    let html = '';
+    html +=
+      '<div class="wi-card opt"><div class="h opt-h">Equate-marginals optimum</div>' +
+        '<div class="big">+' + Math.round(opt.totInstalls).toLocaleString() + ' installs</div>' +
+        '<div class="sub">blended MCPI $' + opt.blendedMCPI.toFixed(2) + ' · target MCPI* $' + opt.mcpiStar.toFixed(2) + '</div>' +
+      '</div>';
+    html +=
+      '<div class="wi-card"><div class="h">Naive (dump-into-lowest)</div>' +
+        '<div class="big">+' + Math.round(naive.deltaInstalls).toLocaleString() + ' installs</div>' +
+        '<div class="sub">all into ' + naive.cell.gameName + ' × ' + naive.cell.channelName +
+          ' · blended MCPI $' + naive.blendedMCPI.toFixed(2) + '</div>' +
+      '</div>';
+    html += '<table class="wi-table"><thead><tr><th>Cell</th><th style="text-align:right">+ Spend</th><th style="text-align:right">+ Installs</th><th style="text-align:right">% of $X</th></tr></thead><tbody>';
+    opt.allocs.forEach(a => {
+      const c = a.cell;
+      html +=
+        '<tr><td class="cell-name"><span class="sw" style="background:' + c.gameColor + '"></span>' +
+          c.gameName + ' × <span style="color:#6e6e63">' + c.channelName + '</span></td>' +
+        '<td style="text-align:right">+$' + (a.deltaSpend/1000).toFixed(1) + 'K</td>' +
+        '<td style="text-align:right">+' + Math.round(a.deltaInstalls).toLocaleString() + '</td>' +
+        '<td style="text-align:right">' + (a.deltaSpend/X*100).toFixed(0) + '%</td></tr>';
+    });
+    html += '</tbody></table>';
+    html +=
+      '<div class="wi-summary">' +
+        '<span>+$' + (X/1000).toFixed(0) + 'K incremental · spread across <strong>' + opt.allocs.length + '</strong> cells</span>' +
+        (winPct != null
+          ? '<span class="win ' + winClass + '">' + (winPct >= 0 ? '▲' : '▼') + ' optimization ' + (winPct >= 0 ? 'wins' : 'loses') + ' ' + Math.abs(winPct).toFixed(0) + '% vs naive</span>'
+          : '<span class="win">naive baseline n/a</span>') +
+      '</div>';
+    root.innerHTML = html;
+  }
+
+  /* ============================================================ */
   /* CSV: parse + validate + sample                                */
   /* ============================================================ */
   const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
@@ -2084,6 +2830,57 @@
       lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
       lines.push('');
       lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else if (state.activeTab === '03') {
+      const cells = buildSatCells(state.games);
+      const X = state.t03.whatIfAmount;
+      const opt   = whatIfOptimize(cells, X);
+      const naive = whatIfNaive(cells, X);
+      const winPct = naive.deltaInstalls > 0
+        ? (opt.totInstalls / naive.deltaInstalls - 1) * 100
+        : null;
+      const sortedAsc  = cells.slice().sort((a,b)=>a.currentMCPI - b.currentMCPI);
+      const sortedDesc = cells.slice().sort((a,b)=>b.currentMCPI - a.currentMCPI);
+
+      lines.push('## Saturation snapshot');
+      lines.push('| Rank | Game × Channel | Spend | Installs | MCPI | linear CPI | sat |');
+      lines.push('|---|---|---|---|---|---|---|');
+      sortedAsc.slice(0, 8).forEach((c, i) => {
+        lines.push('| ' + (i+1) + ' | ' + c.gameName + ' × ' + c.channelName + ' | $' +
+                   (c.spend/1000).toFixed(0) + 'K | ' + Math.round(c.currentInstalls).toLocaleString() +
+                   ' | $' + c.currentMCPI.toFixed(2) + ' | $' + c.linearCPI.toFixed(2) + ' | ' + (c.sat*100).toFixed(0) + '% |');
+      });
+      lines.push('');
+      lines.push('Most-saturated cell: **' + sortedDesc[0].gameName + ' × ' + sortedDesc[0].channelName +
+                 '** at MCPI $' + sortedDesc[0].currentMCPI.toFixed(2) +
+                 ' (' + (sortedDesc[0].currentMCPI / sortedDesc[0].linearCPI).toFixed(1) + '× its linear CPI).');
+      lines.push('Most-headroom cell: **' + sortedAsc[0].gameName + ' × ' + sortedAsc[0].channelName +
+                 '** at MCPI $' + sortedAsc[0].currentMCPI.toFixed(2) + '.');
+      lines.push('');
+
+      lines.push('## What-if · +$' + (X/1000).toFixed(0) + 'K incremental');
+      lines.push('| Cell | + Spend | + Installs | % of $X |');
+      lines.push('|---|---|---|---|');
+      opt.allocs.forEach(a => {
+        lines.push('| ' + a.cell.gameName + ' × ' + a.cell.channelName + ' | $' +
+                   (a.deltaSpend/1000).toFixed(1) + 'K | +' + Math.round(a.deltaInstalls).toLocaleString() +
+                   ' | ' + (a.deltaSpend/X*100).toFixed(0) + '% |');
+      });
+      lines.push('');
+      lines.push('**Equate-marginals optimum**: +' + Math.round(opt.totInstalls).toLocaleString() +
+                 ' installs at blended MCPI $' + opt.blendedMCPI.toFixed(2) +
+                 ' (target MCPI* = $' + opt.mcpiStar.toFixed(2) + ').');
+      lines.push('**Naive baseline** (dump-into-' + naive.cell.gameName + '×' + naive.cell.channelName + '): +' +
+                 Math.round(naive.deltaInstalls).toLocaleString() +
+                 ' installs at blended MCPI $' + naive.blendedMCPI.toFixed(2) + '.');
+      if (winPct != null) {
+        lines.push('**Optimization vs naive**: ' + (winPct >= 0 ? '+' : '') + winPct.toFixed(0) +
+                   '% on installs per dollar — the gap is the cost of ignoring cross-channel saturation curvature.');
+      }
+      lines.push('');
+      lines.push('## Decision insight');
+      lines.push('> ' + document.getElementById('t03-insight').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t03-insight-foot').textContent.trim() + '_');
     } else if (state.activeTab === '02') {
       const t02 = state.t02;
       const fits = state.games.map((g, i) => {
@@ -2282,16 +3079,54 @@
     });
   }
 
+  function bindT03Controls() {
+    document.querySelectorAll('#t03-view button').forEach(b => {
+      b.addEventListener('click', () => {
+        state.t03.view = b.dataset.view;
+        renderT03();
+      });
+    });
+    document.getElementById('t03-game-pick').addEventListener('change', e => {
+      state.t03.selectedGame = e.target.value;
+      renderT03();
+    });
+    document.getElementById('t03-chan-pick').addEventListener('change', e => {
+      state.t03.selectedChannel = e.target.value;
+      renderT03();
+    });
+    document.getElementById('t03-bands').addEventListener('change', e => {
+      state.t03.showBands = e.target.checked;
+      renderT03();
+    });
+    const amt = document.getElementById('t03-wi-amount');
+    document.getElementById('t03-wi-go').addEventListener('click', () => {
+      const v = parseFloat(amt.value);
+      if (isFinite(v) && v > 0) {
+        state.t03.whatIfAmount = v;
+        renderT03();
+      }
+    });
+    [document.getElementById('t03-wi-presets'), document.getElementById('t03-wi-presets-2')].forEach(b => {
+      b.addEventListener('click', () => {
+        const v = parseFloat(b.dataset.amount);
+        amt.value = v;
+        state.t03.whatIfAmount = v;
+        renderT03();
+      });
+    });
+  }
+
   function renderActiveTab() {
     if (state.activeTab === '01') renderT01();
     else if (state.activeTab === '02') renderT02();
-    /* Tabs 03–07 remain placeholders. */
+    else if (state.activeTab === '03') renderT03();
+    /* Tabs 04–07 remain placeholders. */
   }
 
   function init() {
     state.t02.cac = defaultBlendedCAC();
     bindFilters(); bindTabs(); bindDataMode(); bindUpload();
-    bindT01Buttons(); bindT02Controls();
+    bindT01Buttons(); bindT02Controls(); bindT03Controls();
     recompute(); renderActiveTab();
     window.addEventListener('resize', () => {
       if (state.activeTab === '01') renderKPIs();
