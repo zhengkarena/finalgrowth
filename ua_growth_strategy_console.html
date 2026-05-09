@@ -553,6 +553,188 @@
   }
   .t03-divers .stage .body strong { font-weight: 600; }
 
+  /* === Tab 04 layout === */
+  .t04-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) { .t04-grid { grid-template-columns: 1fr; } }
+  .t04-main, .t04-rail { display: flex; flex-direction: column; gap: 16px; }
+
+  /* Matrix */
+  .t04-matrix {
+    display: grid;
+    grid-template-columns: 130px repeat(8, 1fr);
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .t04-matrix .ch-h, .t04-matrix .cn-h {
+    padding: 6px 4px;
+    font-size: 10.5px; letter-spacing: .04em; color: var(--muted);
+    text-transform: uppercase;
+  }
+  .t04-matrix .ch-h { text-align: center; }
+  .t04-matrix .cn-h {
+    text-align: left; padding-left: 4px;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; color: var(--ink); text-transform: none;
+  }
+  .t04-matrix .cn-h .sw { width: 8px; height: 8px; border-radius: 2px; }
+  .t04-cell {
+    border: 1px solid rgba(20,20,15,0.06);
+    border-radius: 4px;
+    padding: 8px 6px 6px;
+    min-height: 50px;
+    text-align: center;
+    cursor: default;
+    position: relative;
+  }
+  .t04-cell.empty { background: #f3f2ec; }
+  .t04-cell .spend {
+    font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--ink);
+    line-height: 1.1;
+  }
+  .t04-cell .roas {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .t04-cell.warn::after {
+    content: '⚠'; position: absolute; top: 2px; right: 4px;
+    font-size: 10px; color: rgba(20,20,15,0.55);
+  }
+  .t04-matrix-legend {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 10px; font-size: 11px; color: var(--muted);
+  }
+  .t04-matrix-legend .leg {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 3px;
+    color: var(--ink); font-family: var(--mono); font-size: 10.5px;
+    border: 1px solid rgba(20,20,15,0.06);
+  }
+
+  /* Fatigue */
+  .t04-fatigue-row {
+    display: grid;
+    grid-template-columns: 1fr 230px;
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .t04-fatigue-wrap { height: 240px; position: relative; }
+  .t04-fatigue-stats {
+    font-size: 11.5px; color: var(--ink-soft);
+    border-left: 1px solid var(--line-soft);
+    padding-left: 14px;
+  }
+  .t04-fatigue-stats .row {
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line-soft);
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .t04-fatigue-stats .row:last-child { border-bottom: none; }
+  .t04-fatigue-stats .lbl {
+    font-size: 10px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase;
+  }
+  .t04-fatigue-stats .v { font-family: var(--mono); font-size: 12px; color: var(--ink); }
+  .t04-fatigue-stats .threshold {
+    margin-top: 8px; padding: 8px 10px;
+    background: #fbf6e9; border-left: 2px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+  }
+  .t04-fatigue-stats .threshold .lbl-2 {
+    font-size: 10px; color: var(--accent); letter-spacing: .07em; text-transform: uppercase;
+    display: block; margin-bottom: 2px;
+  }
+  .t04-fatigue-stats .threshold .v-2 {
+    font-family: var(--mono); font-size: 13px; color: var(--ink);
+  }
+  .t04-fatigue-stats .threshold .sub-2 {
+    font-size: 10.5px; color: var(--muted); margin-top: 2px;
+  }
+
+  /* Rankings */
+  .t04-rank-controls {
+    display: flex; align-items: center; gap: 12px;
+    padding: 6px 0 10px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 8px;
+  }
+  .t04-rank-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .t04-rank-h {
+    margin: 0 0 6px; font-family: var(--serif); font-size: 13px; font-weight: 500;
+    color: var(--ink);
+  }
+  .t04-rank-table table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .t04-rank-table th {
+    text-align: left; font-weight: 500; color: var(--muted);
+    font-size: 10px; letter-spacing: .07em; text-transform: uppercase;
+    padding: 6px 4px; border-bottom: 1px solid var(--line);
+  }
+  .t04-rank-table td {
+    padding: 5px 4px; border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono); font-size: 11px;
+  }
+  .t04-rank-table td.crid {
+    font-weight: 500; color: var(--ink);
+  }
+  .t04-rank-table td.cmeta {
+    font-family: var(--sans); color: var(--muted); font-size: 10.5px;
+  }
+
+  /* Pipeline */
+  .t04-pipe { display: flex; flex-direction: column; gap: 10px; }
+  .t04-pipe-stage {
+    border: 1px solid var(--line); border-radius: 5px;
+    padding: 8px 10px; background: #fcfcf9;
+  }
+  .t04-pipe-stage.testing  { border-left: 3px solid #b8b8a8; }
+  .t04-pipe-stage.scaling  { border-left: 3px solid #6b9c75; }
+  .t04-pipe-stage.fatigued { border-left: 3px solid #b07b1f; }
+  .t04-pipe-stage.killed   { border-left: 3px solid #962d2d; opacity: 0.85; }
+  .t04-pipe-stage .h {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .t04-pipe-stage .h .nm {
+    font-size: 12px; font-weight: 500; color: var(--ink);
+  }
+  .t04-pipe-stage .h .ct {
+    font-family: var(--mono); font-size: 13px; color: var(--ink);
+  }
+  .t04-pipe-stage .h .sub {
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    margin-left: 6px;
+  }
+  .t04-pipe-bars {
+    display: flex; height: 8px; border-radius: 3px; overflow: hidden;
+    background: var(--line);
+  }
+  .t04-pipe-bars .seg { height: 100%; }
+  .t04-pipe-stage .legend {
+    margin-top: 6px;
+    display: flex; flex-wrap: wrap; gap: 8px 12px;
+    font-size: 10.5px; color: var(--muted);
+  }
+  .t04-pipe-stage .legend .item {
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .t04-pipe-stage .legend .sw {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+
+  .t04-defs {
+    font-size: 11.5px; line-height: 1.5; color: var(--ink-soft);
+  }
+  .t04-defs > div {
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .t04-defs > div:last-child { border-bottom: none; }
+
   /* === Modal === */
   .modal-bg {
     position: fixed; inset: 0; background: rgba(20,20,15,.4);
@@ -1010,10 +1192,103 @@
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="04">
-    <div class="placeholder-card">
-      <span class="turn-tag">Coming in Turn 4</span>
-      <h2>04 · Creative Intelligence</h2>
-      <p>Concept × channel ROAS heatmap; selectable creative fatigue curve (CTR / CVR / IPM) with replacement threshold; weekly Top 5 / Bottom 5; testing→scaling→fatigued→killed pipeline funnel.</p>
+    <div class="t04-grid">
+
+      <div class="t04-main">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Creative matrix · Concept × Channel
+              <span class="why" data-tip="Cell color = spend-weighted ROAS relative to portfolio mean. Cell number = monthly spend in $K. Reds are below 0.7× mean; greens above 1.3×. Gray = no spend in cell.">ⓘ</span>
+            </h3>
+            <span class="h-meta" id="t04-matrix-meta"></span>
+          </div>
+          <div class="t04-matrix" id="t04-matrix"></div>
+          <div class="t04-matrix-legend">
+            <span>ROAS vs portfolio mean:</span>
+            <span class="leg" style="background:#c4646e">≤ 0.7×</span>
+            <span class="leg" style="background:#dba2a4">0.85×</span>
+            <span class="leg" style="background:#f4f0e8">1.0×</span>
+            <span class="leg" style="background:#a8c2a2">1.15×</span>
+            <span class="leg" style="background:#6b9c75">≥ 1.3×</span>
+          </div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Fatigue curve · CTR · CVR · IPM
+              <span class="why" data-tip="Fitted exponential decay CTR(imp) = CTR_0 · exp(−λ · imp/1M) on the creative's history. R² and parameters surfaced. Replacement threshold computed from λ as the impression count where CTR drops below 0.75 · CTR_0.">ⓘ</span>
+            </h3>
+            <div class="ctl-group">
+              <label class="ctl-lbl">Creative</label>
+              <select id="t04-creative-pick"></select>
+            </div>
+          </div>
+          <div class="t04-fatigue-row">
+            <div class="t04-fatigue-wrap">
+              <canvas id="t04-fatigue"></canvas>
+            </div>
+            <div class="t04-fatigue-stats" id="t04-fatigue-stats"></div>
+          </div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Top 5 / Bottom 5 creatives</h3>
+            <span class="h-meta" id="t04-rank-meta"></span>
+          </div>
+          <div class="t04-rank-controls">
+            <div class="ctl-group">
+              <label class="ctl-lbl">Score</label>
+              <div class="seg-toggle compact" id="t04-rank-method">
+                <button data-method="shrunk" class="active" type="button" data-tip="Bayes shrinkage: shrunk_i = (σ_i²·pool_mean + τ²·raw_i) / (σ_i² + τ²). Pool by concept. σ_i² uses the creative's game CV — same σ_g driver as Tabs 01–03. Eligibility ≥ 50K impressions.">Shrunk ROAS</button>
+                <button data-method="raw" type="button" data-tip="Raw ROAS without stabilization — useful for sanity-checking the shrinkage but biased by small samples on low-impression creatives.">Raw ROAS</button>
+              </div>
+            </div>
+          </div>
+          <div class="t04-rank-grid">
+            <div class="t04-rank-table" id="t04-rank-top">
+              <h4 class="t04-rank-h">Top 5 · scaling candidates</h4>
+            </div>
+            <div class="t04-rank-table" id="t04-rank-bot">
+              <h4 class="t04-rank-h">Bottom 5 · kill / refresh</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-card recommendation">
+          <span class="tag">&#9830; Decision insight</span>
+          <div class="body" id="t04-insight">—</div>
+          <div class="footnote" id="t04-insight-foot"></div>
+        </div>
+
+      </div>
+
+      <div class="t04-rail">
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Pipeline funnel</h3>
+            <span class="why" data-tip="Operational stages — not statistical. Testing: low impressions, learning. Scaling: ≥100K imp and CTR ≥ 0.75 · CTR_0. Fatigued: CTR drift past threshold, age &lt; 60d. Killed: same drift, age ≥ 60d.">ⓘ</span>
+          </div>
+          <p class="t04-rail-sub">creatives by stage (concept breakdown)</p>
+          <div id="t04-pipeline"></div>
+        </div>
+
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Stage definitions</h3>
+          </div>
+          <div class="t04-defs">
+            <div><strong>Testing</strong> · &lt; 100K impressions; learning regime, ROAS uninformative.</div>
+            <div><strong>Scaling</strong> · ≥ 100K AND current CTR ≥ 0.75 × CTR<sub>0</sub>.</div>
+            <div><strong>Fatigued</strong> · ≥ 100K AND CTR ratio &lt; 0.75 AND age &lt; 60d. Replace.</div>
+            <div><strong>Killed</strong> · ≥ 100K AND CTR ratio &lt; 0.75 AND age ≥ 60d. Sunset.</div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </section>
   <section class="tabpanel" data-tab-panel="05">
@@ -1146,7 +1421,22 @@
       tri: [0.15, 0.20, 0.20, 0.15, 0.10, 0.10, 0.05, 0.05],
       bub: [0.10, 0.15, 0.15, 0.15, 0.10, 0.10, 0.10, 0.15]
     },
-    CPI_MUL: { sol: 1.05, spi: 0.95, tri: 1.00, bub: 0.85 }
+    CPI_MUL: { sol: 1.05, spi: 0.95, tri: 1.00, bub: 0.85 },
+
+    /* Tab 04 ------------------------------------------------------ */
+    /* Concept-level priors. baseROAS sets the centroid of d7 ROAS for
+       creatives of that type; fatigue is the decay rate λ for CTR per
+       million impressions — UGC fades fastest, Testimonial slowest.
+       Calibrated so a typical creative shows a 20–30% CTR drop after a
+       few million impressions, matching real-world casual-game fatigue
+       observations. */
+    CONCEPTS: [
+      { key:'gameplay',    name:'Gameplay demo', baseROAS:0.20, fatigue:0.08, color:'#5d8a72' },
+      { key:'ugc',         name:'UGC',           baseROAS:0.26, fatigue:0.18, color:'#9c6f55' },
+      { key:'testimonial', name:'Testimonial',   baseROAS:0.13, fatigue:0.03, color:'#7d6c8f' },
+      { key:'cinematic',   name:'Cinematic',     baseROAS:0.19, fatigue:0.06, color:'#4a6f8f' },
+      { key:'metagame',    name:'Metagame',      baseROAS:0.16, fatigue:0.10, color:'#a89058' }
+    ]
   };
 
   /* ============================================================ */
@@ -1182,6 +1472,13 @@
       showBands: false,
       whatIfAmount: 100000,
       lastWhatIf: null          // cached optimizer result for memo export
+    },
+    /* Tab 04 ---------------------------------------------------- */
+    t04: {
+      selectedCreativeId: null,
+      rankingMethod: 'shrunk',  // 'raw' | 'shrunk'
+      minImpressions: 50_000,
+      _creatives: null          // generated lazily, cached per seed
     }
   };
 
@@ -2723,6 +3020,481 @@
   }
 
   /* ============================================================ */
+  /* TAB 04 · CREATIVE INTELLIGENCE                                */
+  /* ============================================================ */
+
+  /* Generate ~50 creatives, deterministic per global seed. Each carries
+     game/concept/channel, age, lifetime impressions, spend, baseline and
+     current CTR/CVR (current = baseline · exp(−λ · imp/1M)), raw d7 ROAS,
+     stage assignment, and an 8-point fatigue history for the panel fit. */
+  function generateCreatives(seed, games) {
+    const rng = mulberry32((seed ^ 0xCAFEBABE) >>> 0);
+    const out = [];
+    const N = 50;
+    for (let i = 0; i < N; i++) {
+      const concept = PARAMS.CONCEPTS[Math.floor(rng() * PARAMS.CONCEPTS.length)];
+      const channel = PARAMS.CHANNELS[Math.floor(rng() * PARAMS.CHANNELS.length)];
+      const game    = games[Math.floor(rng() * games.length)];
+      const ageDays = Math.round(2 + rng() * 88);          // 2–90 days
+      /* Lifetime impressions span ~3 orders of magnitude (~20K–25M).
+         Combined with calibrated fatigue rates, this produces a realistic
+         distribution across testing/scaling/fatigued/killed. */
+      const impLog  = 10 + rng() * 7;                       // ln-scale
+      const totalImp = Math.exp(impLog) * (0.7 + 0.6 * rng());
+      const baselineCTR = 0.005 + 0.012 * rng() + (concept.key === 'cinematic' ? 0.005 : 0);
+      const lambdaPerM = concept.fatigue * (0.7 + 0.6 * rng());
+      const currentCTR = baselineCTR * Math.exp(-lambdaPerM * totalImp / 1e6);
+      const baselineCVR = 0.18 + 0.15 * rng();
+      const cvrDecay = 0.3 * lambdaPerM * (rng() < 0.35 ? 1 : 0);
+      const currentCVR = baselineCVR * Math.exp(-cvrDecay * totalImp / 1e6);
+      const currentIPM = currentCTR * currentCVR * 1000;
+      /* Spend = lifetime CPM × imp/1000, with channel-driven CPM bias. */
+      const cpm = 1.5 + 4.0 * rng() + (channel.key === 'asa' ? 1.5 : 0);
+      const spend = totalImp / 1000 * cpm;
+      /* Raw d7 ROAS = concept × channel × game × creative-quality noise */
+      const channelMult = 0.85 + 0.45 * rng();
+      const cv = game.cv;
+      const noise = Math.exp(cv * gauss(rng) * 0.4);
+      const rawROAS = concept.baseROAS * (0.55 + 0.95 * rng()) * channelMult * noise;
+      /* Stage assignment */
+      const ctrRatio = currentCTR / baselineCTR;
+      let stage;
+      if (totalImp < 100e3)             stage = 'testing';
+      else if (ctrRatio >= 0.75)        stage = 'scaling';
+      else if (ageDays < 60)            stage = 'fatigued';
+      else                              stage = 'killed';
+      /* Fatigue history (8 points, ascending in cumulative impressions). */
+      const history = [];
+      for (let h = 0; h < 8; h++) {
+        const impAtH = (h + 1) / 8 * totalImp;
+        const ctrH = baselineCTR * Math.exp(-lambdaPerM * impAtH / 1e6) * Math.exp(0.10 * gauss(rng));
+        const cvrH = baselineCVR * Math.exp(-cvrDecay  * impAtH / 1e6) * Math.exp(0.08 * gauss(rng));
+        history.push({ imp: impAtH, ctr: ctrH, cvr: cvrH, ipm: ctrH * cvrH * 1000 });
+      }
+      const id = 'CR' + (1000 + Math.floor(rng() * 8999));
+      out.push({
+        id,
+        conceptKey: concept.key, conceptName: concept.name, conceptColor: concept.color,
+        channelKey: channel.key, channelName: channel.name, channelColor: channel.color,
+        gameKey: game.key, gameName: game.name, gameColor: game.color, gameCV: cv,
+        ageDays, totalImp, spend,
+        baselineCTR, currentCTR, baselineCVR, currentCVR, currentIPM,
+        lambdaPerM, rawROAS,
+        stage,
+        history
+      });
+    }
+    return out;
+  }
+
+  /* Fit y = y_0 · exp(−λ · x / scale) on (x_i, y_i). Linear in log y.
+     Returns y_0, λ, R², and a closed-form replacement-threshold solver. */
+  function fitExpDecay(points, scale) {
+    const n = points.length;
+    const X  = points.map(p => p.x / scale);          // x normalized to scale units
+    const lY = points.map(p => Math.log(Math.max(p.y, 1e-9)));
+    const mx = X.reduce((a, b) => a + b, 0) / n;
+    const my = lY.reduce((a, b) => a + b, 0) / n;
+    let num = 0, den = 0;
+    for (let i = 0; i < n; i++) { num += (X[i]-mx)*(lY[i]-my); den += (X[i]-mx)*(X[i]-mx); }
+    const slope = num / den;            // = −λ
+    const lambda = -slope;
+    const intercept = my - slope * mx;
+    const y0 = Math.exp(intercept);
+    /* R² in original-scale residuals (more honest than log-scale R²) */
+    const yFit = X.map(x => y0 * Math.exp(-lambda * x));
+    const yObs = points.map(p => p.y);
+    const meanY = yObs.reduce((a, b) => a + b, 0) / n;
+    let SSr = 0, SSt = 0;
+    for (let i = 0; i < n; i++) { SSr += (yObs[i]-yFit[i])**2; SSt += (yObs[i]-meanY)**2; }
+    const R2 = SSt > 0 ? 1 - SSr / SSt : 0;
+    return {
+      y0, lambda, R2, scale,
+      predict: x => y0 * Math.exp(-lambda * x / scale),
+      /* threshold: x at which y = frac · y_0  →  exp(−λ · x/scale) = frac
+                                              →  x = −scale · ln(frac) / λ */
+      thresholdX: (frac) => lambda > 0 ? -scale * Math.log(frac) / lambda : Infinity
+    };
+  }
+
+  /* Shrunk per-creative ROAS: pool by concept (mean and τ²); per-creative
+     measurement variance σ_i² = (raw_i · CV_g)² / (impressions_i / 100K),
+     using the creative's GAME CV — same σ_g driver as Tabs 01–03.
+     Returns array of { ...creative, shrunkROAS, weight, sigma2, poolMean }. */
+  function shrinkRankings(creatives) {
+    const byConcept = {};
+    creatives.forEach(c => { (byConcept[c.conceptKey] = byConcept[c.conceptKey] || []).push(c); });
+    const poolStats = {};
+    Object.entries(byConcept).forEach(([k, arr]) => {
+      const m = arr.reduce((s, c) => s + c.rawROAS, 0) / arr.length;
+      const v = arr.reduce((s, c) => s + (c.rawROAS - m)**2, 0) / Math.max(1, arr.length - 1);
+      poolStats[k] = { mean: m, varTau: Math.max(v, 1e-6) };
+    });
+    return creatives.map(c => {
+      const ps = poolStats[c.conceptKey];
+      const nNorm = c.totalImp / 100_000;
+      const sigma2 = (c.rawROAS * c.gameCV) ** 2 / Math.max(nNorm, 0.05);
+      const w = ps.varTau / (sigma2 + ps.varTau);
+      const shrunk = (sigma2 * ps.mean + ps.varTau * c.rawROAS) / (sigma2 + ps.varTau);
+      return { ...c, shrunkROAS: shrunk, weight: w, sigma2, poolMean: ps.mean };
+    });
+  }
+
+  /* ============================================================ */
+  /* TAB 04 RENDER                                                 */
+  /* ============================================================ */
+  function ensureCreatives() {
+    if (!state.t04._creatives || state.t04._creativesSeed !== state.seed) {
+      state.t04._creatives = generateCreatives(state.seed, state.games);
+      state.t04._creativesSeed = state.seed;
+      state.t04.selectedCreativeId = null;   // re-pick default
+    }
+  }
+
+  function renderT04() {
+    if (state.activeTab !== '04') return;
+    ensureCreatives();
+    const creatives = state.t04._creatives;
+    /* Default selected creative = highest-spend non-killed creative */
+    if (!state.t04.selectedCreativeId) {
+      const eligible = creatives.filter(c => c.stage !== 'killed');
+      const top = eligible.slice().sort((a, b) => b.spend - a.spend)[0] || creatives[0];
+      state.t04.selectedCreativeId = top.id;
+    }
+    renderT04Matrix(creatives);
+    renderT04Fatigue(creatives);
+    renderT04Rankings(creatives);
+    renderT04Pipeline(creatives);
+    renderT04Insight(creatives);
+  }
+
+  /* ---- Matrix ---- */
+  function renderT04Matrix(creatives) {
+    const root = document.getElementById('t04-matrix');
+    root.innerHTML = '';
+    /* Aggregate by (concept, channel) using non-killed creatives. */
+    const active = creatives.filter(c => c.stage !== 'killed');
+    const grid = {};
+    active.forEach(c => {
+      const k = c.conceptKey + '|' + c.channelKey;
+      if (!grid[k]) grid[k] = { spend: 0, weighted: 0, cnt: 0 };
+      grid[k].spend    += c.spend;
+      grid[k].weighted += c.spend * c.rawROAS;
+      grid[k].cnt      += 1;
+    });
+    const totalSpend = active.reduce((s, c) => s + c.spend, 0);
+    const totalROAS  = active.reduce((s, c) => s + c.spend * c.rawROAS, 0) / Math.max(totalSpend, 1e-9);
+
+    /* Header row */
+    const hRow = ['<div></div>'];
+    PARAMS.CHANNELS.forEach(ch => {
+      hRow.push('<div class="ch-h">' + ch.name + '</div>');
+    });
+    root.insertAdjacentHTML('beforeend', hRow.join(''));
+
+    /* Concept rows */
+    PARAMS.CONCEPTS.forEach(cn => {
+      root.insertAdjacentHTML('beforeend',
+        '<div class="cn-h"><span class="sw" style="background:' + cn.color + '"></span>' + cn.name + '</div>');
+      PARAMS.CHANNELS.forEach(ch => {
+        const k = cn.key + '|' + ch.key;
+        const cell = grid[k];
+        if (!cell || cell.spend < 100) {
+          root.insertAdjacentHTML('beforeend', '<div class="t04-cell empty"></div>');
+          return;
+        }
+        const cellROAS = cell.weighted / cell.spend;
+        const ratio = cellROAS / totalROAS;
+        const color = roasColor(ratio);
+        const isWarn = ratio < 0.75 && cell.spend > totalSpend * 0.04;
+        root.insertAdjacentHTML('beforeend',
+          '<div class="t04-cell' + (isWarn ? ' warn' : '') + '" style="background:' + color + '"' +
+          ' title="' + cn.name + ' × ' + ch.name + ' — $' + (cell.spend/1000).toFixed(0) + 'K · ROAS ' + cellROAS.toFixed(2) + ' (' + ratio.toFixed(2) + '× mean) · ' + cell.cnt + ' creatives">' +
+            '<div class="spend">$' + (cell.spend/1000).toFixed(0) + 'K</div>' +
+            '<div class="roas">ROAS ' + cellROAS.toFixed(2) + '</div>' +
+          '</div>');
+      });
+    });
+
+    document.getElementById('t04-matrix-meta').textContent =
+      'spend $' + (totalSpend/1000).toFixed(0) + 'K · portfolio ROAS_d7 ' + totalROAS.toFixed(2) +
+      ' · ' + active.length + ' active creatives';
+  }
+  function roasColor(ratio) {
+    /* Anchor at 0.7×, 1.0×, 1.3×. Linear interp between the three stops. */
+    const stops = [
+      { x: 0.70, c: [196,  100, 110] }, // strong red
+      { x: 0.85, c: [219,  162, 164] }, // muted red
+      { x: 1.00, c: [244,  240, 232] }, // paper / neutral
+      { x: 1.15, c: [168,  194, 162] }, // muted green
+      { x: 1.30, c: [107,  156, 117] }  // strong green
+    ];
+    if (ratio <= stops[0].x) return rgb(stops[0].c);
+    if (ratio >= stops[stops.length-1].x) return rgb(stops[stops.length-1].c);
+    for (let i = 0; i < stops.length - 1; i++) {
+      if (ratio <= stops[i+1].x) {
+        const t = (ratio - stops[i].x) / (stops[i+1].x - stops[i].x);
+        const c = [0, 1, 2].map(k => Math.round(stops[i].c[k] + t * (stops[i+1].c[k] - stops[i].c[k])));
+        return rgb(c);
+      }
+    }
+    return rgb(stops[2].c);
+  }
+  function rgb(c) { return 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')'; }
+
+  /* ---- Fatigue panel ---- */
+  function renderT04Fatigue(creatives) {
+    /* Populate creative dropdown — top spenders first, killed at bottom. */
+    const sel = document.getElementById('t04-creative-pick');
+    if (sel) {
+      sel.innerHTML = '';
+      creatives.slice()
+        .sort((a, b) => (a.stage === 'killed' ? 1 : 0) - (b.stage === 'killed' ? 1 : 0) || b.spend - a.spend)
+        .forEach(c => {
+          const o = document.createElement('option');
+          o.value = c.id;
+          o.textContent = c.id + ' · ' + c.conceptName + ' × ' + c.channelName + ' · ' + c.gameName + ' (' + c.stage + ')';
+          sel.appendChild(o);
+        });
+      sel.value = state.t04.selectedCreativeId;
+    }
+    const creative = creatives.find(c => c.id === state.t04.selectedCreativeId);
+    if (!creative) return;
+
+    /* Fit exponential decay on CTR (history.imp, history.ctr) with scale = 1M */
+    const ctrFit = fitExpDecay(creative.history.map(h => ({ x: h.imp, y: h.ctr })), 1e6);
+    const cvrFit = fitExpDecay(creative.history.map(h => ({ x: h.imp, y: h.cvr })), 1e6);
+
+    /* Render chart */
+    destroyChart('t04-fatigue');
+    const cv = document.getElementById('t04-fatigue');
+    const xMax = creative.history[creative.history.length - 1].imp * 1.3;
+    const N = 60;
+    const ctrCurve = [], cvrCurve = [], ipmCurve = [];
+    for (let i = 0; i <= N; i++) {
+      const x = (i / N) * xMax;
+      const ctrPred = ctrFit.predict(x);
+      const cvrPred = cvrFit.predict(x);
+      ctrCurve.push({ x, y: ctrPred * 100 });           /* show CTR as % */
+      cvrCurve.push({ x, y: cvrPred * 100 });           /* show CVR as % */
+      ipmCurve.push({ x, y: ctrPred * cvrPred * 1000 });
+    }
+
+    /* Replacement threshold = imp at which CTR = 0.75 · CTR_0 */
+    const thr = ctrFit.thresholdX(0.75);
+    const datasets = [
+      { type:'line', label:'CTR (%)',  data: ctrCurve, yAxisID:'y',  borderColor:'#4a6f8f', borderWidth:1.7, pointRadius:0, tension:0.2, fill:false },
+      { type:'line', label:'CVR (%)',  data: cvrCurve, yAxisID:'y',  borderColor:'#9c6f55', borderWidth:1.7, pointRadius:0, tension:0.2, fill:false },
+      { type:'line', label:'IPM',      data: ipmCurve, yAxisID:'y2', borderColor:'#608f6f', borderWidth:1.5, pointRadius:0, tension:0.2, borderDash:[4,4], fill:false },
+      /* Observed history points */
+      { type:'scatter', label:'CTR obs', data: creative.history.map(h => ({ x: h.imp, y: h.ctr * 100 })),
+        yAxisID:'y', pointRadius:3, pointBorderColor:'#4a6f8f', pointBackgroundColor:'#fff', pointBorderWidth:1.5 },
+      { type:'scatter', label:'CVR obs', data: creative.history.map(h => ({ x: h.imp, y: h.cvr * 100 })),
+        yAxisID:'y', pointRadius:3, pointBorderColor:'#9c6f55', pointBackgroundColor:'#fff', pointBorderWidth:1.5 }
+    ];
+    /* Threshold marker */
+    if (isFinite(thr) && thr <= xMax) {
+      datasets.push({
+        type:'line', label:'Replacement threshold', yAxisID:'y',
+        data: [{ x: thr, y: 0 }, { x: thr, y: ctrFit.predict(0) * 100 }],
+        borderColor:'#a8001f', borderWidth:1.4, borderDash:[3,3], pointRadius:0, fill:false
+      });
+    }
+    charts['t04-fatigue'] = new Chart(cv.getContext('2d'), {
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom', align: 'start',
+            labels: { boxWidth: 8, boxHeight: 8, font: { size: 11 },
+              filter: it => !/ obs$/.test(it.text) && it.text !== 'Replacement threshold' }
+          },
+          tooltip: {
+            callbacks: {
+              label: (cx) => cx.dataset.label + ' — imp ' + (cx.parsed.x/1e6).toFixed(2) + 'M · ' +
+                (cx.dataset.yAxisID === 'y2'
+                  ? cx.parsed.y.toFixed(2) + ' IPM'
+                  : cx.parsed.y.toFixed(2) + '%')
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: 0, max: xMax,
+            title: { display: true, text: 'Lifetime impressions', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => (v/1e6).toFixed(1) + 'M' }
+          },
+          y: {
+            position: 'left', min: 0,
+            title: { display: true, text: 'CTR / CVR (%)', color: '#6e6e63', font: { size: 10 } },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 } }
+          },
+          y2: {
+            position: 'right', min: 0,
+            title: { display: true, text: 'IPM', color: '#6e6e63', font: { size: 10 } },
+            grid: { display: false },
+            ticks: { color: '#6e6e63', font: { size: 10 } }
+          }
+        }
+      }
+    });
+
+    /* Stats panel */
+    const sp = document.getElementById('t04-fatigue-stats');
+    const thrM = isFinite(thr) ? (thr / 1e6).toFixed(2) + 'M' : '—';
+    const remaining = isFinite(thr) ? Math.max(0, thr - creative.totalImp) / 1e6 : Infinity;
+    const ratio = creative.currentCTR / creative.baselineCTR;
+    const ratioColor = ratio >= 0.85 ? 'var(--good)' : (ratio >= 0.75 ? 'var(--warn)' : 'var(--bad)');
+    sp.innerHTML =
+      '<div class="row"><span class="lbl">Model</span><span class="v">CTR = CTR<sub>0</sub> · exp(−λ · imp/1M)</span></div>' +
+      '<div class="row"><span class="lbl">CTR<sub>0</sub> (fitted)</span><span class="v">' + (ctrFit.y0 * 100).toFixed(2) + '%</span></div>' +
+      '<div class="row"><span class="lbl">λ (per 1M imp)</span><span class="v">' + ctrFit.lambda.toFixed(2) + '</span></div>' +
+      '<div class="row"><span class="lbl">R²</span><span class="v">' + ctrFit.R2.toFixed(3) + '</span></div>' +
+      '<div class="row"><span class="lbl">Current CTR / CTR<sub>0</sub></span><span class="v" style="color:' + ratioColor + '">' + (ratio * 100).toFixed(1) + '%</span></div>' +
+      '<div class="row"><span class="lbl">Stage</span><span class="v">' + creative.stage + '</span></div>' +
+      '<div class="threshold">' +
+        '<span class="lbl-2">Replacement threshold (CTR ≤ 0.75·CTR<sub>0</sub>)</span>' +
+        '<span class="v-2">' + thrM + ' impressions</span>' +
+        '<div class="sub-2">currently at ' + (creative.totalImp/1e6).toFixed(2) + 'M · ' +
+          (remaining === Infinity ? 'never crossed at fitted λ' :
+           remaining > 0 ? (remaining).toFixed(2) + 'M imp of headroom' :
+           'past threshold by ' + (-remaining).toFixed(2) + 'M imp') + '</div>' +
+      '</div>';
+  }
+
+  /* ---- Rankings ---- */
+  function renderT04Rankings(creatives) {
+    const t04 = state.t04;
+    const eligible = creatives.filter(c => c.totalImp >= t04.minImpressions && c.stage !== 'killed');
+    const ranked = shrinkRankings(eligible);
+    const score = c => t04.rankingMethod === 'shrunk' ? c.shrunkROAS : c.rawROAS;
+    const sorted = ranked.slice().sort((a, b) => score(b) - score(a));
+    const top = sorted.slice(0, 5);
+    const bot = sorted.slice(-5).reverse();
+
+    document.getElementById('t04-rank-meta').textContent =
+      t04.rankingMethod === 'shrunk'
+        ? 'Score = Shrunk ROAS (Bayes pool by concept · σ_i² uses game CV) · min ' + (t04.minImpressions/1000).toFixed(0) + 'K imp · n=' + eligible.length + ' eligible'
+        : 'Score = Raw ROAS (no stabilization) · min ' + (t04.minImpressions/1000).toFixed(0) + 'K imp · n=' + eligible.length + ' eligible';
+
+    document.querySelectorAll('#t04-rank-method button').forEach(b =>
+      b.classList.toggle('active', b.dataset.method === t04.rankingMethod));
+
+    drawRank('t04-rank-top', top, 'Top 5 · scaling candidates', t04.rankingMethod);
+    drawRank('t04-rank-bot', bot, 'Bottom 5 · kill / refresh',  t04.rankingMethod);
+  }
+  function drawRank(rootId, rows, title, method) {
+    const root = document.getElementById(rootId);
+    let html = '<h4 class="t04-rank-h">' + title + '</h4>';
+    html += '<table><thead><tr>' +
+      '<th>Creative</th><th>Concept × Channel</th><th style="text-align:right">Imp</th>' +
+      '<th style="text-align:right">Raw</th><th style="text-align:right">Shrunk</th><th style="text-align:right">w</th></tr></thead><tbody>';
+    rows.forEach(c => {
+      const w = c.weight;
+      html +=
+        '<tr><td class="crid">' + c.id + '</td>' +
+        '<td class="cmeta">' + c.conceptName + ' × ' + c.channelName + ' · ' + c.gameName + '</td>' +
+        '<td style="text-align:right">' + (c.totalImp >= 1e6 ? (c.totalImp/1e6).toFixed(1) + 'M' : (c.totalImp/1e3).toFixed(0) + 'K') + '</td>' +
+        '<td style="text-align:right' + (method === 'raw' ? ';font-weight:500' : '') + '">' + c.rawROAS.toFixed(2) + '</td>' +
+        '<td style="text-align:right' + (method === 'shrunk' ? ';font-weight:500' : '') + '">' + c.shrunkROAS.toFixed(2) + '</td>' +
+        '<td style="text-align:right;color:var(--muted)">' + (w*100).toFixed(0) + '%</td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    html += '<p style="font-size:10.5px;color:var(--muted);margin:6px 0 0">w = shrinkage weight on raw ROAS. Low w = small sample, more pull to concept mean.</p>';
+    root.innerHTML = html;
+  }
+
+  /* ---- Pipeline funnel ---- */
+  function renderT04Pipeline(creatives) {
+    const stages = ['testing', 'scaling', 'fatigued', 'killed'];
+    const names  = { testing:'Testing', scaling:'Scaling', fatigued:'Fatigued', killed:'Killed' };
+    const root = document.getElementById('t04-pipeline');
+    root.innerHTML = '<div class="t04-pipe">' + stages.map(stg => {
+      const inStg = creatives.filter(c => c.stage === stg);
+      const total = inStg.length;
+      const totalSpend = inStg.reduce((s, c) => s + c.spend, 0);
+      /* Per-concept breakdown */
+      const counts = PARAMS.CONCEPTS.map(cn => ({
+        cn, n: inStg.filter(c => c.conceptKey === cn.key).length
+      })).filter(x => x.n > 0);
+      let barsHtml = '<div class="t04-pipe-bars">';
+      counts.forEach(x => {
+        const w = (x.n / Math.max(total,1)) * 100;
+        barsHtml += '<span class="seg" style="width:' + w + '%;background:' + x.cn.color + '"></span>';
+      });
+      barsHtml += '</div>';
+      const legend = counts.map(x =>
+        '<span class="item"><span class="sw" style="background:' + x.cn.color + '"></span>' + x.cn.name + ' ×' + x.n + '</span>'
+      ).join('');
+      return '<div class="t04-pipe-stage ' + stg + '">' +
+        '<div class="h"><span class="nm">' + names[stg] + '<span class="sub">$' + (totalSpend/1000).toFixed(0) + 'K</span></span><span class="ct">' + total + '</span></div>' +
+        barsHtml +
+        '<div class="legend">' + legend + '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  /* ---- Insight ---- */
+  function renderT04Insight(creatives) {
+    const active = creatives.filter(c => c.stage !== 'killed');
+    /* Pipeline imbalance check: per concept, scale+fatigue ≥ 2× testing? */
+    const conceptSplit = PARAMS.CONCEPTS.map(cn => {
+      const inCn = active.filter(c => c.conceptKey === cn.key);
+      const testing  = inCn.filter(c => c.stage === 'testing').length;
+      const live     = inCn.filter(c => c.stage === 'scaling' || c.stage === 'fatigued').length;
+      return { cn, testing, live, ratio: live / Math.max(testing, 1) };
+    });
+    const imbalance = conceptSplit
+      .filter(x => x.live >= 3 && x.live >= 2 * Math.max(x.testing, 1))
+      .sort((a, b) => b.ratio - a.ratio)[0];
+
+    /* Wasted-spend cell: max spend × (mean − cell_ROAS, clipped at 0) */
+    const grid = {};
+    active.forEach(c => {
+      const k = c.conceptKey + '|' + c.channelKey;
+      if (!grid[k]) grid[k] = { spend: 0, weighted: 0, conceptName: c.conceptName, channelName: c.channelName };
+      grid[k].spend += c.spend;
+      grid[k].weighted += c.spend * c.rawROAS;
+    });
+    const totalSpend = active.reduce((s, c) => s + c.spend, 0);
+    const meanROAS   = active.reduce((s, c) => s + c.spend * c.rawROAS, 0) / Math.max(totalSpend, 1e-9);
+    const cells = Object.values(grid).map(x => ({
+      ...x, roas: x.weighted / x.spend
+    })).filter(x => x.spend > totalSpend * 0.04);
+    const worst = cells.slice().sort((a, b) =>
+      (b.spend * Math.max(0, meanROAS - b.roas)) - (a.spend * Math.max(0, meanROAS - a.roas)))[0];
+    const best  = cells.slice().sort((a, b) => b.roas - a.roas)[0];
+
+    let html, foot;
+    if (imbalance) {
+      const cn = imbalance.cn;
+      html =
+        '<strong>' + cn.name + '</strong> pipeline is unbalanced: ' +
+        '<strong>' + imbalance.live + ' live</strong> creatives (scaling + fatigued) vs ' +
+        '<strong>' + imbalance.testing + ' in testing</strong>. ' +
+        'Replacement velocity needs to be ≥ scaling velocity. ' +
+        '<strong>Brief ' + Math.max(2, Math.round(imbalance.live / 2 - imbalance.testing)) + ' new ' + cn.name.toLowerCase() + ' tests this week</strong>, or expect a ROAS cliff in 4–6 weeks as ' + cn.name.toLowerCase() + ' fatigue compounds without backstop.';
+      foot = 'Branch: pipeline-imbalance · concept ratio live/testing = ' + imbalance.ratio.toFixed(1) + '×';
+    } else if (worst && best && worst.roas < meanROAS * 0.85) {
+      const shift = Math.min(50_000, Math.round(worst.spend * 0.20 / 5000) * 5000);
+      const winInstalls = Math.round(shift * (best.roas - worst.roas) / Math.max(worst.roas, 0.05));
+      html =
+        '<strong>' + worst.conceptName + ' × ' + worst.channelName + '</strong> is the largest ROAS-shortfall cell — $' + (worst.spend/1000).toFixed(0) + 'K/mo at ROAS ' + worst.roas.toFixed(2) + ' (' + (worst.roas/meanROAS*100).toFixed(0) + '% of portfolio mean). ' +
+        '<strong>Shift $' + (shift/1000).toFixed(0) + 'K to ' + best.conceptName + ' × ' + best.channelName + '</strong> (currently ROAS ' + best.roas.toFixed(2) + ') — projected install lift roughly equivalent to a ' + (shift/totalSpend*100).toFixed(0) + 'pp creative-mix swing.';
+      foot = 'Branch: waste-recommendation · portfolio mean ROAS ' + meanROAS.toFixed(2);
+    } else {
+      html = 'Creative mix is balanced and within range of portfolio mean. No high-priority reallocation flagged this week — focus on continuing the testing-to-scaling pipeline.';
+      foot = 'Branch: balanced-state';
+    }
+    document.getElementById('t04-insight').innerHTML = html;
+    document.getElementById('t04-insight-foot').textContent = foot;
+  }
+
+  /* ============================================================ */
   /* CSV: parse + validate + sample                                */
   /* ============================================================ */
   const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
@@ -2830,6 +3602,50 @@
       lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
       lines.push('');
       lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else if (state.activeTab === '04') {
+      ensureCreatives();
+      const creatives = state.t04._creatives;
+      const active    = creatives.filter(c => c.stage !== 'killed');
+      const totSpend  = active.reduce((s, c) => s + c.spend, 0);
+      const meanROAS  = active.reduce((s, c) => s + c.spend * c.rawROAS, 0) / Math.max(totSpend, 1e-9);
+      lines.push('## Portfolio creative summary');
+      lines.push('- Active creatives: **' + active.length + '** · total monthly spend $' + (totSpend/1000).toFixed(0) + 'K · spend-weighted ROAS_d7 ' + meanROAS.toFixed(2));
+      const stageCounts = ['testing','scaling','fatigued','killed'].map(s => s + ': ' + creatives.filter(c => c.stage === s).length);
+      lines.push('- Pipeline · ' + stageCounts.join(' · '));
+      lines.push('');
+
+      lines.push('## Top 5 / Bottom 5 (Shrunk ROAS · Bayes pool by concept · σ_i² uses game CV · min 50K imp)');
+      const eligible = creatives.filter(c => c.totalImp >= state.t04.minImpressions && c.stage !== 'killed');
+      const ranked = shrinkRankings(eligible).sort((a, b) => b.shrunkROAS - a.shrunkROAS);
+      const top = ranked.slice(0, 5), bot = ranked.slice(-5).reverse();
+      const renderRows = (arr, hdr) => {
+        lines.push('### ' + hdr);
+        lines.push('| ID | Concept × Channel | Game | Imp | Raw | Shrunk | w |');
+        lines.push('|---|---|---|---|---|---|---|');
+        arr.forEach(c => lines.push('| ' + c.id + ' | ' + c.conceptName + ' × ' + c.channelName + ' | ' + c.gameName +
+          ' | ' + (c.totalImp >= 1e6 ? (c.totalImp/1e6).toFixed(1) + 'M' : (c.totalImp/1e3).toFixed(0) + 'K') +
+          ' | ' + c.rawROAS.toFixed(2) + ' | ' + c.shrunkROAS.toFixed(2) + ' | ' + (c.weight*100).toFixed(0) + '% |'));
+      };
+      renderRows(top, 'Top 5 · scaling candidates');
+      lines.push('');
+      renderRows(bot, 'Bottom 5 · kill / refresh');
+      lines.push('');
+
+      const sel = creatives.find(c => c.id === state.t04.selectedCreativeId);
+      if (sel) {
+        const ctrFit = fitExpDecay(sel.history.map(h => ({ x: h.imp, y: h.ctr })), 1e6);
+        const thr = ctrFit.thresholdX(0.75);
+        lines.push('## Fatigue inspection · ' + sel.id + ' (' + sel.conceptName + ' × ' + sel.channelName + ' · ' + sel.gameName + ')');
+        lines.push('- Model: CTR(imp) = CTR_0 · exp(−λ · imp/1M)');
+        lines.push('- CTR_0 fitted: ' + (ctrFit.y0*100).toFixed(2) + '%   ·   λ: ' + ctrFit.lambda.toFixed(2) + ' /M imp   ·   R²: ' + ctrFit.R2.toFixed(3));
+        lines.push('- Replacement threshold (CTR ≤ 0.75·CTR_0): ' + (isFinite(thr) ? (thr/1e6).toFixed(2) + 'M imp' : 'never crossed at fitted λ'));
+        lines.push('- Currently at ' + (sel.totalImp/1e6).toFixed(2) + 'M imp · stage: **' + sel.stage + '**');
+        lines.push('');
+      }
+      lines.push('## Decision insight');
+      lines.push('> ' + document.getElementById('t04-insight').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t04-insight-foot').textContent.trim() + '_');
     } else if (state.activeTab === '03') {
       const cells = buildSatCells(state.games);
       const X = state.t03.whatIfAmount;
@@ -3079,6 +3895,20 @@
     });
   }
 
+  function bindT04Controls() {
+    const sel = document.getElementById('t04-creative-pick');
+    sel.addEventListener('change', () => {
+      state.t04.selectedCreativeId = sel.value;
+      renderT04();
+    });
+    document.querySelectorAll('#t04-rank-method button').forEach(b => {
+      b.addEventListener('click', () => {
+        state.t04.rankingMethod = b.dataset.method;
+        renderT04();
+      });
+    });
+  }
+
   function bindT03Controls() {
     document.querySelectorAll('#t03-view button').forEach(b => {
       b.addEventListener('click', () => {
@@ -3120,13 +3950,14 @@
     if (state.activeTab === '01') renderT01();
     else if (state.activeTab === '02') renderT02();
     else if (state.activeTab === '03') renderT03();
-    /* Tabs 04–07 remain placeholders. */
+    else if (state.activeTab === '04') renderT04();
+    /* Tabs 05–07 remain placeholders. */
   }
 
   function init() {
     state.t02.cac = defaultBlendedCAC();
     bindFilters(); bindTabs(); bindDataMode(); bindUpload();
-    bindT01Buttons(); bindT02Controls(); bindT03Controls();
+    bindT01Buttons(); bindT02Controls(); bindT03Controls(); bindT04Controls();
     recompute(); renderActiveTab();
     window.addEventListener('resize', () => {
       if (state.activeTab === '01') renderKPIs();
