@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>UA Growth Strategy Console · MobilityWare</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --paper: #ffffff;
+    --ink: #14140f;
+    --ink-soft: #2c2c25;
+    --muted: #6e6e63;
+    --line: #e2e2dc;
+    --line-soft: #efefe9;
+    --accent: #a8001f;
+    --accent-soft: #efd9de;
+    --good: #2a6b3f;
+    --warn: #b07b1f;
+    --bad:  #962d2d;
+    --chip: #f3f2ec;
+    --shadow: 0 1px 0 rgba(20,20,15,.04);
+    --serif: 'Iowan Old Style','Charter','Source Serif Pro',Georgia,'Times New Roman',serif;
+    --sans:  -apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,sans-serif;
+    --mono:  'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  a { color: inherit; }
+
+  /* === Brand bar === */
+  .brandbar {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 14px 28px 10px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .brand {
+    display: flex; align-items: baseline; gap: 10px;
+    font-family: var(--serif); font-size: 19px; letter-spacing: .2px;
+  }
+  .brand .diamond { color: var(--accent); font-size: 16px; transform: translateY(-1px); }
+  .brand .sub {
+    margin-left: 8px; padding-left: 10px;
+    border-left: 1px solid var(--line);
+    color: var(--muted); font-size: 12px;
+    font-family: var(--sans); letter-spacing: .04em; text-transform: uppercase;
+  }
+  .brand-meta { color: var(--muted); font-size: 11.5px; font-family: var(--mono); }
+
+  /* === Sticky filter bar === */
+  .filterbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 18px;
+    padding: 10px 28px;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: saturate(120%) blur(6px);
+    -webkit-backdrop-filter: saturate(120%) blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px 14px; flex: 1; }
+  .field { display: inline-flex; align-items: center; gap: 6px; }
+  .field > label {
+    font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  }
+  .field select {
+    appearance: none; -webkit-appearance: none;
+    background: var(--paper); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 5px 22px 5px 8px;
+    font-family: inherit; font-size: 12.5px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%236e6e63' d='M5 7L1 3h8z'/></svg>");
+    background-repeat: no-repeat; background-position: right 6px center;
+  }
+  .field select:focus { outline: none; border-color: var(--ink); }
+  .actions { display: flex; align-items: center; gap: 10px; }
+  .seg-toggle {
+    display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+  }
+  .seg-toggle button {
+    background: var(--paper); color: var(--ink-soft); border: none;
+    padding: 6px 10px; font-size: 12px;
+  }
+  .seg-toggle button.active { background: var(--ink); color: var(--paper); }
+  .btn {
+    background: var(--paper); color: var(--ink-soft);
+    border: 1px solid var(--line); border-radius: 4px;
+    padding: 6px 10px; font-size: 12px;
+  }
+  .btn:hover { border-color: var(--ink); }
+  .btn-primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* === Tab strip === */
+  .tabstrip {
+    display: flex; gap: 0; padding: 0 22px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .tabstrip button {
+    background: transparent; border: none; color: var(--muted);
+    padding: 12px 14px; font-size: 12.5px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap; letter-spacing: .02em;
+  }
+  .tabstrip button .num {
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+    margin-right: 6px;
+  }
+  .tabstrip button:hover { color: var(--ink); }
+  .tabstrip button.active {
+    color: var(--ink); border-bottom-color: var(--accent);
+  }
+  .tabstrip button.active .num { color: var(--accent); }
+
+  /* === Main area === */
+  main { padding: 22px 28px 60px; }
+  .tabpanel { display: none; }
+  .tabpanel.active { display: block; }
+  .placeholder-card {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+    padding: 36px; max-width: 720px;
+    box-shadow: var(--shadow);
+  }
+  .placeholder-card h2 {
+    margin: 0 0 6px; font-family: var(--serif); font-size: 22px; font-weight: 500;
+  }
+  .placeholder-card .turn-tag {
+    display: inline-block; padding: 2px 8px; margin-bottom: 16px;
+    background: var(--chip); border-radius: 999px;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .placeholder-card p { color: var(--muted); margin: 8px 0; }
+
+  /* === Tab 01 grid === */
+  .t01-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr 400px;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 1180px) {
+    .t01-grid { grid-template-columns: 1fr; }
+  }
+  .col-card {
+    background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+  .col-card + .col-card { margin-top: 16px; }
+  .col-h {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 0 0 10px;
+  }
+  .col-h h3 {
+    margin: 0; font-family: var(--serif); font-size: 15px; font-weight: 500;
+    letter-spacing: .01em;
+  }
+  .col-h .h-meta {
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+  }
+  .why {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-left: 8px; font-size: 10.5px; color: var(--muted);
+    cursor: help; border-bottom: 1px dotted var(--muted);
+  }
+
+  /* === Filter context note === */
+  .ctx-note {
+    margin: -6px 0 14px;
+    padding: 8px 12px;
+    background: #fbf8ee; border: 1px solid #ecdfb6; border-radius: 4px;
+    font-size: 11.5px; color: #6e5d24;
+  }
+  .ctx-note .lbl {
+    font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em;
+    margin-right: 6px;
+  }
+
+  /* === Game cards (left col) === */
+  .donut-wrap { position: relative; height: 200px; margin: 4px 0 6px; }
+  .donut-center {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .donut-center .big {
+    font-family: var(--mono); font-size: 18px; color: var(--ink);
+  }
+  .donut-center .lbl {
+    font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  }
+  .game-row {
+    display: grid;
+    grid-template-columns: 12px 1fr auto;
+    gap: 10px; align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .game-row:first-of-type { border-top: 1px solid var(--line); }
+  .swatch {
+    width: 10px; height: 10px; border-radius: 2px;
+    align-self: start; margin-top: 4px;
+  }
+  .game-name {
+    font-size: 13px; font-weight: 500; color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .game-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 4px 8px; font-size: 11px; color: var(--muted);
+  }
+  .game-stats .v { font-family: var(--mono); color: var(--ink); }
+  .game-stats .lbl { font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; }
+  .game-spend {
+    font-family: var(--mono); font-size: 12.5px; color: var(--ink);
+    text-align: right; min-width: 70px;
+  }
+  .game-spend .pct { color: var(--muted); font-size: 10.5px; display: block; }
+  .spark { width: 100%; height: 26px; margin-top: 6px; }
+
+  /* === Sliders (middle col) === */
+  .slider-stack { margin: 6px 0 14px; }
+  .slider-row {
+    display: grid;
+    grid-template-columns: 16px 130px 1fr 56px 64px;
+    gap: 10px; align-items: center;
+    padding: 7px 0;
+  }
+  .slider-row .swatch { margin-top: 0; }
+  .slider-row .gname { font-size: 12.5px; }
+  .slider-row input[type=range] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px; background: var(--line);
+    border-radius: 4px; outline: none;
+  }
+  .slider-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--ink); cursor: grab;
+    box-shadow: 0 0 0 2px var(--paper);
+  }
+  .slider-row input[type=range]::-moz-range-thumb {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--ink); cursor: grab; border: 2px solid var(--paper);
+  }
+  .slider-row .pct {
+    font-family: var(--mono); font-size: 12.5px; text-align: right; color: var(--ink);
+  }
+  .slider-row .delta {
+    font-family: var(--mono); font-size: 11px; text-align: right; color: var(--muted);
+  }
+  .slider-row .delta.pos { color: var(--good); }
+  .slider-row .delta.neg { color: var(--bad); }
+  .slider-controls {
+    display: flex; gap: 8px; align-items: center; justify-content: space-between;
+    margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--line-soft);
+    font-size: 11.5px; color: var(--muted);
+  }
+  .sum-pill {
+    font-family: var(--mono); padding: 2px 8px; border-radius: 999px;
+    background: var(--chip); color: var(--ink);
+  }
+  .mini-btn {
+    font-size: 11px; background: transparent; border: 1px solid var(--line);
+    padding: 3px 8px; border-radius: 4px; color: var(--ink-soft);
+  }
+
+  /* === KPI whisker cards === */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin-top: 8px;
+  }
+  .kpi {
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 10px 12px; background: #fcfcf9;
+  }
+  .kpi .lbl {
+    font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+  }
+  .kpi .v {
+    font-family: var(--mono); font-size: 22px; color: var(--ink); margin-top: 2px;
+  }
+  .kpi .v .unit { font-size: 13px; color: var(--muted); margin-left: 2px; }
+  .kpi .ci {
+    font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 2px;
+  }
+  .kpi .delta-line {
+    font-family: var(--mono); font-size: 11px; margin-top: 4px;
+  }
+  .kpi .delta-line.pos { color: var(--good); }
+  .kpi .delta-line.neg { color: var(--bad); }
+  .kpi .delta-line.neutral { color: var(--muted); }
+  .whisker-svg { width: 100%; height: 38px; margin-top: 8px; display: block; }
+
+  /* === Frontier (right col) === */
+  .frontier-wrap { height: 280px; position: relative; }
+  .frontier-axis-tip {
+    position: absolute; top: 50%; left: -2px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: left center;
+    font-size: 10px; color: var(--muted); cursor: help;
+    border-bottom: 1px dotted var(--muted);
+  }
+  .frontier-legend {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px;
+    margin-top: 10px; font-size: 11.5px;
+  }
+  .frontier-legend .item { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+  .frontier-legend .dot {
+    width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink);
+  }
+  .recommendation {
+    margin-top: 14px; padding: 12px 14px;
+    border: 1px solid var(--ink); border-left: 3px solid var(--accent);
+    background: #fbfbf6;
+    font-size: 13px; line-height: 1.55;
+  }
+  .recommendation .tag {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent);
+    display: block; margin-bottom: 4px;
+  }
+  .recommendation .body strong { font-weight: 600; }
+  .recommendation .footnote {
+    font-size: 10.5px; color: var(--muted); margin-top: 6px; font-family: var(--mono);
+  }
+
+  /* === Modal === */
+  .modal-bg {
+    position: fixed; inset: 0; background: rgba(20,20,15,.4);
+    display: none; align-items: center; justify-content: center; z-index: 100;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--paper); border-radius: 8px; padding: 22px 24px;
+    width: 540px; max-width: 92vw;
+    box-shadow: 0 10px 40px rgba(20,20,15,.18);
+  }
+  .modal h3 { margin: 0 0 4px; font-family: var(--serif); font-size: 18px; font-weight: 500; }
+  .modal p { color: var(--muted); margin: 4px 0 12px; font-size: 12.5px; }
+  .modal .drop {
+    border: 1.5px dashed var(--line); border-radius: 6px;
+    padding: 22px; text-align: center; color: var(--muted);
+    background: #fcfcf9; margin-bottom: 12px;
+  }
+  .modal .drop.over { border-color: var(--ink); color: var(--ink); }
+  .modal .err {
+    background: #fdf3f3; border: 1px solid #f0c8c8; color: #8a2828;
+    padding: 8px 12px; border-radius: 4px; font-size: 12px;
+    margin-bottom: 10px; display: none;
+  }
+  .modal .err.show { display: block; }
+  .modal .err code { font-family: var(--mono); font-size: 11px; }
+  .modal .ok {
+    background: #f3faf4; border: 1px solid #cae6cc; color: #2a5a36;
+    padding: 8px 12px; border-radius: 4px; font-size: 12px;
+    margin-bottom: 10px; display: none;
+  }
+  .modal .ok.show { display: block; }
+  .modal-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+  /* === Footer === */
+  footer {
+    margin-top: 40px; padding: 14px 28px 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 11px;
+    display: flex; justify-content: space-between;
+  }
+  footer .diamond { color: var(--accent); }
+
+  /* === Tooltip === */
+  [data-tip] { position: relative; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 6px); left: 0;
+    background: var(--ink); color: var(--paper);
+    padding: 6px 10px; border-radius: 4px;
+    font-size: 11px; line-height: 1.4; font-weight: 400;
+    white-space: normal; width: max-content; max-width: 280px;
+    z-index: 60; box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<header class="brandbar">
+  <div class="brand">
+    <span class="diamond">&#9830;</span>
+    <span>UA Growth Strategy Console</span>
+    <span class="sub">MobilityWare · Portfolio Decision Surface</span>
+  </div>
+  <div class="brand-meta" id="brand-meta">demo data · seed —</div>
+</header>
+
+<nav class="filterbar" id="filterbar">
+  <div class="filters">
+    <span class="field"><label>Game</label>
+      <select id="f-game">
+        <option value="all">All</option>
+        <option value="sol">Solitaire</option>
+        <option value="spi">Spider Solitaire</option>
+        <option value="tri">TriPeaks</option>
+        <option value="bub">Bubble Shooter Pop</option>
+      </select>
+    </span>
+    <span class="field"><label>OS</label>
+      <select id="f-os">
+        <option value="all">All</option>
+        <option value="ios">iOS</option>
+        <option value="and">Android</option>
+      </select>
+    </span>
+    <span class="field"><label>Channel</label>
+      <select id="f-channel">
+        <option value="all">All</option>
+        <option value="googleads">Google Ads</option>
+        <option value="asa">ASA</option>
+        <option value="meta">Meta</option>
+        <option value="applovin">AppLovin</option>
+        <option value="unity">Unity</option>
+        <option value="moloco">Moloco</option>
+        <option value="ironsource">ironSource</option>
+        <option value="tiktok">TikTok</option>
+      </select>
+    </span>
+    <span class="field"><label>Geo</label>
+      <select id="f-geo">
+        <option value="all">All</option>
+        <option value="us">US</option><option value="ca">CA</option>
+        <option value="uk">UK</option><option value="au">AU</option>
+        <option value="de">DE</option><option value="jp">JP</option>
+      </select>
+    </span>
+    <span class="field"><label>Audience</label>
+      <select id="f-segment">
+        <option value="all">All</option>
+        <option value="whale">Whales</option>
+        <option value="midiap">Mid IAP</option>
+        <option value="lowiap">Low IAP</option>
+        <option value="ads">Ads-only</option>
+        <option value="lapsed">Lapsed reactivation</option>
+      </select>
+    </span>
+    <span class="field"><label>Creative</label>
+      <select id="f-creative">
+        <option value="all">All</option>
+        <option value="gameplay">Gameplay demo</option>
+        <option value="ugc">UGC</option>
+        <option value="testimonial">Testimonial</option>
+        <option value="cinematic">Cinematic</option>
+        <option value="metagame">Metagame</option>
+      </select>
+    </span>
+    <span class="field"><label>Date</label>
+      <select id="f-daterange">
+        <option value="30d">Last 30d</option>
+        <option value="90d">Last 90d</option>
+        <option value="180d" selected>Last 180d</option>
+        <option value="qtd">QTD</option>
+        <option value="ytd">YTD</option>
+      </select>
+    </span>
+  </div>
+  <div class="actions">
+    <div class="seg-toggle" id="data-mode" role="tablist" aria-label="Data source">
+      <button data-mode="demo" class="active" type="button">Demo data</button>
+      <button data-mode="upload" type="button">Upload data</button>
+    </div>
+    <button class="btn" id="btn-export" type="button" data-tip="Exports a Markdown memo with current filters and active tab's headline numbers + recommendation">Export decision memo</button>
+    <button class="btn" id="btn-reset" type="button">Reset filters</button>
+  </div>
+</nav>
+
+<nav class="tabstrip" id="tabstrip" role="tablist">
+  <button data-tab="01" class="active" type="button"><span class="num">01</span>Portfolio Allocator</button>
+  <button data-tab="02" type="button"><span class="num">02</span>LTV &amp; Payback</button>
+  <button data-tab="03" type="button"><span class="num">03</span>Marginal Efficiency</button>
+  <button data-tab="04" type="button"><span class="num">04</span>Creative Intelligence</button>
+  <button data-tab="05" type="button"><span class="num">05</span>ASO &amp; Store Funnel</button>
+  <button data-tab="06" type="button"><span class="num">06</span>Competitive &amp; Market</button>
+  <button data-tab="07" type="button"><span class="num">07</span>Finance Reconciliation</button>
+</nav>
+
+<main>
+
+  <!-- ============================================================ -->
+  <!-- TAB 01 · Portfolio Budget Allocator                           -->
+  <!-- ============================================================ -->
+  <section class="tabpanel active" data-tab-panel="01">
+    <div id="t01-ctx" class="ctx-note" style="display:none;"></div>
+    <div class="t01-grid">
+
+      <!-- LEFT COLUMN: current allocation -->
+      <div>
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Current spend allocation</h3>
+            <span class="why" data-tip="Where the next dollar already goes. Compare against the Optimal point on the frontier (right) to see if today's mix is risk-efficient.">Why this matters</span>
+          </div>
+          <div class="donut-wrap">
+            <canvas id="t01-donut"></canvas>
+            <div class="donut-center">
+              <div class="big" id="t01-donut-total">$1.00M</div>
+              <div class="lbl">Monthly UA budget</div>
+            </div>
+          </div>
+          <div id="t01-game-rows"></div>
+        </div>
+      </div>
+
+      <!-- MIDDLE COLUMN: reallocation sandbox -->
+      <div>
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Reallocation sandbox</h3>
+            <span class="h-meta">budget fixed · $1.00M / mo</span>
+          </div>
+          <div class="slider-stack" id="t01-sliders"></div>
+          <div class="slider-controls">
+            <span>Total <span class="sum-pill" id="t01-sum">100.0%</span></span>
+            <span>
+              <button class="mini-btn" id="t01-reset-w" type="button">Reset to current</button>
+              <button class="mini-btn" id="t01-snap-opt" type="button">Snap to optimal</button>
+            </span>
+          </div>
+
+          <div class="kpi-grid" style="margin-top:18px;">
+            <div class="kpi">
+              <div class="lbl">Blended D30 ROAS
+                <span class="why" data-tip="Spend-weighted projected D30 ROAS for next month. Whisker = 90% prediction interval (μ ± 1.645σ). Dashed marker = current plan's value.">ⓘ</span>
+              </div>
+              <div class="v" id="t01-kpi-roas-v">—</div>
+              <div class="ci" id="t01-kpi-roas-ci">90% CI: —</div>
+              <svg class="whisker-svg" id="t01-kpi-roas-svg"></svg>
+              <div class="delta-line neutral" id="t01-kpi-roas-delta">vs current: —</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Blended payback
+                <span class="why" data-tip="Spend-weighted P50 payback days. Whisker spans P10–P90 across the games' empirical payback distributions.">ⓘ</span>
+              </div>
+              <div class="v" id="t01-kpi-pb-v">—</div>
+              <div class="ci" id="t01-kpi-pb-ci">P10–P90: —</div>
+              <svg class="whisker-svg" id="t01-kpi-pb-svg"></svg>
+              <div class="delta-line neutral" id="t01-kpi-pb-delta">vs current: —</div>
+            </div>
+            <div class="kpi">
+              <div class="lbl">Portfolio volatility
+                <span class="why" data-tip="σ(blended D30 ROAS) = sqrt(w' Σ w). Σ built from per-game monthly D30 ROAS std dev × game-game correlation. Lower = more predictable next-month return.">ⓘ</span>
+              </div>
+              <div class="v" id="t01-kpi-vol-v">—</div>
+              <div class="ci" id="t01-kpi-vol-ci">epistemic ±10%</div>
+              <svg class="whisker-svg" id="t01-kpi-vol-svg"></svg>
+              <div class="delta-line neutral" id="t01-kpi-vol-delta">vs current: —</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: efficient frontier + recommendation -->
+      <div>
+        <div class="col-card">
+          <div class="col-h">
+            <h3>Efficient frontier
+              <span class="why" data-tip="Each grey dot is a feasible allocation across the 4 games. The frontier (upper-left edge) shows the best return for a given level of volatility.">ⓘ</span>
+            </h3>
+            <span class="h-meta">500 sampled allocations</span>
+          </div>
+          <div class="frontier-wrap">
+            <canvas id="t01-frontier"></canvas>
+          </div>
+          <div class="frontier-legend">
+            <div class="item"><span class="dot" style="background:#1a1a1a;border-color:#1a1a1a;"></span>Current allocation</div>
+            <div class="item"><span class="dot" style="background:var(--accent);border-color:var(--accent);"></span>Sharpe-optimal</div>
+            <div class="item"><span class="dot" style="background:#2a6b3f;border-color:#2a6b3f;"></span>Max ROAS</div>
+            <div class="item"><span class="dot" style="background:#4a6f8f;border-color:#4a6f8f;"></span>Min risk</div>
+          </div>
+
+          <div class="recommendation">
+            <span class="tag">&#9830; Recommendation</span>
+            <div class="body" id="t01-reco">—</div>
+            <div class="footnote" id="t01-reco-foot"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- Placeholder tabs 02–07                                        -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" data-tab-panel="02">
+    <div class="placeholder-card">
+      <span class="turn-tag">Coming in Turn 2</span>
+      <h2>02 · LTV Curve &amp; Payback Modeler</h2>
+      <p>Cumulative ARPU curves D0→D360 by cohort × game × channel; fit power-law / log-linear / mixed (IAP+ads) models with residuals; CAC payback marker; per-game P10/P50/P90 payback waterfall; plain-language insight card.</p>
+    </div>
+  </section>
+  <section class="tabpanel" data-tab-panel="03">
+    <div class="placeholder-card">
+      <span class="turn-tag">Coming in Turn 3</span>
+      <h2>03 · Marginal Efficiency &amp; Saturation</h2>
+      <p>Per channel × game saturation curves with Michaelis-Menten fits; marginal CPI overlay; diversification panel for incremental budget; "What-if +$X" optimizer returning channel split, expected installs delta, blended CPI.</p>
+    </div>
+  </section>
+  <section class="tabpanel" data-tab-panel="04">
+    <div class="placeholder-card">
+      <span class="turn-tag">Coming in Turn 4</span>
+      <h2>04 · Creative Intelligence</h2>
+      <p>Concept × channel ROAS heatmap; selectable creative fatigue curve (CTR / CVR / IPM) with replacement threshold; weekly Top 5 / Bottom 5; testing→scaling→fatigued→killed pipeline funnel.</p>
+    </div>
+  </section>
+  <section class="tabpanel" data-tab-panel="05">
+    <div class="placeholder-card">
+      <span class="turn-tag">Coming in Turn 5</span>
+      <h2>05 · ASO &amp; Store Conversion Funnel</h2>
+      <p>Impression → PDP view → install → D1 retain → first IAP funnel split by traffic source, with directional casual-card benchmarks; top 20 keyword install contribution + rank trend; current store A/B test status.</p>
+    </div>
+  </section>
+  <section class="tabpanel" data-tab-panel="06">
+    <div class="placeholder-card">
+      <span class="turn-tag">Coming in Turn 6</span>
+      <h2>06 · Competitive &amp; Market Intelligence</h2>
+      <p>Ranks vs top 5 competitors for each of the 4 games; SOV heatmap by channel × geo (synthetic estimates, Sensor Tower-style); competitor creative refresh cadence; market headwind alerts.</p>
+    </div>
+  </section>
+  <section class="tabpanel" data-tab-panel="07">
+    <div class="placeholder-card">
+      <span class="turn-tag">Coming in Turn 7</span>
+      <h2>07 · Finance Forecast Reconciliation</h2>
+      <p>QTD UA spend vs plan + daily burn; revenue P10/P50/P90 forecast; last-4-quarter forecast accuracy self-check (surfacing model bias); game-level contribution P&amp;L; cash-flow timing tied to Tab 02 payback.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Upload modal -->
+<div class="modal-bg" id="upload-modal">
+  <div class="modal">
+    <h3>Upload your UA dataset</h3>
+    <p>CSV, headers case-insensitive, column order flexible. Required columns: <code style="font-family:var(--mono);">date, game, channel, geo, os, spend_usd, installs</code>. Optional columns flagged with &#9888; if missing.</p>
+    <div class="err" id="upload-err"></div>
+    <div class="ok"  id="upload-ok"></div>
+    <label class="drop" id="upload-drop">
+      <input type="file" id="upload-file" accept=".csv,text/csv" style="display:none;" />
+      Drop CSV here, or <span style="border-bottom:1px solid var(--ink);">click to browse</span>
+    </label>
+    <div class="modal-actions">
+      <button class="btn" id="btn-sample-csv" type="button">Download sample CSV</button>
+      <span>
+        <button class="btn" id="btn-modal-cancel" type="button">Cancel</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span><span class="diamond">&#9830;</span> UA Growth Strategy Console · synthetic data, not MobilityWare confidential · for portfolio-decision demo only</span>
+  <span id="footer-meta">v0.1 · turn 1</span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================ */
+  /* CORE: PRNG + hashing                                          */
+  /* ============================================================ */
+  function fnv1a(str) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 0x01000193) >>> 0;
+    }
+    return h >>> 0;
+  }
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function gauss(rng) {
+    let u = 0, v = 0;
+    while (u === 0) u = rng();
+    while (v === 0) v = rng();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  /* ============================================================ */
+  /* PORTFOLIO PARAMS                                              */
+  /* ============================================================ */
+  const PARAMS = {
+    GAMES: [
+      { key:'sol', name:'Solitaire',          mu:0.55, sigma:0.08, pb50:110, pb90:145, sat:0.75, color:'#4a6f8f' },
+      { key:'spi', name:'Spider Solitaire',   mu:0.60, sigma:0.14, pb50:140, pb90:190, sat:0.67, color:'#7d6c8f' },
+      { key:'tri', name:'TriPeaks',           mu:0.85, sigma:0.16, pb50:85,  pb90:120, sat:0.60, color:'#9c6f55' },
+      { key:'bub', name:'Bubble Shooter Pop', mu:0.48, sigma:0.20, pb50:180, pb90:240, sat:0.80, color:'#608f6f' }
+    ],
+    CORR: [
+      [1.00, 0.50, 0.35, 0.20],
+      [0.50, 1.00, 0.30, 0.15],
+      [0.35, 0.30, 1.00, 0.25],
+      [0.20, 0.15, 0.25, 1.00]
+    ],
+    CURRENT_W: [0.30, 0.20, 0.30, 0.20],
+    BUDGET: 1_000_000
+  };
+
+  /* ============================================================ */
+  /* STATE                                                         */
+  /* ============================================================ */
+  const state = {
+    filters: {
+      game:'all', os:'all', channel:'all', geo:'all',
+      segment:'all', creative:'all', daterange:'180d'
+    },
+    mode: 'demo',       // 'demo' | 'upload'
+    activeTab: '01',
+    uploaded: null,     // {rows, missingOptional[]}
+    games: [],          // computed per-game stats
+    sliderW: PARAMS.CURRENT_W.slice(),
+    optimalW: PARAMS.CURRENT_W.slice(),
+    maxRoasW: PARAMS.CURRENT_W.slice(),
+    minRiskW: PARAMS.CURRENT_W.slice(),
+    cloud:    [],       // 500 sampled allocations
+    seed:     0
+  };
+
+  /* ============================================================ */
+  /* DEMO DATA: per-game stats keyed off filter seed               */
+  /* ============================================================ */
+  function filterSeedKey(f) {
+    return [f.game,f.os,f.channel,f.geo,f.segment,f.creative,f.daterange].join('|');
+  }
+  function buildGameStats(seed) {
+    const rng = mulberry32(seed);
+    return PARAMS.GAMES.map((g, i) => {
+      const muE   = clamp(g.mu    * (0.92 + 0.16*rng()), 0.10, 1.50);
+      const sigE  = clamp(g.sigma * (0.85 + 0.30*rng()), 0.03, 0.45);
+      const pb50  = Math.round(g.pb50 * (0.92 + 0.16*rng()));
+      const pb90  = Math.round(g.pb90 * (0.90 + 0.20*rng()));
+      const pb10  = Math.round(pb50 - (pb90 - pb50) * 0.7);
+      const margMul = 1 - g.sat * 0.6 + (rng()-0.5)*0.05;
+      const margROAS = muE * margMul;
+      const spendMonthly = PARAMS.BUDGET * PARAMS.CURRENT_W[i];
+      const dailySpend = spendMonthly / 30;
+      const spark = generateSpark(rng, 90, dailySpend, 0.18);
+      return {
+        ...g, muE, sigE, pb10, pb50: pb50, pb90, margROAS,
+        spendMonthly, sparkData: spark
+      };
+    });
+  }
+  function generateSpark(rng, n, base, vol) {
+    const out = []; let v = base;
+    for (let i = 0; i < n; i++) {
+      v = v * (1 + (rng()-0.5)*vol*0.4);
+      out.push(Math.max(0, v + base*0.05*(rng()-0.5)));
+    }
+    return out;
+  }
+
+  /* ============================================================ */
+  /* PORTFOLIO MATH                                                */
+  /* ============================================================ */
+  function buildSigma(games) {
+    const n = games.length;
+    const S = Array.from({length:n}, () => new Array(n));
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+      S[i][j] = games[i].sigE * games[j].sigE * PARAMS.CORR[i][j];
+    }
+    return S;
+  }
+  function pMu(w, games)        { return w.reduce((s, wi, i) => s + wi*games[i].muE, 0); }
+  function pPayback(w, games, k){ return w.reduce((s, wi, i) => s + wi*games[i][k], 0); }
+  function pSigma(w, S) {
+    let v = 0;
+    for (let i = 0; i < w.length; i++) for (let j = 0; j < w.length; j++) v += w[i]*w[j]*S[i][j];
+    return Math.sqrt(Math.max(v, 0));
+  }
+  function pDiffSigma(wA, wB, S) {
+    const d = wA.map((x, i) => x - wB[i]);
+    let v = 0;
+    for (let i = 0; i < d.length; i++) for (let j = 0; j < d.length; j++) v += d[i]*d[j]*S[i][j];
+    return Math.sqrt(Math.max(v, 0));
+  }
+
+  /* Grid search on the 4-simplex with step 1/N */
+  function searchSimplex(games, S, objective) {
+    const N = 40;                // 2.5% steps; ~12k feasible 4-tuples
+    const isMin = objective === 'minrisk';
+    let bestVal = isMin ? Infinity : -Infinity;
+    let bestW = null;
+    for (let a = 0; a <= N; a++) {
+      for (let b = 0; b <= N - a; b++) {
+        for (let c = 0; c <= N - a - b; c++) {
+          const d = N - a - b - c;
+          const w = [a/N, b/N, c/N, d/N];
+          const mu = pMu(w, games);
+          const sg = pSigma(w, S);
+          let val;
+          if (objective === 'sharpe')   val = sg > 1e-9 ? mu/sg : 0;
+          else if (objective === 'maxroas') val = mu;
+          else if (objective === 'minrisk') val = sg;
+          if (isMin ? val < bestVal : val > bestVal) {
+            bestVal = val; bestW = w;
+          }
+        }
+      }
+    }
+    return bestW;
+  }
+
+  function sampleCloud(games, S, n, seed) {
+    const rng = mulberry32(seed ^ 0xC0FFEE);
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const u = [-Math.log(1-rng()), -Math.log(1-rng()), -Math.log(1-rng()), -Math.log(1-rng())];
+      const s = u[0]+u[1]+u[2]+u[3];
+      const w = u.map(x => x/s);
+      out.push({ w, mu: pMu(w, games), sg: pSigma(w, S) });
+    }
+    return out;
+  }
+
+  /* ============================================================ */
+  /* FORMAT HELPERS                                                */
+  /* ============================================================ */
+  function fmtMoney(v, force) {
+    const s = v < 0 ? '-' : '';
+    const a = Math.abs(v);
+    if (a >= 1e6) return s + '$' + (a/1e6).toFixed(2) + 'M';
+    if (a >= 1e3) return s + '$' + (a/1e3).toFixed(0) + 'K';
+    return s + '$' + a.toFixed(0);
+  }
+  function fmtSignedMoney(v) { return (v >= 0 ? '+' : '') + fmtMoney(v); }
+  function fmtPct(v, dec)    { return (v*100).toFixed(dec ?? 1) + '%'; }
+  function fmtRoas(v)        { return v.toFixed(2); }
+  function fmtDays(v)        { return Math.round(v) + 'd'; }
+  function clamp(v, lo, hi)  { return Math.max(lo, Math.min(hi, v)); }
+
+  /* ============================================================ */
+  /* CHART INSTANCES (kept for teardown)                           */
+  /* ============================================================ */
+  const charts = {};
+  function destroyChart(key) { if (charts[key]) { charts[key].destroy(); delete charts[key]; } }
+
+  /* ============================================================ */
+  /* TAB 01 RENDER                                                 */
+  /* ============================================================ */
+  function recompute() {
+    state.seed = fnv1a(filterSeedKey(state.filters));
+    state.games   = buildGameStats(state.seed);
+    const S       = buildSigma(state.games);
+    state.sigma   = S;
+    state.optimalW = searchSimplex(state.games, S, 'sharpe');
+    state.maxRoasW = searchSimplex(state.games, S, 'maxroas');
+    state.minRiskW = searchSimplex(state.games, S, 'minrisk');
+    state.cloud    = sampleCloud(state.games, S, 500, state.seed);
+  }
+
+  function renderT01() {
+    if (state.activeTab !== '01') return;
+
+    /* filter context note */
+    const ctx = document.getElementById('t01-ctx');
+    const f = state.filters;
+    const narrowed = ['game','os','channel','geo','segment','creative'].filter(k => f[k] !== 'all');
+    if (narrowed.length) {
+      const labels = narrowed.map(k => k.charAt(0).toUpperCase()+k.slice(1)+'='+f[k]).join(' · ');
+      ctx.innerHTML = '<span class="lbl">Filter context</span> '+labels+' &nbsp;—&nbsp; portfolio always shows all 4 games; filters narrow the data window used to estimate per-game μ, σ, payback.';
+      ctx.style.display = '';
+    } else {
+      ctx.style.display = 'none';
+    }
+    document.getElementById('brand-meta').textContent =
+      (state.mode === 'demo' ? 'demo data' : 'uploaded data') + ' · seed 0x' + state.seed.toString(16).padStart(8,'0');
+
+    renderDonut();
+    renderGameRows();
+    renderSliders();
+    renderKPIs();
+    renderFrontier();
+    renderRecommendation();
+  }
+
+  /* --- Donut --- */
+  function renderDonut() {
+    destroyChart('donut');
+    const ctx = document.getElementById('t01-donut').getContext('2d');
+    const data = PARAMS.CURRENT_W.map(w => w * PARAMS.BUDGET);
+    charts.donut = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: state.games.map(g => g.name),
+        datasets: [{
+          data,
+          backgroundColor: state.games.map(g => g.color),
+          borderColor: '#ffffff',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '68%',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => c.label + ' — ' + fmtMoney(c.parsed) + ' / mo (' + fmtPct(c.parsed/PARAMS.BUDGET) + ')'
+            }
+          }
+        }
+      }
+    });
+    document.getElementById('t01-donut-total').textContent = fmtMoney(PARAMS.BUDGET);
+  }
+
+  /* --- Game rows (left col) --- */
+  function renderGameRows() {
+    const root = document.getElementById('t01-game-rows');
+    root.innerHTML = '';
+    state.games.forEach((g, i) => {
+      const w = PARAMS.CURRENT_W[i];
+      const row = document.createElement('div');
+      row.className = 'game-row';
+      row.innerHTML = `
+        <span class="swatch" style="background:${g.color}"></span>
+        <div>
+          <div class="game-name">${g.name}</div>
+          <div class="game-stats">
+            <div><div class="lbl">D30 ROAS</div><div class="v">${fmtRoas(g.muE)}</div></div>
+            <div><div class="lbl">Payback P50</div><div class="v">${fmtDays(g.pb50)}</div></div>
+            <div><div class="lbl">Marginal ROAS</div><div class="v">${fmtRoas(g.margROAS)}</div></div>
+          </div>
+          <canvas class="spark" id="t01-spark-${g.key}"></canvas>
+        </div>
+        <div class="game-spend">
+          ${fmtMoney(w*PARAMS.BUDGET)}
+          <span class="pct">${fmtPct(w)}</span>
+        </div>
+      `;
+      root.appendChild(row);
+    });
+    /* draw sparklines after DOM insertion */
+    state.games.forEach(g => {
+      const cv = document.getElementById('t01-spark-'+g.key);
+      destroyChart('spark-'+g.key);
+      charts['spark-'+g.key] = new Chart(cv.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: g.sparkData.map((_,i) => i),
+          datasets: [{
+            data: g.sparkData,
+            borderColor: g.color,
+            borderWidth: 1.4,
+            pointRadius: 0,
+            tension: 0.25,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend:{display:false}, tooltip:{enabled:false} },
+          scales: {
+            x: { display: false },
+            y: { display: false, grace: '5%' }
+          },
+          elements: { line: { borderJoinStyle: 'round' } },
+          animation: false
+        }
+      });
+    });
+  }
+
+  /* --- Sliders --- */
+  function renderSliders() {
+    const root = document.getElementById('t01-sliders');
+    root.innerHTML = '';
+    state.games.forEach((g, i) => {
+      const row = document.createElement('div');
+      row.className = 'slider-row';
+      row.innerHTML = `
+        <span class="swatch" style="background:${g.color}"></span>
+        <span class="gname">${g.name}</span>
+        <input type="range" min="0" max="100" step="0.5"
+               value="${(state.sliderW[i]*100).toFixed(1)}"
+               data-idx="${i}" />
+        <span class="pct" id="t01-pct-${i}">${(state.sliderW[i]*100).toFixed(1)}%</span>
+        <span class="delta" id="t01-d-${i}"></span>
+      `;
+      root.appendChild(row);
+    });
+    root.querySelectorAll('input[type=range]').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        const idx = +e.target.dataset.idx;
+        const newPct = +e.target.value / 100;
+        adjustSliders(idx, newPct);
+        updateSliderUI();
+        renderKPIs();
+        renderFrontier();           /* re-place "Sandbox" point */
+        renderRecommendation();
+      });
+    });
+    updateSliderUI();
+  }
+  function adjustSliders(idx, newPct) {
+    const w = state.sliderW.slice();
+    newPct = clamp(newPct, 0, 1);
+    const others = w.reduce((s, x, i) => s + (i === idx ? 0 : x), 0);
+    const target = 1 - newPct;
+    w[idx] = newPct;
+    if (others < 1e-9) {
+      const each = target / (w.length - 1);
+      for (let i = 0; i < w.length; i++) if (i !== idx) w[i] = each;
+    } else {
+      const k = target / others;
+      for (let i = 0; i < w.length; i++) if (i !== idx) w[i] = w[i] * k;
+    }
+    state.sliderW = w;
+  }
+  function updateSliderUI() {
+    state.sliderW.forEach((w, i) => {
+      const inp = document.querySelector(`input[type=range][data-idx="${i}"]`);
+      if (inp) inp.value = (w*100).toFixed(1);
+      document.getElementById('t01-pct-'+i).textContent = (w*100).toFixed(1) + '%';
+      const d = (w - PARAMS.CURRENT_W[i]) * 100;
+      const dEl = document.getElementById('t01-d-'+i);
+      dEl.textContent = (d > 0 ? '+' : '') + d.toFixed(1) + 'pp';
+      dEl.className = 'delta ' + (Math.abs(d) < 0.05 ? '' : (d > 0 ? 'pos' : 'neg'));
+    });
+    const sum = state.sliderW.reduce((a,b)=>a+b, 0);
+    document.getElementById('t01-sum').textContent = (sum*100).toFixed(1) + '%';
+  }
+
+  /* --- KPI cards with whiskers --- */
+  function renderKPIs() {
+    const w = state.sliderW;
+    const wC = PARAMS.CURRENT_W;
+    const G = state.games, S = state.sigma;
+    const Z90 = 1.6449;
+
+    /* Blended D30 ROAS */
+    const muS = pMu(w, G), sgS = pSigma(w, S);
+    const muC = pMu(wC, G), sgC = pSigma(wC, S);
+    document.getElementById('t01-kpi-roas-v').innerHTML = fmtRoas(muS) + '<span class="unit"> D30</span>';
+    document.getElementById('t01-kpi-roas-ci').textContent =
+      '90% CI: ' + fmtRoas(muS - Z90*sgS) + ' – ' + fmtRoas(muS + Z90*sgS);
+    drawWhisker('t01-kpi-roas-svg', muS, muS - Z90*sgS, muS + Z90*sgS, muC,
+      Math.min(muS-Z90*sgS, muC-Z90*sgC, 0.20), Math.max(muS+Z90*sgS, muC+Z90*sgC, 1.20),
+      v => v.toFixed(2));
+    setDelta('t01-kpi-roas-delta', muS - muC, v => (v>=0?'+':'') + v.toFixed(3) + ' ROAS', true);
+
+    /* Blended payback (P50) with P10–P90 whisker */
+    const pb50S = pPayback(w, G, 'pb50');
+    const pb10S = pPayback(w, G, 'pb10');
+    const pb90S = pPayback(w, G, 'pb90');
+    const pb50C = pPayback(wC, G, 'pb50');
+    const pb10C = pPayback(wC, G, 'pb10');
+    const pb90C = pPayback(wC, G, 'pb90');
+    document.getElementById('t01-kpi-pb-v').innerHTML = Math.round(pb50S) + '<span class="unit"> d</span>';
+    document.getElementById('t01-kpi-pb-ci').textContent =
+      'P10–P90: ' + Math.round(pb10S) + 'd – ' + Math.round(pb90S) + 'd';
+    drawWhisker('t01-kpi-pb-svg', pb50S, pb10S, pb90S, pb50C,
+      Math.min(pb10S, pb10C) * 0.9, Math.max(pb90S, pb90C) * 1.05,
+      v => Math.round(v) + 'd');
+    setDelta('t01-kpi-pb-delta', pb50S - pb50C, v => (v>=0?'+':'') + Math.round(v) + 'd', false /* lower is better */);
+
+    /* Volatility */
+    document.getElementById('t01-kpi-vol-v').innerHTML = (sgS*100).toFixed(2) + '<span class="unit"> %σ</span>';
+    document.getElementById('t01-kpi-vol-ci').textContent = 'epistemic ±10% · ' + (sgS*0.9*100).toFixed(2) + '–' + (sgS*1.1*100).toFixed(2) + '%';
+    drawWhisker('t01-kpi-vol-svg', sgS, sgS*0.9, sgS*1.1, sgC,
+      Math.min(sgS*0.85, sgC*0.85, 0), Math.max(sgS*1.15, sgC*1.15) * 1.05,
+      v => (v*100).toFixed(2)+'%');
+    setDelta('t01-kpi-vol-delta', sgS - sgC, v => (v>=0?'+':'') + (v*100).toFixed(2) + 'pp', false);
+  }
+  function setDelta(id, delta, fmt, higherBetter) {
+    const el = document.getElementById(id);
+    el.textContent = 'vs current: ' + fmt(delta);
+    if (Math.abs(delta) < 1e-6) { el.className = 'delta-line neutral'; return; }
+    const good = higherBetter ? delta > 0 : delta < 0;
+    el.className = 'delta-line ' + (good ? 'pos' : 'neg');
+  }
+  function drawWhisker(svgId, mean, lo, hi, baseline, axisLo, axisHi, fmt) {
+    const svg = document.getElementById(svgId);
+    const W = svg.clientWidth || 300, H = 38;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const pad = 6;
+    const xs = v => pad + (W - 2*pad) * (v - axisLo) / (axisHi - axisLo);
+    const cy = H/2;
+    const xLo = xs(lo), xHi = xs(hi), xM = xs(mean), xB = xs(baseline);
+    svg.innerHTML = `
+      <line x1="${pad}" y1="${cy}" x2="${W-pad}" y2="${cy}" stroke="#e2e2dc" stroke-width="1"/>
+      <line x1="${xLo}" y1="${cy-7}" x2="${xLo}" y2="${cy+7}" stroke="#14140f" stroke-width="1"/>
+      <line x1="${xHi}" y1="${cy-7}" x2="${xHi}" y2="${cy+7}" stroke="#14140f" stroke-width="1"/>
+      <line x1="${xLo}" y1="${cy}" x2="${xHi}" y2="${cy}" stroke="#14140f" stroke-width="1.5"/>
+      <line x1="${xB}" y1="${cy-12}" x2="${xB}" y2="${cy+12}" stroke="#6e6e63" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="${xM}" cy="${cy}" r="4" fill="#a8001f" stroke="#fff" stroke-width="1"/>
+      <text x="${pad}" y="${H-2}" font-size="9" fill="#6e6e63" font-family="monospace">${fmt(axisLo)}</text>
+      <text x="${W-pad}" y="${H-2}" font-size="9" fill="#6e6e63" font-family="monospace" text-anchor="end">${fmt(axisHi)}</text>
+    `;
+  }
+
+  /* --- Efficient frontier --- */
+  function renderFrontier() {
+    destroyChart('frontier');
+    const cv = document.getElementById('t01-frontier');
+    const G = state.games, S = state.sigma;
+
+    const cloud = state.cloud.map(p => ({ x: p.mu, y: p.sg }));
+    const muCur = pMu(PARAMS.CURRENT_W, G), sgCur = pSigma(PARAMS.CURRENT_W, S);
+    const muOpt = pMu(state.optimalW,   G), sgOpt = pSigma(state.optimalW,   S);
+    const muMax = pMu(state.maxRoasW,   G), sgMax = pSigma(state.maxRoasW,   S);
+    const muMin = pMu(state.minRiskW,   G), sgMin = pSigma(state.minRiskW,   S);
+    const muSlid= pMu(state.sliderW,    G), sgSlid= pSigma(state.sliderW,    S);
+
+    charts.frontier = new Chart(cv.getContext('2d'), {
+      type: 'scatter',
+      data: {
+        datasets: [
+          {
+            label: 'Sampled allocations',
+            data: cloud,
+            backgroundColor: 'rgba(110,110,99,0.18)',
+            borderColor: 'rgba(110,110,99,0.18)',
+            pointRadius: 2.2, pointHoverRadius: 3,
+            order: 5
+          },
+          { label: 'Sandbox', data: [{x:muSlid,y:sgSlid}],
+            pointStyle: 'rectRot', pointRadius: 9, pointHoverRadius: 10,
+            backgroundColor: '#ffffff', borderColor: '#a8001f', borderWidth: 2,
+            order: 1 },
+          { label: 'Current', data: [{x:muCur,y:sgCur}],
+            pointRadius: 7, pointHoverRadius: 8,
+            backgroundColor: '#1a1a1a', borderColor: '#1a1a1a', borderWidth: 1,
+            order: 2 },
+          { label: 'Sharpe-optimal', data: [{x:muOpt,y:sgOpt}],
+            pointRadius: 8, pointHoverRadius: 9,
+            backgroundColor: '#a8001f', borderColor: '#a8001f', borderWidth: 1,
+            order: 1 },
+          { label: 'Max ROAS', data: [{x:muMax,y:sgMax}],
+            pointRadius: 7, pointHoverRadius: 8,
+            backgroundColor: '#2a6b3f', borderColor: '#2a6b3f', borderWidth: 1,
+            order: 3 },
+          { label: 'Min risk', data: [{x:muMin,y:sgMin}],
+            pointRadius: 7, pointHoverRadius: 8,
+            backgroundColor: '#4a6f8f', borderColor: '#4a6f8f', borderWidth: 1,
+            order: 3 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => c.dataset.label + ' — μ=' + c.parsed.x.toFixed(3) + ', σ=' + (c.parsed.y*100).toFixed(2) + '%'
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Expected blended D30 ROAS  (μ)',
+              color: '#6e6e63',
+              font: { size: 11 }
+            },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => v.toFixed(2) }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'ROAS volatility  σ  (hover label for definition)',
+              color: '#6e6e63',
+              font: { size: 11 }
+            },
+            grid: { color: 'rgba(226,226,220,0.6)' },
+            ticks: { color: '#6e6e63', font: { size: 10 }, callback: v => (v*100).toFixed(1) + '%' }
+          }
+        }
+      }
+    });
+
+    /* Axis tooltip on the y-axis title — Chart.js doesn't expose a direct
+       hover target for axis titles, so we mount a positioned helper. */
+    const wrap = cv.parentElement;
+    wrap.querySelectorAll('.frontier-axis-tip').forEach(n => n.remove());
+    const tip = document.createElement('span');
+    tip.className = 'frontier-axis-tip';
+    tip.textContent = 'σ definition';
+    tip.setAttribute('data-tip',
+      'ROAS volatility = std dev of monthly D30 ROAS, weighted by allocation, computed over trailing 6 months. ' +
+      'Aggregated as sqrt(w′ Σ w) where Σ = D·C·D, D=diag(per-game σ), C=game-game correlation. ' +
+      '90% prediction interval shown on KPIs uses μ ± 1.645σ.');
+    wrap.appendChild(tip);
+  }
+
+  /* --- Recommendation (computed live from optimal vs current) --- */
+  function renderRecommendation() {
+    const G = state.games, S = state.sigma;
+    const wC = PARAMS.CURRENT_W;
+    const wO = state.optimalW;
+    const muC = pMu(wC, G), muO = pMu(wO, G);
+    const sgC = pSigma(wC, S), sgO = pSigma(wO, S);
+    const dW = wO.map((x, i) => x - wC[i]);
+    const maxAbs = Math.max.apply(null, dW.map(Math.abs));
+    const recoEl = document.getElementById('t01-reco');
+    const footEl = document.getElementById('t01-reco-foot');
+
+    if (maxAbs < 0.01) {
+      recoEl.innerHTML = '<strong>Current allocation is within 1% of the Sharpe-optimal point</strong> — no reallocation recommended at this confidence level.';
+      footEl.textContent = 'μ_current=' + muC.toFixed(3) + ', σ_current=' + (sgC*100).toFixed(2)+'% · '
+                        + 'μ_opt='     + muO.toFixed(3) + ', σ_opt='     + (sgO*100).toFixed(2)+'%';
+      return;
+    }
+
+    /* dominant donor / receiver */
+    let donorIdx = 0, recvIdx = 0;
+    for (let i = 0; i < dW.length; i++) {
+      if (dW[i] < dW[donorIdx]) donorIdx = i;
+      if (dW[i] > dW[recvIdx])  recvIdx = i;
+    }
+    const shift = Math.min(-dW[donorIdx], dW[recvIdx]);
+    const shiftPct = (shift * 100);
+
+    const revDelta   = (muO - muC) * PARAMS.BUDGET;
+    const sdDelta    = pDiffSigma(wO, wC, S) * PARAMS.BUDGET;
+    const Z90 = 1.6449;
+    const lo = revDelta - Z90 * sdDelta;
+    const hi = revDelta + Z90 * sdDelta;
+    const pbC = pPayback(wC, G, 'pb50');
+    const pbO = pPayback(wO, G, 'pb50');
+    const pbDelta = pbO - pbC;
+    const pbVerb = pbDelta < 0 ? 'shortens' : (pbDelta > 0 ? 'lengthens' : 'is unchanged');
+    const otherShifts = dW
+      .map((d, i) => ({ d, i }))
+      .filter(x => x.i !== donorIdx && x.i !== recvIdx && Math.abs(x.d) >= 0.01);
+    const otherNote = otherShifts.length
+      ? ' Plus minor adjustments: ' + otherShifts
+          .map(x => (x.d>0?'+':'') + (x.d*100).toFixed(1) + 'pp ' + G[x.i].name)
+          .join(', ') + '.'
+      : '';
+
+    recoEl.innerHTML =
+      '<strong>Shift ' + shiftPct.toFixed(0) + '% from ' + G[donorIdx].name +
+      ' to ' + G[recvIdx].name + '</strong> → ' + fmtSignedMoney(revDelta) +
+      ' projected D30 revenue, payback ' + pbVerb +
+      (pbDelta === 0 ? '' : ' by ' + Math.abs(Math.round(pbDelta)) + ' days') + ', ' +
+      '<strong>90% CI: [' + fmtSignedMoney(lo) + ', ' + fmtSignedMoney(hi) + ']</strong>.' +
+      otherNote;
+    footEl.textContent =
+      'Computed live: μ_opt − μ_current = ' + (muO-muC).toFixed(3) +
+      ', σ(Δ) = ' + (pDiffSigma(wO, wC, S)*100).toFixed(2)+'% · ' +
+      'budget = $' + (PARAMS.BUDGET/1e6).toFixed(2) + 'M/mo · ' +
+      'Optimal w = [' + wO.map(x => (x*100).toFixed(0)+'%').join(', ') + ']';
+  }
+
+  /* ============================================================ */
+  /* CSV: parse + validate + sample                                */
+  /* ============================================================ */
+  const REQUIRED = ['date','game','channel','geo','os','spend_usd','installs'];
+  const OPTIONAL = ['campaign_id','creative_id','concept_type','impressions','cpi','roas_d1','roas_d7','roas_d30','roas_d90','arpu_d1','arpu_d7','arpu_d30','arpu_d90','arpdau','retention_d1','retention_d7','retention_d30','store_impressions','store_pdp_views','store_installs','ad_revenue','iap_revenue'];
+
+  function parseCSV(text) {
+    const lines = text.replace(/\r/g,'').split('\n').filter(l => l.length > 0);
+    if (!lines.length) return { error: 'Empty file' };
+    const head = lines[0].split(',').map(s => s.trim().toLowerCase());
+    const missing = REQUIRED.filter(k => head.indexOf(k) < 0);
+    if (missing.length) {
+      return { error: 'Missing required columns: ' + missing.join(', ') + '. Required set: ' + REQUIRED.join(', ') };
+    }
+    const idx = {};
+    REQUIRED.concat(OPTIONAL).forEach(k => { const i = head.indexOf(k); if (i >= 0) idx[k] = i; });
+    const rows = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cells = lines[i].split(',').map(s => s.trim());
+      const r = {};
+      Object.keys(idx).forEach(k => { r[k] = cells[idx[k]]; });
+      rows.push(r);
+    }
+    const missingOptional = OPTIONAL.filter(k => idx[k] === undefined);
+    return { rows, missingOptional, columns: Object.keys(idx) };
+  }
+  function buildSampleCSV() {
+    const head = REQUIRED.concat(['campaign_id','creative_id','concept_type','impressions','roas_d7','roas_d30','retention_d1']);
+    const rows = [head.join(',')];
+    const games = ['Solitaire','Spider Solitaire','TriPeaks','Bubble Shooter Pop'];
+    const chans = ['Google Ads','ASA','Meta','AppLovin','Unity','Moloco','ironSource','TikTok'];
+    const geos = ['US','CA','UK','AU','DE','JP'];
+    const concepts = ['Gameplay demo','UGC','Testimonial','Cinematic','Metagame'];
+    const rng = mulberry32(42);
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(); d.setDate(d.getDate() - Math.floor(rng()*180));
+      const date = d.toISOString().slice(0,10);
+      const g = games[Math.floor(rng()*games.length)];
+      const c = chans[Math.floor(rng()*chans.length)];
+      const geo = geos[Math.floor(rng()*geos.length)];
+      const os = rng() < 0.55 ? 'iOS' : 'Android';
+      const spend = (500 + rng()*8000).toFixed(2);
+      const inst = Math.round(spend / (1.5 + rng()*5));
+      const camp = 'C' + (1000 + Math.floor(rng()*900));
+      const cre  = 'CR' + (500 + Math.floor(rng()*900));
+      const cpt  = concepts[Math.floor(rng()*concepts.length)];
+      const imp = inst * (60 + Math.floor(rng()*120));
+      const r7  = (0.05 + rng()*0.15).toFixed(3);
+      const r30 = (0.20 + rng()*0.35).toFixed(3);
+      const ret1 = (0.28 + rng()*0.14).toFixed(3);
+      rows.push([date,g,c,geo,os,spend,inst,camp,cre,cpt,imp,r7,r30,ret1].join(','));
+    }
+    return rows.join('\n');
+  }
+
+  /* ============================================================ */
+  /* MEMO EXPORT                                                   */
+  /* ============================================================ */
+  function exportMemo() {
+    const f = state.filters;
+    const tabTitle = {
+      '01': '01 · Portfolio Budget Allocator',
+      '02': '02 · LTV & Payback Modeler',
+      '03': '03 · Marginal Efficiency & Saturation',
+      '04': '04 · Creative Intelligence',
+      '05': '05 · ASO & Store Conversion Funnel',
+      '06': '06 · Competitive & Market Intelligence',
+      '07': '07 · Finance Forecast Reconciliation'
+    }[state.activeTab];
+    const lines = [];
+    lines.push('# UA Growth Strategy Console — Decision Memo');
+    lines.push('');
+    lines.push('**Tab:** ' + tabTitle);
+    lines.push('**Generated:** ' + new Date().toISOString());
+    lines.push('**Data source:** ' + (state.mode === 'demo' ? 'demo data (synthetic)' : 'uploaded CSV'));
+    lines.push('**Seed:** 0x' + state.seed.toString(16).padStart(8,'0'));
+    lines.push('');
+    lines.push('## Filter context');
+    lines.push('| Filter | Value |');
+    lines.push('|---|---|');
+    Object.entries(f).forEach(([k, v]) => lines.push('| ' + k + ' | ' + v + ' |'));
+    lines.push('');
+    if (state.activeTab === '01') {
+      const G = state.games, S = state.sigma, wC = PARAMS.CURRENT_W, wO = state.optimalW, w = state.sliderW;
+      const Z90 = 1.6449;
+      lines.push('## Portfolio metrics — Sandbox vs Current vs Sharpe-optimal');
+      lines.push('| Allocation | μ (D30 ROAS) | σ | 90% prediction interval | Payback P50 |');
+      lines.push('|---|---|---|---|---|');
+      const row = (lab, ww) => {
+        const mu = pMu(ww, G), sg = pSigma(ww, S), pb = pPayback(ww, G, 'pb50');
+        return '| ' + lab + ' | ' + mu.toFixed(3) + ' | ' + (sg*100).toFixed(2) + '% | ' +
+               (mu - Z90*sg).toFixed(3) + ' – ' + (mu + Z90*sg).toFixed(3) + ' | ' + Math.round(pb) + 'd |';
+      };
+      lines.push(row('Sandbox', w));
+      lines.push(row('Current plan', wC));
+      lines.push(row('Sharpe-optimal', wO));
+      lines.push('');
+      lines.push('## Allocation weights');
+      lines.push('| Game | Current | Sandbox | Sharpe-optimal |');
+      lines.push('|---|---|---|---|');
+      G.forEach((g, i) => lines.push('| ' + g.name + ' | ' + (wC[i]*100).toFixed(1) + '% | ' + (w[i]*100).toFixed(1) + '% | ' + (wO[i]*100).toFixed(1) + '% |'));
+      lines.push('');
+      lines.push('## Recommendation');
+      lines.push('> ' + document.getElementById('t01-reco').textContent.trim());
+      lines.push('');
+      lines.push('_' + document.getElementById('t01-reco-foot').textContent.trim() + '_');
+    } else {
+      lines.push('## ' + tabTitle);
+      lines.push('');
+      lines.push('_This tab is not yet built. Memo export will populate when the tab ships._');
+    }
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ua-decision-memo-tab' + state.activeTab + '-' + new Date().toISOString().slice(0,10) + '.md';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+
+  /* ============================================================ */
+  /* WIRING                                                        */
+  /* ============================================================ */
+  function bindFilters() {
+    ['game','os','channel','geo','segment','creative','daterange'].forEach(k => {
+      const el = document.getElementById('f-' + k);
+      el.addEventListener('change', () => {
+        state.filters[k] = el.value;
+        state.sliderW = PARAMS.CURRENT_W.slice();
+        recompute();
+        renderActiveTab();
+      });
+    });
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      Object.assign(state.filters, {
+        game:'all', os:'all', channel:'all', geo:'all',
+        segment:'all', creative:'all', daterange:'180d'
+      });
+      ['game','os','channel','geo','segment','creative','daterange'].forEach(k => {
+        document.getElementById('f-' + k).value = state.filters[k];
+      });
+      state.sliderW = PARAMS.CURRENT_W.slice();
+      recompute();
+      renderActiveTab();
+    });
+  }
+  function bindTabs() {
+    document.querySelectorAll('#tabstrip button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#tabstrip button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.activeTab = btn.dataset.tab;
+        document.querySelectorAll('.tabpanel').forEach(p =>
+          p.classList.toggle('active', p.dataset.tabPanel === state.activeTab)
+        );
+        renderActiveTab();
+      });
+    });
+  }
+  function bindDataMode() {
+    document.querySelectorAll('#data-mode button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const m = btn.dataset.mode;
+        if (m === 'upload') openUpload();
+        else {
+          state.mode = 'demo';
+          state.uploaded = null;
+          document.querySelectorAll('#data-mode button').forEach(b => b.classList.toggle('active', b.dataset.mode === 'demo'));
+          recompute(); renderActiveTab();
+        }
+      });
+    });
+  }
+  function openUpload() {
+    document.getElementById('upload-modal').classList.add('open');
+    document.getElementById('upload-err').classList.remove('show');
+    document.getElementById('upload-ok').classList.remove('show');
+  }
+  function closeUpload() { document.getElementById('upload-modal').classList.remove('open'); }
+  function bindUpload() {
+    const drop = document.getElementById('upload-drop');
+    const file = document.getElementById('upload-file');
+    drop.addEventListener('click', () => file.click());
+    drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault(); drop.classList.remove('over');
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    file.addEventListener('change', (e) => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+    document.getElementById('btn-modal-cancel').addEventListener('click', () => {
+      closeUpload();
+      /* If user cancels, snap toggle back to whatever mode currently holds */
+      document.querySelectorAll('#data-mode button').forEach(b =>
+        b.classList.toggle('active', b.dataset.mode === state.mode));
+    });
+    document.getElementById('btn-sample-csv').addEventListener('click', () => {
+      const csv = buildSampleCSV();
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ua_sample_schema.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    });
+  }
+  function handleFile(f) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = parseCSV(reader.result);
+      const errEl = document.getElementById('upload-err');
+      const okEl  = document.getElementById('upload-ok');
+      if (res.error) {
+        errEl.innerHTML = res.error;
+        errEl.classList.add('show'); okEl.classList.remove('show');
+        return;
+      }
+      state.mode = 'upload';
+      state.uploaded = res;
+      document.querySelectorAll('#data-mode button').forEach(b =>
+        b.classList.toggle('active', b.dataset.mode === 'upload'));
+      const optMsg = res.missingOptional.length
+        ? ' Missing optional fields (model-imputed in UI with ⚠): <code>' + res.missingOptional.join(', ') + '</code>.'
+        : '';
+      okEl.innerHTML = '<strong>Loaded</strong> · ' + res.rows.length + ' rows · ' +
+                       res.columns.length + ' columns recognized.' + optMsg;
+      okEl.classList.add('show'); errEl.classList.remove('show');
+      /* In Turn 1 the upload doesn't yet drive Tab 01 numbers — flagged in
+         the assumptions. Schema validation is the contract; downstream
+         wiring will be added when each tab can consume per-row data. */
+      setTimeout(closeUpload, 1200);
+      recompute(); renderActiveTab();
+    };
+    reader.readAsText(f);
+  }
+
+  function bindT01Buttons() {
+    document.getElementById('t01-reset-w').addEventListener('click', () => {
+      state.sliderW = PARAMS.CURRENT_W.slice();
+      updateSliderUI(); renderKPIs(); renderFrontier(); renderRecommendation();
+    });
+    document.getElementById('t01-snap-opt').addEventListener('click', () => {
+      state.sliderW = state.optimalW.slice();
+      updateSliderUI(); renderKPIs(); renderFrontier(); renderRecommendation();
+    });
+    document.getElementById('btn-export').addEventListener('click', exportMemo);
+  }
+
+  function renderActiveTab() {
+    if (state.activeTab === '01') renderT01();
+    /* Tabs 02–07 are placeholders; nothing to render in Turn 1. */
+  }
+
+  function init() {
+    bindFilters(); bindTabs(); bindDataMode(); bindUpload(); bindT01Buttons();
+    recompute(); renderActiveTab();
+    window.addEventListener('resize', () => {
+      if (state.activeTab === '01') {
+        renderKPIs();   /* re-draw whisker SVGs at new widths */
+      }
+    });
+  }
+  init();
+})();
+</script>
+</body>
+</html>
