@@ -599,8 +599,8 @@
             <div class="item"><span class="dot" style="background:#4a6f8f;border-color:#4a6f8f;"></span>Min risk</div>
           </div>
           <div class="constraint-note">
-            <span class="lbl">Constraint</span> min 5% per live title
-            <span class="why" data-tip="Live games carry mandatory minimum spend: cutting a title to 0% breaks ASO momentum, severs the measurement signal needed to re-engage the audience, and forfeits option value. Standard UA portfolios apply a 3–10% floor; we use 5%. Setting MIN_WEIGHT=0 in code reproduces the unconstrained frontier.">ⓘ</span>
+            <span class="lbl">Constraint</span> 5% &le; w<sub>i</sub> &le; 60% per title
+            <span class="why" data-tip="Per-title box constraints standard for any real portfolio optimizer.   Lower floor 5%: zeroing a live game cuts measurement, breaks ASO momentum, forfeits audience option value.   Upper cap 60%: caps single-title shock exposure (creative fatigue, store-rank loss, regulatory) and forces real diversification.   Setting MIN_WEIGHT=0, MAX_WEIGHT=1 in code reproduces the unconstrained mean-variance frontier (which corner-solves to 0% and 90%+ on individual titles — operationally unrealistic).">ⓘ</span>
           </div>
 
           <div class="recommendation">
@@ -737,11 +737,15 @@
     ],
     CURRENT_W: [0.30, 0.20, 0.30, 0.20],
     BUDGET: 1_000_000,
-    /* Minimum allocation per live title. Real UA portfolios always carry a
-       floor: zeroing a live game means cutting off measurement, breaking ASO
-       momentum, and forfeiting the option value of re-engaging the audience.
-       Surfaced explicitly in the UI under the frontier. */
-    MIN_WEIGHT: 0.05
+    /* Per-title box constraints. Real UA portfolios always carry both:
+       - lower floor (5%): zeroing a live game cuts off measurement, breaks
+         ASO momentum, and forfeits option value on the audience.
+       - upper cap (60%): caps single-title shock exposure (creative
+         fatigue, store-rank loss, regulatory hits to one game) and forces
+         diversification so the portfolio actually behaves like a portfolio.
+       Both bounds are surfaced under the frontier. */
+    MIN_WEIGHT: 0.05,
+    MAX_WEIGHT: 0.60
   };
 
   /* ============================================================ */
@@ -823,20 +827,21 @@
     return Math.sqrt(Math.max(v, 0));
   }
 
-  /* Grid search on the 4-simplex with step 1/N, subject to a per-title
-     minimum-weight floor (default 5%). Mirrors min/max box constraints in
-     standard mean-variance optimizers. */
-  function searchSimplex(games, S, objective, minPct) {
-    const N = 40;                // 2.5% steps; ~7k feasible 4-tuples under floor
+  /* Grid search on the 4-simplex with step 1/N, subject to per-title box
+     constraints minPct ≤ w_i ≤ maxPct. Mirrors min/max bounds in standard
+     mean-variance optimizers. */
+  function searchSimplex(games, S, objective, minPct, maxPct) {
+    const N = 40;                // 2.5% steps
     const m = Math.round((minPct || 0) * N);
+    const M = Math.round((maxPct != null ? maxPct : 1) * N);
     const isMin = objective === 'minrisk';
     let bestVal = isMin ? Infinity : -Infinity;
     let bestW = null;
-    for (let a = m; a <= N - 3*m; a++) {
-      for (let b = m; b <= N - a - 2*m; b++) {
-        for (let c = m; c <= N - a - b - m; c++) {
+    for (let a = m; a <= Math.min(M, N - 3*m); a++) {
+      for (let b = m; b <= Math.min(M, N - a - 2*m); b++) {
+        for (let c = m; c <= Math.min(M, N - a - b - m); c++) {
           const d = N - a - b - c;
-          if (d < m) continue;
+          if (d < m || d > M) continue;
           const w = [a/N, b/N, c/N, d/N];
           const mu = pMu(w, games);
           const sg = pSigma(w, S);
@@ -895,9 +900,9 @@
     state.games   = buildGameStats(state.seed);
     const S       = buildSigma(state.games);
     state.sigma   = S;
-    state.optimalW = searchSimplex(state.games, S, 'sharpe',  PARAMS.MIN_WEIGHT);
-    state.maxRoasW = searchSimplex(state.games, S, 'maxroas', PARAMS.MIN_WEIGHT);
-    state.minRiskW = searchSimplex(state.games, S, 'minrisk', PARAMS.MIN_WEIGHT);
+    state.optimalW = searchSimplex(state.games, S, 'sharpe',  PARAMS.MIN_WEIGHT, PARAMS.MAX_WEIGHT);
+    state.maxRoasW = searchSimplex(state.games, S, 'maxroas', PARAMS.MIN_WEIGHT, PARAMS.MAX_WEIGHT);
+    state.minRiskW = searchSimplex(state.games, S, 'minrisk', PARAMS.MIN_WEIGHT, PARAMS.MAX_WEIGHT);
     state.cloud    = sampleCloud(state.games, S, 500, state.seed);
   }
 
@@ -1242,21 +1247,24 @@
     wrap.appendChild(tip);
   }
 
-  /* --- Recommendation (computed live from optimal vs current) --- */
+  /* --- Recommendation (computed live: optimal vs sandbox) ---
+     Compares against state.sliderW so dragging sliders reshapes the
+     recommendation in real time, and "Snap to optimal" deterministically
+     triggers the within-1% no-op branch. */
   function renderRecommendation() {
     const G = state.games, S = state.sigma;
-    const wC = PARAMS.CURRENT_W;
+    const wS = state.sliderW;
     const wO = state.optimalW;
-    const muC = pMu(wC, G), muO = pMu(wO, G);
-    const sgC = pSigma(wC, S), sgO = pSigma(wO, S);
-    const dW = wO.map((x, i) => x - wC[i]);
+    const muS = pMu(wS, G), muO = pMu(wO, G);
+    const sgS = pSigma(wS, S), sgO = pSigma(wO, S);
+    const dW = wO.map((x, i) => x - wS[i]);
     const maxAbs = Math.max.apply(null, dW.map(Math.abs));
     const recoEl = document.getElementById('t01-reco');
     const footEl = document.getElementById('t01-reco-foot');
 
     if (maxAbs < 0.01) {
-      recoEl.innerHTML = '<strong>Current allocation is within 1% of the Sharpe-optimal point</strong> — no reallocation recommended at this confidence level.';
-      footEl.textContent = 'μ_current=' + muC.toFixed(3) + ', σ_current=' + (sgC*100).toFixed(2)+'% · '
+      recoEl.innerHTML = '<strong>Current sandbox allocation is within 1% of the Sharpe-optimal point</strong> — no reallocation recommended at this confidence level.';
+      footEl.textContent = 'μ_sandbox=' + muS.toFixed(3) + ', σ_sandbox=' + (sgS*100).toFixed(2)+'% · '
                         + 'μ_opt='     + muO.toFixed(3) + ', σ_opt='     + (sgO*100).toFixed(2)+'%';
       return;
     }
@@ -1270,14 +1278,14 @@
     const shift = Math.min(-dW[donorIdx], dW[recvIdx]);
     const shiftPct = (shift * 100);
 
-    const revDelta   = (muO - muC) * PARAMS.BUDGET;
-    const sdDelta    = pDiffSigma(wO, wC, S) * PARAMS.BUDGET;
+    const revDelta = (muO - muS) * PARAMS.BUDGET;
+    const sdDelta  = pDiffSigma(wO, wS, S) * PARAMS.BUDGET;
     const Z90 = 1.6449;
     const lo = revDelta - Z90 * sdDelta;
     const hi = revDelta + Z90 * sdDelta;
-    const pbC = pPayback(wC, G, 'pb50');
+    const pbS = pPayback(wS, G, 'pb50');
     const pbO = pPayback(wO, G, 'pb50');
-    const pbDelta = pbO - pbC;
+    const pbDelta = pbO - pbS;
     const pbVerb = pbDelta < 0 ? 'shortens' : (pbDelta > 0 ? 'lengthens' : 'is unchanged');
     const otherShifts = dW
       .map((d, i) => ({ d, i }))
@@ -1296,10 +1304,11 @@
       '<strong>90% CI: [' + fmtSignedMoney(lo) + ', ' + fmtSignedMoney(hi) + ']</strong>.' +
       otherNote;
     footEl.textContent =
-      'Computed live: μ_opt − μ_current = ' + (muO-muC).toFixed(3) +
-      ', σ(Δ) = ' + (pDiffSigma(wO, wC, S)*100).toFixed(2)+'% · ' +
+      'Computed live: μ_opt − μ_sandbox = ' + (muO-muS).toFixed(3) +
+      ', σ(Δ) = ' + (pDiffSigma(wO, wS, S)*100).toFixed(2)+'% · ' +
       'budget = $' + (PARAMS.BUDGET/1e6).toFixed(2) + 'M/mo · ' +
-      'Optimal w = [' + wO.map(x => (x*100).toFixed(0)+'%').join(', ') + ']';
+      'Optimal w = [' + wO.map(x => (x*100).toFixed(0)+'%').join(', ') + '] · ' +
+      'bounds 5–60%';
   }
 
   /* ============================================================ */
@@ -1399,7 +1408,7 @@
       lines.push(row('Current plan', wC));
       lines.push(row('Sharpe-optimal', wO));
       lines.push('');
-      lines.push('**Constraint:** min ' + (PARAMS.MIN_WEIGHT*100).toFixed(0) + '% per live title (applied to all three optima).');
+      lines.push('**Constraint:** ' + (PARAMS.MIN_WEIGHT*100).toFixed(0) + '% ≤ w_i ≤ ' + (PARAMS.MAX_WEIGHT*100).toFixed(0) + '% per title (applied to all three optima).');
       lines.push('');
       lines.push('## Allocation weights');
       lines.push('| Game | Current | Sandbox | Sharpe-optimal |');
